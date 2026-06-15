@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アニメで日本語！ - 애니메이션 일본어</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+  :root {
+    --pink: #FF6B9D;
+    --purple: #9B59B6;
+    --blue: #3498DB;
+    --yellow: #F1C40F;
+    --green: #2ECC71;
+    --orange: #E67E22;
+    --dark: #1a0533;
+    --card-bg: #ffffff;
+    --bg: #fdf0ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 배경 별 */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(circle at 10% 20%, rgba(255,107,157,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(155,89,182,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(52,152,219,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* 헤더 */
+  header {
+    background: linear-gradient(135deg, #FF6B9D 0%, #9B59B6 50%, #3498DB 100%);
+    padding: 18px 20px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    clip-path: ellipse(100% 100% at 50% 0%);
+  }
+
+  header::before {
+    content: '★ ✦ ★ ✦ ★ ✦ ★';
+    position: absolute;
+    top: 8px; left: 0; right: 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 8px;
+  }
+
+  .header-title {
+    color: white;
+    font-size: 2em;
+    font-weight: 900;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+    letter-spacing: 2px;
+  }
+
+  .header-sub {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95em;
+    margin-top: 6px;
+  }
+
+  .mascot {
+    font-size: 3em;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-5deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+  }
+
+  /* XP 바 */
+  .xp-bar-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 12px 20px;
+    margin: -30px 20px 10px;
+    box-shadow: 0 4px 20px rgba(155,89,182,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .level-badge {
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: white;
+    font-weight: 900;
+    font-size: 0.8em;
+    padding: 6px 10px;
+    border-radius: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(241,196,15,0.4);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .xp-section {
+    flex: 1;
+  }
+
+  .xp-label {
+    font-size: 0.75em;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .xp-bar {
+    background: #f0e6ff;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+  }
+
+  .xp-fill {
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .total-score {
+    font-size: 0.85em;
+    font-weight: 700;
+    color: var(--purple);
+    white-space: nowrap;
+  }
+
+  /* 탭 네비게이션 */
+  .tab-nav {
+    display: flex;
+    gap: 6px;
+    padding: 0 12px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tab-nav::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    flex: 0 0 auto;
+    background: white;
+    border: 2.5px solid #e8d5f5;
+    border-radius: 16px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 700;
+    color: #888;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(155,89,182,0.35);
+    transform: translateY(-2px);
+  }
+
+  .tab-btn:hover:not(.active) {
+    border-color: var(--pink);
+    color: var(--pink);
+  }
+
+  /* 메인 컨테이너 */
+  .container {
+    padding: 0 12px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* 섹션 카드 */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 16px rgba(155,89,182,0.1);
+    border: 2px solid #f5e6ff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
+  }
+
+  .section-title {
+    font-size: 1.1em;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-icon {
+    font-size: 1.3em;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  }
+
+  /* ===== 히라가나 탭 ===== */
+  .kana-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .kana-card {
+    background: linear-gradient(135deg, #fdf0ff, #f0e6ff);
+    border: 2px solid #e8d5f5;
+    border-radius: 14px;
+    padding: 10px 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .kana-card:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(155,89,182,0.25);
+    border-color: var(--pink);
+  }
+
+  .kana-card.learned {
+    background: linear-gradient(135deg, #d4f8e8, #a8f0cc);
+    border-color: var(--green);
+  }
+
+  .kana-card .jp {
+    font-size: 1.6em;
+    font-family: 'Noto Sans JP', sans-serif;
+    display: block;
+    color: var(--dark);
+    font-weight: 700;
+  }
+
+  .kana-card .ro {
+    font-size: 0.65em;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .kana-card .check {
+    position: absolute;
+    top: 2px; right: 4px;
+    font-size: 0.7em;
+    color: var(--green);
+    display: none;
+  }
+
+  .kana-card.learned .check { display: block; }
+
+  .kana-row-label {
+    font-size: 0.75em;
+    font-weight: 700;
+    color: var(--purple);
+    padding: 4px 8px;
+    background: #f5e6ff;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  /* 히라가나 플래시카드 */
+  .flashcard-area {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .big-kana-card {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 24px;
+    padding: 40px 20px;
+    margin: 0 auto 16px;
+    max-width: 280px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    box-shadow: 0 8px 32px rgba(155,89,182,0.35);
+    position: relative;
+  }
+
+  .big-kana-card:hover { transform: scale(1.02); }
+
+  .big-kana-card .kana-big {
+    font-size: 5em;
+    color: white;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.15);
+    display: block;
+    line-height: 1;
+  }
+
+  .big-kana-card .kana-hint {
+    color: rgba(255,255,255,0.0);
+    font-size: 1.3em;
+    margin-top: 12px;
+    transition: color 0.3s;
+  }
+
+  .big-kana-card.revealed .kana-hint {
+    color: rgba(255,255,255,0.95);
+  }
+
+  .reveal-btn {
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 12px 28px;
+    font-size: 0.95em;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 6px 4px;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 0 4px 12px rgba(230,126,34,0.35);
+  }
+
+  .reveal-btn:hover { transform: translateY(-2px); }
+
+  .nav-btns { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+
+  .nav-btn {
+    background: white;
+    border: 2.5px solid var(--purple);
+    color: var(--purple);
+    border-radius: 14px;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .nav-btn:hover {
+    background: var(--purple);
+    color: white;
+  }
+
+  /* ===== 애니 대사 탭 ===== */
+  .anime-scene {
+    background: linear-gradient(135deg, #1a0533, #2d1b69);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #4a2080;
+  }
+
+  .anime-scene::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(255,107,157,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .scene-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    font-size: 0.7em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .dialogue-bubble {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .dialogue-bubble:hover {
+    background: rgba(255,255,255,0.13);
+    border-color: var(--pink);
+    transform: translateX(4px);
+  }
+
+  .dialogue-char {
+    font-size: 0.72em;
+    color: var(--yellow);
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dialogue-jp {
+    font-size: 1.2em;
+    color: white;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  .dialogue-romaji {
+    font-size: 0.8em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+
+  .dialogue-kr {
+    font-size: 0.85em;
+    color: rgba(255,255,255,0.0);
+    transition: color 0.3s;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 4px 8px;
+    display: inline-block;
+  }
+
+  .dialogue-bubble:hover .dialogue-kr,
+  .dialogue-bubble.revealed .dialogue-kr {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .dialogue-tip {
+    font-size: 0.7em;
+    color: rgba(255,255,255,0.35);
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  .anime-category-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .anime-category-tabs::-webkit-scrollbar { display: none; }
+
+  .cat-tab {
+    flex: 0 0 auto;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 0.78em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .cat-tab.active {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-color: transparent;
+    color: white;
+  }
+
+  .vocab-highlight {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: var(--dark);
+    font-size: 0.72em;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 8px;
+    margin: 2px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+
+  .vocab-highlight:hover { transform: scale(1.1); }
+
+  /* ===== 단어 퀴즈 탭 ===== */
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .quiz-progress {
+    font-size: 0.85em;
+    color: #888;
+    font-weight: 700;
+  }
+
+  .streak-badge {
+    background: linear-gradient(135deg, var(--orange), #e74c3c);
+    color: white;
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .quiz-question-card {
+    background: linear-gradient(135deg, var(--dark), #2d1b69);
+    border-radius: 24px;
+    padding: 30px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 32px rgba(26,5,51,0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quiz-question-card::after {
+    content: '?';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 5em;
+    color: rgba(255,255,255,0.04);
+    font-weight: 900;
+  }
+
+  .quiz-type-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.7);
+    font-size: 0.72em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .quiz-word {
+    font-size: 3em;
+    color: white;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    line-height: 1.1;
+  }
+
+  .quiz-word-sub {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85em;
+    margin-top: 6px;
+  }
+
+  .quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .quiz-option {
+    background: white;
+    border: 2.5px solid #e8d5f5;
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95em;
+    font-weight: 700;
+    color: var(--dark);
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .quiz-option:hover:not(.disabled) {
+    border-color: var(--purple);
+    background: #f5e6ff;
+    transform: translateY(-2px);
+  }
+
+  .quiz-option.correct {
+    background: linear-gradient(135deg, #d4f8e8, #a8f0cc);
+    border-color: var(--green);
+    color: #1a7a4a;
+    animation: correctPop 0.4s ease;
+  }
+
+  .quiz-option.wrong {
+    background: linear-gradient(135deg, #ffe0e0, #ffc0c0);
+    border-color: #e74c3c;
+    color: #c0392b;
+    animation: wrongShake 0.4s ease;
+  }
+
+  .quiz-option.disabled { cursor: not-allowed; }
+
+  @keyframes correctPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .feedback-box {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border: 2px solid #e8d5f5;
+    display: none;
+  }
+
+  .feedback-box.show { display: block; }
+
+  .feedback-box.correct-fb {
+    border-color: var(--green);
+    background: linear-gradient(135deg, #f0fff8, #e6fff3);
+  }
+
+  .feedback-box.wrong-fb {
+    border-color: #e74c3c;
+    background: linear-gradient(135deg, #fff0f0, #ffe6e6);
+  }
+
+  .feedback-emoji {
+    font-size: 1.8em;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .feedback-text {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .feedback-sub {
+    font-size: 0.78em;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  .next-quiz-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 14px;
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    box-shadow: 0 4px 16px rgba(155,89,182,0.35);
+    transition: all 0.2s;
+    display: none;
+  }
+
+  .next-quiz-btn.show { display: block; }
+  .next-quiz-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(155,89,182,0.45); }
+
+  /* ===== 회화 연습 탭 ===== */
+  .situation-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .situation-card {
+    background: white;
+    border: 2.5px solid #e8d5f5;
+    border-radius: 18px;
+    padding: 16px 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .situation-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+
+  .situation-card:hover::before,
+  .situation-card.active::before { transform: scaleX(1); }
+
+  .situation-card:hover, .situation-card.active {
+    border-color: var(--purple);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(155,89,182,0.2);
+  }
+
+  .situation-icon {
+    font-size: 2.2em;
+    margin-bottom: 6px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  }
+
+  .situation-name {
+    font-size: 0.85em;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  .situation-name-jp {
+    font-size: 0.75em;
+    color: #888;
+    font-family: 'Noto Sans JP', sans-serif;
+    margin-top: 2px;
+  }
+
+  .conversation-scene {
+    display: none;
+  }
+
+  .conversation-scene.active { display: block; }
+
+  .conv-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .conv-back-btn {
+    background: #f5e6ff;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 0.85em;
+    color: var(--purple);
+    font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .conv-title {
+    font-size: 1em;
+    font-weight: 900;
+    color: var(--dark);
+  }
+
+  .conv-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .conv-msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 85%;
+  }
+
+  .conv-msg.right {
+    align-self: flex-end;
+    align-items: flex-end;
+  }
+
+  .conv-msg.left {
+    align-self: flex-start;
+    align-items: flex-start;
+  }
+
+  .conv-char-name {
+    font-size: 0.72em;
+    color: #888;
+    margin-bottom: 3px;
+    font-weight: 700;
+  }
+
+  .conv-bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .conv-msg.left .conv-bubble {
+    background: white;
+    border: 2px solid #e8d5f5;
+    border-radius: 18px 18px 18px 4px;
+  }
+
+  .conv-msg.right .conv-bubble {
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    border-radius: 18px 18px 4px 18px;
+  }
+
+  .conv-bubble:hover { transform: scale(1.02); }
+
+  .conv-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    color: var(--dark);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .conv-msg.right .conv-jp { color: white; }
+
+  .conv-romaji {
+    font-size: 0.72em;
+    color: #aaa;
+    display: block;
+    margin-bottom: 3px;
+    font-style: italic;
+  }
+
+  .conv-msg.right .conv-romaji { color: rgba(255,255,255,0.6); }
+
+  .conv-kr {
+    font-size: 0.8em;
+    color: rgba(155,89,182,0.0);
+    display: block;
+    transition: color 0.3s;
+    padding: 3px 6px;
+    background: rgba(155,89,182,0.05);
+    border-radius: 6px;
+    margin-top: 2px;
+  }
+
+  .conv-bubble:hover .conv-kr,
+  .conv-bubble.revealed .conv-kr { color: #666; }
+
+  .conv-msg.right .conv-kr { background: rgba(255,255,255,0.1); }
+  .conv-msg.right .conv-bubble:hover .conv-kr,
+  .conv-msg.right .conv-bubble.revealed .conv-kr { color: rgba(255,255,255,0.9); }
+
+  .conv-tap-hint {
+    font-size: 0.72em;
+    color: #bbb;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  /* 포인트 팝업 */
+  .point-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: linear-gradient(135deg, var(--yellow), var(--orange));
+    color: white;
+    font-size: 1.5em;
+    font-weight: 900;
+    padding: 14px 28px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(241,196,15,0.5);
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .point-popup.show {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* 완료 화면 */
+  .complete-screen {
+    text-align: center;
+    padding: 20px;
+    display: none;
+  }
+
+  .complete-screen.show { display: block; }
+
+  .complete-emoji {
+    font-size: 4em;
+    animation: spin 0.5s ease;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(-30deg) scale(0); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+
+  /* ===== TTS 버튼 ===== */
+  .speak-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.35);
+    color: white;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 0.78em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .speak-btn:hover { background: rgba(255,255,255,0.28); transform: scale(1.05); }
+  .speak-btn.speaking {
+    background: rgba(241,196,15,0.35);
+    border-color: var(--yellow);
+    color: var(--yellow);
+    animation: speakPulse 0.55s ease-in-out infinite;
+  }
+
+  .speak-btn-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #f0e6ff;
+    border: 1.5px solid #d5b8ff;
+    color: var(--purple);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.75em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .speak-btn-light:hover { background: #e0ccff; transform: scale(1.05); }
+  .speak-btn-light.speaking {
+    background: #fff3cd;
+    border-color: var(--yellow);
+    color: var(--orange);
+    animation: speakPulse 0.55s ease-in-out infinite;
+  }
+
+  @keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.07); }
+  }
+
+  .kana-speak-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .tts-wave {
+    display: inline-flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 16px;
+    margin-left: 4px;
+  }
+  .tts-wave span {
+    display: inline-block;
+    width: 3px;
+    background: currentColor;
+    border-radius: 2px;
+    animation: wave 0.8s ease-in-out infinite;
+  }
+  .tts-wave span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .tts-wave span:nth-child(2) { height: 12px; animation-delay: 0.1s; }
+  .tts-wave span:nth-child(3) { height: 8px; animation-delay: 0.2s; }
+  .tts-wave span:nth-child(4) { height: 14px; animation-delay: 0.15s; }
+  .tts-wave span:nth-child(5) { height: 5px; animation-delay: 0.05s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(1.4); }
+  }
+
+  /* 반응형 */
+  @media (max-width: 380px) {
+    .kana-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; }
+    .kana-card .jp { font-size: 1.3em; }
+    .quiz-options { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 포인트 팝업 -->
+<div class="point-popup" id="pointPopup">+10 XP ⭐</div>
+
+<!-- 헤더 -->
+<header>
+  <div class="mascot">🐱</div>
+  <div class="header-title">アニメで日本語！</div>
+  <div class="header-sub">애니메이션으로 배우는 일본어 🌸</div>
+</header>
+
+<!-- XP 바 -->
+<div class="xp-bar-wrapper">
+  <div class="level-badge" id="levelBadge">Lv.1<br>初心者</div>
+  <div class="xp-section">
+    <div class="xp-label" id="xpLabel">경험치 0 / 100 XP</div>
+    <div class="xp-bar"><div class="xp-fill" id="xpFill"></div></div>
+  </div>
+  <div class="total-score" id="totalScore">⭐ 0점</div>
+</div>
+
+<!-- 탭 네비게이션 -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('hiragana')">🔤 히라가나</button>
+  <button class="tab-btn" onclick="switchTab('anime')">🎌 애니 대사</button>
+  <button class="tab-btn" onclick="switchTab('quiz')">🎮 단어 퀴즈</button>
+  <button class="tab-btn" onclick="switchTab('conversation')">💬 회화 연습</button>
+</div>
+
+<div class="container">
+
+<!-- ======== 히라가나 탭 ======== -->
+<div id="tab-hiragana" class="tab-content active">
+
+  <div class="card">
+    <div class="section-title">
+      <span class="section-icon">✨</span>
+      히라가나 플래시카드
+    </div>
+
+    <div class="flashcard-area">
+      <div class="big-kana-card" id="flashcard" onclick="revealFlashcard()">
+        <span class="kana-big" id="flashKana">あ</span>
+        <div class="kana-hint" id="flashHint">a</div>
+        <div class="kana-speak-wrap">
+          <button class="speak-btn" id="kanaSpeak" onclick="event.stopPropagation(); speakKana()">🔊 듣기</button>
+        </div>
+      </div>
+      <div style="color:#888; font-size:0.8em; margin-bottom:10px;">👆 카드 터치 → 발음 확인 &nbsp;|&nbsp; 🔊 듣기 → 음성 재생</div>
+      <div class="nav-btns">
+        <button class="nav-btn" onclick="prevKana()">◀ 이전</button>
+        <button class="reveal-btn" onclick="markLearned()">✅ 외웠어요!</button>
+        <button class="nav-btn" onclick="nextKana()">다음 ▶</button>
+      </div>
+      <div style="color:#aaa; font-size:0.78em; margin-top:10px;" id="kanaProgress">1 / 46</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">
+      <span class="section-icon">📋</span>
+      히라가나 오십음도
+    </div>
+
+    <div id="kanaTableContent"></div>
+  </div>
+
+</div>
+
+<!-- ======== 애니 대사 탭 ======== -->
+<div id="tab-anime" class="tab-content">
+
+  <div class="anime-scene">
+    <div class="anime-category-tabs" id="animeCatTabs">
+      <button class="cat-tab active" onclick="switchAnimeCategory(0, this)">⚔️ 소년만화</button>
+      <button class="cat-tab" onclick="switchAnimeCategory(1, this)">💕 일상/학교</button>
+      <button class="cat-tab" onclick="switchAnimeCategory(2, this)">🔮 이세계</button>
+      <button class="cat-tab" onclick="switchAnimeCategory(3, this)">🌸 감동 명대사</button>
+    </div>
+
+    <div style="color:rgba(255,255,255,0.4); font-size:0.75em; margin-bottom:12px; text-align:center;">
+      💡 말풍선을 터치하면 한국어 번역이 나타나요!
+    </div>
+
+    <div id="animeDialogues"></div>
+  </div>
+
+</div>
+
+<!-- ======== 단어 퀴즈 탭 ======== -->
+<div id="tab-quiz" class="tab-content">
+
+  <div class="card">
+    <div class="quiz-header">
+      <div>
+        <div class="section-title" style="margin-bottom:4px;">
+          <span class="section-icon">🎮</span>
+          단어 퀴즈
+        </div>
+        <div class="quiz-progress" id="quizProgress">문제 1 / 10</div>
+      </div>
+      <div class="streak-badge" id="streakBadge">🔥 0연속</div>
+    </div>
+
+    <div id="quizArea">
+      <div class="quiz-question-card" style="cursor:pointer;" onclick="speakQuizWord()" title="클릭해서 발음 듣기">
+        <div class="quiz-type-badge" id="quizTypeBadge">일본어 → 한국어</div>
+        <div class="quiz-word" id="quizWord">ありがとう</div>
+        <div class="quiz-word-sub" id="quizWordSub">a·ri·ga·to·u</div>
+        <button class="speak-btn" id="quizSpeak" onclick="event.stopPropagation(); speakQuizWord()" style="margin:10px auto 0; display:flex; width:fit-content;">🔊 발음 듣기</button>
+      </div>
+
+      <div class="quiz-options" id="quizOptions"></div>
+
+      <div class="feedback-box" id="feedbackBox">
+        <span class="feedback-emoji" id="feedbackEmoji"></span>
+        <div class="feedback-text" id="feedbackText"></div>
+        <div class="feedback-sub" id="feedbackSub"></div>
+      </div>
+
+      <button class="next-quiz-btn" id="nextQuizBtn" onclick="nextQuiz()">다음 문제 →</button>
+    </div>
+
+    <div class="complete-screen" id="completeScreen">
+      <div class="complete-emoji">🎉</div>
+      <h2 style="color:var(--purple); margin:12px 0 6px; font-size:1.4em;">퀴즈 완료!</h2>
+      <div style="font-size:0.9em; color:#666; margin-bottom:16px;" id="completeSummary"></div>
+      <button class="next-quiz-btn show" onclick="restartQuiz()" style="display:block;">
+        🔄 다시 도전!
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ======== 회화 연습 탭 ======== -->
+<div id="tab-conversation" class="tab-content">
+
+  <!-- 상황 선택 -->
+  <div id="situationSelect">
+    <div class="card">
+      <div class="section-title">
+        <span class="section-icon">💬</span>
+        어떤 상황에서 대화할까요?
+      </div>
+      <div class="situation-cards" id="situationCards"></div>
+    </div>
+  </div>
+
+  <!-- 대화 화면 -->
+  <div class="conversation-scene" id="conversationScene">
+    <div class="card">
+      <div class="conv-header">
+        <button class="conv-back-btn" onclick="backToSituations()">← 돌아가기</button>
+        <div class="conv-title" id="convTitle"></div>
+      </div>
+
+      <div class="conv-tap-hint">💡 말풍선을 눌러 한국어 번역 확인!</div>
+
+      <div class="conv-messages" id="convMessages"></div>
+
+      <div id="convVocabSection"></div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ========== TTS (음성 읽기) ==========
+let ttsVoice = null;
+let currentSpeakBtn = null;
+
+function initTTS() {
+  if (!window.speechSynthesis) return;
+  function loadVoices() {
+    const voices = window.speechSynthesis.getVoices();
+    ttsVoice = voices.find(v => v.lang === 'ja-JP') ||
+               voices.find(v => v.lang.startsWith('ja')) ||
+               null;
+  }
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text, btnEl) {
+  if (!window.speechSynthesis) {
+    alert('이 브라우저는 음성 읽기를 지원하지 않아요 😅\nChrome이나 Edge를 사용해보세요!');
+    return;
+  }
+  // 이미 읽는 중이면 정지 (토글)
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    if (currentSpeakBtn && currentSpeakBtn !== btnEl) {
+      setBtnIdle(currentSpeakBtn);
+    }
+    if (currentSpeakBtn === btnEl) {
+      setBtnIdle(btnEl);
+      currentSpeakBtn = null;
+      return;
+    }
+  }
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'ja-JP';
+  utt.rate = 0.82;
+  utt.pitch = 1.05;
+  if (ttsVoice) utt.voice = ttsVoice;
+
+  if (btnEl) {
+    currentSpeakBtn = btnEl;
+    setBtnSpeaking(btnEl);
+  }
+  utt.onend = () => { if (btnEl) setBtnIdle(btnEl); currentSpeakBtn = null; };
+  utt.onerror = () => { if (btnEl) setBtnIdle(btnEl); currentSpeakBtn = null; };
+  window.speechSynthesis.speak(utt);
+  addXP(1, '🔊');
+}
+
+function setBtnSpeaking(btn) {
+  if (!btn) return;
+  btn.classList.add('speaking');
+  btn.innerHTML = '🔊 읽는 중... <span class="tts-wave"><span></span><span></span><span></span><span></span><span></span></span>';
+}
+function setBtnIdle(btn) {
+  if (!btn) return;
+  btn.classList.remove('speaking');
+  btn.textContent = '🔊 듣기';
+}
+
+function speakKana() {
+  const kana = document.getElementById('flashKana').textContent;
+  const btn = document.getElementById('kanaSpeak');
+  speak(kana, btn);
+}
+
+function speakQuizWord() {
+  const wordEl = document.getElementById('quizWord');
+  const text = wordEl.textContent;
+  const typeBadge = document.getElementById('quizTypeBadge').textContent;
+  // 일본어 → 한국어 모드일 때만 일본어 읽기
+  if (typeBadge.includes('일본어')) {
+    const btn = document.getElementById('quizSpeak');
+    speak(text, btn);
+  }
+}
+
+// ========== 데이터 ==========
+
+const hiragana = [
+  { kana:'あ', rom:'a' }, { kana:'い', rom:'i' }, { kana:'う', rom:'u' }, { kana:'え', rom:'e' }, { kana:'お', rom:'o' },
+  { kana:'か', rom:'ka' }, { kana:'き', rom:'ki' }, { kana:'く', rom:'ku' }, { kana:'け', rom:'ke' }, { kana:'こ', rom:'ko' },
+  { kana:'さ', rom:'sa' }, { kana:'し', rom:'shi' }, { kana:'す', rom:'su' }, { kana:'せ', rom:'se' }, { kana:'そ', rom:'so' },
+  { kana:'た', rom:'ta' }, { kana:'ち', rom:'chi' }, { kana:'つ', rom:'tsu' }, { kana:'て', rom:'te' }, { kana:'と', rom:'to' },
+  { kana:'な', rom:'na' }, { kana:'に', rom:'ni' }, { kana:'ぬ', rom:'nu' }, { kana:'ね', rom:'ne' }, { kana:'の', rom:'no' },
+  { kana:'は', rom:'ha' }, { kana:'ひ', rom:'hi' }, { kana:'ふ', rom:'fu' }, { kana:'へ', rom:'he' }, { kana:'ほ', rom:'ho' },
+  { kana:'ま', rom:'ma' }, { kana:'み', rom:'mi' }, { kana:'む', rom:'mu' }, { kana:'め', rom:'me' }, { kana:'も', rom:'mo' },
+  { kana:'や', rom:'ya' }, { kana:'ゆ', rom:'yu' }, { kana:'よ', rom:'yo' },
+  { kana:'ら', rom:'ra' }, { kana:'り', rom:'ri' }, { kana:'る', rom:'ru' }, { kana:'れ', rom:'re' }, { kana:'ろ', rom:'ro' },
+  { kana:'わ', rom:'wa' }, { kana:'を', rom:'wo' }, { kana:'ん', rom:'n' }
+];
+
+const kanaRows = [
+  { label: 'あ행', items: [0,1,2,3,4] },
+  { label: 'か행', items: [5,6,7,8,9] },
+  { label: 'さ행', items: [10,11,12,13,14] },
+  { label: 'た행', items: [15,16,17,18,19] },
+  { label: 'な행', items: [20,21,22,23,24] },
+  { label: 'は행', items: [25,26,27,28,29] },
+  { label: 'ま행', items: [30,31,32,33,34] },
+  { label: 'や행', items: [35,36,37] },
+  { label: 'ら행', items: [38,39,40,41,42] },
+  { label: 'わ행', items: [43,44,45] },
+];
+
+const animeCategories = [
+  { // 소년만화
+    scenes: [
+      {
+        tag: '⚔️ 전투 장면', color: '#e74c3c',
+        dialogues: [
+          { char: '🗡️ 주인공', jp: 'あきらめるな！', romaji: 'Akirameru na!', kr: '포기하지 마!', vocab: [{w:'あきらめる', m:'포기하다'}] },
+          { char: '👊 라이벌', jp: 'まだまだだな。', romaji: 'Madamada da na.', kr: '아직 멀었어.', vocab: [{w:'まだまだ', m:'아직 멀었어'}] },
+          { char: '🗡️ 주인공', jp: 'ぼくは負けない！絶対に！', romaji: 'Boku wa makenai! Zettai ni!', kr: '나는 지지 않아! 절대로!', vocab: [{w:'負けない', m:'지지 않아'},{w:'絶対に', m:'절대로'}] },
+        ]
+      },
+      {
+        tag: '🔥 파워업 장면', color: '#e67e22',
+        dialogues: [
+          { char: '✨ 주인공', jp: 'もっと強くなりたい！', romaji: 'Motto tsuyoku naritai!', kr: '더 강해지고 싶어!', vocab: [{w:'強い', m:'강하다'},{w:'なりたい', m:'되고 싶다'}] },
+          { char: '🧙 스승', jp: '信じろ。お前ならできる。', romaji: 'Shinjiro. Omae nara dekiru.', kr: '믿어라. 너라면 할 수 있어.', vocab: [{w:'信じる', m:'믿다'},{w:'できる', m:'할 수 있다'}] },
+          { char: '✨ 주인공', jp: 'ありがとう！やってみる！', romaji: 'Arigatou! Yatte miru!', kr: '고마워! 해볼게!', vocab: [{w:'ありがとう', m:'감사해'},{w:'やってみる', m:'해볼게'}] },
+        ]
+      },
+    ]
+  },
+  { // 일상/학교
+    scenes: [
+      {
+        tag: '🏫 학교 아침', color: '#3498db',
+        dialogues: [
+          { char: '👧 친구 A', jp: 'おはよう！今日も頑張ろう！', romaji: 'Ohayou! Kyou mo ganbarou!', kr: '좋은 아침! 오늘도 힘내자!', vocab: [{w:'おはよう', m:'좋은 아침'},{w:'頑張ろう', m:'힘내자'}] },
+          { char: '👦 친구 B', jp: 'うん！昨日アニメ見た？', romaji: 'Un! Kinou anime mita?', kr: '응! 어제 애니 봤어?', vocab: [{w:'昨日', m:'어제'},{w:'見た', m:'봤어'}] },
+          { char: '👧 친구 A', jp: 'もちろん！すごかった！', romaji: 'Mochiron! Sugokatta!', kr: '물론이지! 엄청 대박이었어!', vocab: [{w:'もちろん', m:'물론'},{w:'すごい', m:'대단해'}] },
+        ]
+      },
+      {
+        tag: '🍱 점심시간', color: '#2ecc71',
+        dialogues: [
+          { char: '👦 친구', jp: 'いただきます！', romaji: 'Itadakimasu!', kr: '잘 먹겠습니다!', vocab: [{w:'いただきます', m:'잘 먹겠습니다'}] },
+          { char: '👧 주인공', jp: 'それ、おいしそうだね。', romaji: 'Sore, oishisou da ne.', kr: '그거 맛있겠다.', vocab: [{w:'おいしい', m:'맛있다'},{w:'～そう', m:'~인 것 같다'}] },
+          { char: '👦 친구', jp: 'ひとくちどうぞ！', romaji: 'Hitokuchi douzo!', kr: '한 입 먹어봐!', vocab: [{w:'ひとくち', m:'한 입'},{w:'どうぞ', m:'자, 받아'}] },
+        ]
+      },
+    ]
+  },
+  { // 이세계
+    scenes: [
+      {
+        tag: '🏰 마왕 성 앞', color: '#9b59b6',
+        dialogues: [
+          { char: '🧙 마법사', jp: 'ここが魔王の城か…', romaji: 'Koko ga maou no shiro ka...', kr: '여기가 마왕의 성인가...', vocab: [{w:'ここ', m:'여기'},{w:'城', m:'성'}] },
+          { char: '⚔️ 용사', jp: 'みんな、準備はいいか？', romaji: 'Minna, junbi wa ii ka?', kr: '모두, 준비됐어?', vocab: [{w:'みんな', m:'모두'},{w:'準備', m:'준비'}] },
+          { char: '🛡️ 전사', jp: 'いつでもOK！行くぞ！', romaji: 'Itsudemo OK! Iku zo!', kr: '언제든지 OK! 가자!', vocab: [{w:'いつでも', m:'언제든지'},{w:'行く', m:'가다'}] },
+        ]
+      },
+      {
+        tag: '🌟 스킬 획득', color: '#f39c12',
+        dialogues: [
+          { char: '📢 시스템', jp: 'レベルアップ！新しいスキルを覚えた！', romaji: 'Reberu appu! Atarashii sukiru wo oboeta!', kr: '레벨 업! 새로운 스킬을 익혔다!', vocab: [{w:'新しい', m:'새로운'},{w:'覚えた', m:'익혔다'}] },
+          { char: '✨ 주인공', jp: 'やった！これで強くなれる！', romaji: 'Yatta! Kore de tsuyoku nareru!', kr: '해냈어! 이걸로 강해질 수 있어!', vocab: [{w:'やった', m:'해냈어!'},{w:'強くなれる', m:'강해질 수 있어'}] },
+        ]
+      },
+    ]
+  },
+  { // 감동 명대사
+    scenes: [
+      {
+        tag: '💫 우정 장면', color: '#1abc9c',
+        dialogues: [
+          { char: '👫 친구', jp: 'ずっと一緒にいるよ。', romaji: 'Zutto issho ni iru yo.', kr: '항상 같이 있을게.', vocab: [{w:'ずっと', m:'항상, 계속'},{w:'一緒に', m:'함께'}] },
+          { char: '💫 주인공', jp: 'うん。ありがとう、友達。', romaji: 'Un. Arigatou, tomodachi.', kr: '응. 고마워, 친구야.', vocab: [{w:'友達', m:'친구'}] },
+        ]
+      },
+      {
+        tag: '🌙 감동 명대사', color: '#2980b9',
+        dialogues: [
+          { char: '🌟 현자', jp: '夢を諦めるな。夢は逃げない。逃げるのは自分だ。', romaji: 'Yume wo akirameru na. Yume wa nigenai. Nigeru no wa jibun da.', kr: '꿈을 포기하지 마. 꿈은 도망가지 않는다. 도망가는 건 자기 자신이다.', vocab: [{w:'夢', m:'꿈'},{w:'諦める', m:'포기하다'},{w:'逃げる', m:'도망가다'}] },
+          { char: '💪 주인공', jp: 'そうだ。ぼくはまだ諦めない。', romaji: 'Sou da. Boku wa mada akiramenai.', kr: '그래. 나는 아직 포기하지 않아.', vocab: [{w:'まだ', m:'아직'}] },
+        ]
+      },
+    ]
+  },
+];
+
+const quizWords = [
+  { jp:'ありがとう', rom:'arigatou', kr:'감사합니다/고마워' },
+  { jp:'すみません', rom:'sumimasen', kr:'죄송합니다/저기요' },
+  { jp:'かわいい', rom:'kawaii', kr:'귀엽다' },
+  { jp:'強い', rom:'tsuyoi', kr:'강하다' },
+  { jp:'友達', rom:'tomodachi', kr:'친구' },
+  { jp:'学校', rom:'gakkou', kr:'학교' },
+  { jp:'先生', rom:'sensei', kr:'선생님' },
+  { jp:'おいしい', rom:'oishii', kr:'맛있다' },
+  { jp:'好き', rom:'suki', kr:'좋아하다/좋아해' },
+  { jp:'夢', rom:'yume', kr:'꿈' },
+  { jp:'頑張る', rom:'ganbaru', kr:'힘내다/열심히 하다' },
+  { jp:'大丈夫', rom:'daijoubu', kr:'괜찮아' },
+  { jp:'楽しい', rom:'tanoshii', kr:'즐겁다/재미있다' },
+  { jp:'怖い', rom:'kowai', kr:'무섭다' },
+  { jp:'早い', rom:'hayai', kr:'빠르다' },
+  { jp:'ありがとう', rom:'arigatou', kr:'감사합니다' },
+  { jp:'一緒に', rom:'issho ni', kr:'함께/같이' },
+  { jp:'絶対', rom:'zettai', kr:'절대로/반드시' },
+  { jp:'嬉しい', rom:'ureshii', kr:'기쁘다' },
+  { jp:'悲しい', rom:'kanashii', kr:'슬프다' },
+];
+
+const situations = [
+  {
+    icon: '🏪', name: '편의점에서', nameJp: 'コンビニで',
+    conv: [
+      { side:'left', char:'🛒 점원', jp:'いらっしゃいませ！', romaji:'Irasshaimase!', kr:'어서 오세요!' },
+      { side:'right', char:'👤 나', jp:'これ、ひとつください。', romaji:'Kore, hitotsu kudasai.', kr:'이거 하나 주세요.' },
+      { side:'left', char:'🛒 점원', jp:'はい、300円になります。', romaji:'Hai, sanbyaku en ni narimasu.', kr:'네, 300엔입니다.' },
+      { side:'right', char:'👤 나', jp:'ありがとうございます！', romaji:'Arigatou gozaimasu!', kr:'감사합니다!' },
+      { side:'left', char:'🛒 점원', jp:'またどうぞ！', romaji:'Mata douzo!', kr:'또 오세요!' },
+    ],
+    vocab: [
+      { w:'いらっしゃいませ', m:'어서 오세요 (가게 인사)' },
+      { w:'ひとつ', m:'하나 (1개)' },
+      { w:'ください', m:'주세요' },
+      { w:'～円', m:'~엔 (일본 화폐)' },
+    ]
+  },
+  {
+    icon: '🏫', name: '학교 첫날', nameJp: '学校の初日',
+    conv: [
+      { side:'left', char:'👨‍🏫 선생님', jp:'自己紹介してください。', romaji:'Jiko shoukai shite kudasai.', kr:'자기소개를 해주세요.' },
+      { side:'right', char:'👤 나', jp:'はじめまして！田中ユナです。', romaji:'Hajimemashite! Tanaka Yuna desu.', kr:'처음 뵙겠습니다! 다나카 유나입니다.' },
+      { side:'right', char:'👤 나', jp:'アニメが大好きです！よろしく！', romaji:'Anime ga daisuki desu! Yoroshiku!', kr:'애니메이션을 엄청 좋아해요! 잘 부탁해요!' },
+      { side:'left', char:'👫 친구', jp:'わたしもアニメ好き！なかよくしよう！', romaji:'Watashi mo anime suki! Nakayoku shiyou!', kr:'나도 애니 좋아해! 친하게 지내자!' },
+    ],
+    vocab: [
+      { w:'はじめまして', m:'처음 뵙겠습니다' },
+      { w:'大好き', m:'매우 좋아해' },
+      { w:'よろしく', m:'잘 부탁해요' },
+      { w:'なかよく', m:'사이좋게' },
+    ]
+  },
+  {
+    icon: '🍜', name: '라멘집에서', nameJp: 'ラーメン屋で',
+    conv: [
+      { side:'left', char:'🍜 직원', jp:'何名様ですか？', romaji:'Nanmei sama desu ka?', kr:'몇 분이세요?' },
+      { side:'right', char:'👤 나', jp:'ふたりです。', romaji:'Futari desu.', kr:'두 명이에요.' },
+      { side:'left', char:'🍜 직원', jp:'ご注文は？', romaji:'Go chuumon wa?', kr:'주문은요?' },
+      { side:'right', char:'👤 나', jp:'醤油ラーメンをふたつください。', romaji:'Shouyu raamen wo futatsu kudasai.', kr:'간장 라멘 두 개 주세요.' },
+      { side:'left', char:'🍜 직원', jp:'少々お待ちください！', romaji:'Shoushou omachi kudasai!', kr:'잠시만 기다려 주세요!' },
+    ],
+    vocab: [
+      { w:'何名様', m:'몇 분' },
+      { w:'ふたり', m:'두 명' },
+      { w:'ご注文', m:'주문 (공손한 표현)' },
+      { w:'少々お待ち', m:'잠시만 기다려' },
+    ]
+  },
+  {
+    icon: '🎌', name: '애니 덕후 토크', nameJp: 'アニメトーク',
+    conv: [
+      { side:'left', char:'👘 친구', jp:'最近どんなアニメ見てる？', romaji:'Saikin donna anime miteru?', kr:'요즘 어떤 애니 보고 있어?' },
+      { side:'right', char:'👤 나', jp:'鬼滅の刃！すごく面白い！', romaji:'Kimetsu no Yaiba! Sugoku omoshiroi!', kr:'귀멸의 칼날! 엄청 재미있어!' },
+      { side:'left', char:'👘 친구', jp:'わかる！好きなキャラは？', romaji:'Wakaru! Suki na kyara wa?', kr:'맞아! 좋아하는 캐릭터는?' },
+      { side:'right', char:'👤 나', jp:'炭治郎が一番好き！', romaji:'Tanjiro ga ichiban suki!', kr:'탄지로를 제일 좋아해!' },
+      { side:'left', char:'👘 친구', jp:'いい趣味だね！一緒に見よう！', romaji:'Ii shumi da ne! Issho ni miyou!', kr:'취향 좋다! 같이 보자!' },
+    ],
+    vocab: [
+      { w:'最近', m:'요즘, 최근' },
+      { w:'面白い', m:'재미있다' },
+      { w:'一番', m:'가장, 제일' },
+      { w:'趣味', m:'취미' },
+    ]
+  },
+  {
+    icon: '🏥', name: '아플 때', nameJp: '病気のとき',
+    conv: [
+      { side:'right', char:'👤 나', jp:'気分が悪いです。', romaji:'Kibun ga warui desu.', kr:'기분이 안 좋아요.' },
+      { side:'left', char:'👨‍⚕️ 선생님', jp:'どこが痛いですか？', romaji:'Doko ga itai desu ka?', kr:'어디가 아프세요?' },
+      { side:'right', char:'👤 나', jp:'頭が痛いです。熱もあります。', romaji:'Atama ga itai desu. Netsu mo arimasu.', kr:'머리가 아파요. 열도 있어요.' },
+      { side:'left', char:'👨‍⚕️ 선생님', jp:'今日は休んでください。', romaji:'Kyou wa yasunde kudasai.', kr:'오늘은 쉬세요.' },
+    ],
+    vocab: [
+      { w:'気分が悪い', m:'기분이 나쁘다/몸이 안 좋다' },
+      { w:'痛い', m:'아프다' },
+      { w:'頭', m:'머리' },
+      { w:'熱', m:'열' },
+    ]
+  },
+  {
+    icon: '🚃', name: '전철에서', nameJp: '電車で',
+    conv: [
+      { side:'right', char:'👤 나', jp:'すみません、この電車は渋谷に行きますか？', romaji:'Sumimasen, kono densha wa Shibuya ni ikimasu ka?', kr:'저기요, 이 전철은 시부야에 가나요?' },
+      { side:'left', char:'👴 할아버지', jp:'はい、行きますよ。三つ目の駅です。', romaji:'Hai, ikimasu yo. Mittsu me no eki desu.', kr:'네, 가요. 세 번째 역이에요.' },
+      { side:'right', char:'👤 나', jp:'ありがとうございます！助かりました！', romaji:'Arigatou gozaimasu! Tasukarimashita!', kr:'감사합니다! 살았어요!' },
+    ],
+    vocab: [
+      { w:'電車', m:'전철' },
+      { w:'駅', m:'역' },
+      { w:'三つ目', m:'세 번째' },
+      { w:'助かりました', m:'도움이 됐어요/살았어요' },
+    ]
+  },
+];
+
+// ========== 상태 ==========
+let currentKanaIdx = 0;
+let learnedKana = new Set();
+let flashRevealed = false;
+
+let xp = 0;
+let streak = 0;
+let totalScore = 0;
+
+let currentAnimeCategory = 0;
+let quizQueue = [];
+let currentQuizIdx = 0;
+let quizAnswered = false;
+let quizCorrect = 0;
+let quizStreak = 0;
+
+// ========== XP 시스템 ==========
+function addXP(amount, label) {
+  xp += amount;
+  totalScore += amount;
+  const levels = [
+    { min:0, max:100, name:'初心者', label:'Lv.1' },
+    { min:100, max:250, name:'見習い', label:'Lv.2' },
+    { min:250, max:500, name:'勉強家', label:'Lv.3' },
+    { min:500, max:900, name:'アニメ通', label:'Lv.4' },
+    { min:900, max:1500, name:'日本語好き', label:'Lv.5' },
+    { min:1500, max:9999, name:'マスター', label:'Lv.6' },
+  ];
+  let lv = levels[levels.length-1];
+  for (let l of levels) { if (xp < l.max) { lv = l; break; } }
+  const pct = Math.min(100, ((xp - lv.min) / (lv.max - lv.min)) * 100);
+  document.getElementById('xpFill').style.width = pct + '%';
+  document.getElementById('xpLabel').textContent = `경험치 ${xp} / ${lv.max} XP`;
+  document.getElementById('levelBadge').innerHTML = `${lv.label}<br>${lv.name}`;
+  document.getElementById('totalScore').textContent = `⭐ ${totalScore}점`;
+
+  // 팝업
+  const popup = document.getElementById('pointPopup');
+  popup.textContent = `+${amount} XP ${label || '⭐'}`;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1200);
+}
+
+// ========== 탭 전환 ==========
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const tabMap = { hiragana:0, anime:1, quiz:2, conversation:3 };
+  btns[tabMap[tab]].classList.add('active');
+}
+
+// ========== 히라가나 ==========
+function initKanaTable() {
+  const container = document.getElementById('kanaTableContent');
+  let html = '';
+  kanaRows.forEach(row => {
+    html += `<div class="kana-row-label">${row.label}</div>`;
+    html += '<div class="kana-grid" style="margin-bottom:12px">';
+    row.items.forEach(idx => {
+      const k = hiragana[idx];
+      html += `
+        <div class="kana-card ${learnedKana.has(idx)?'learned':''}" onclick="flashcardGo(${idx})" id="kcard${idx}">
+          <span class="check">✓</span>
+          <span class="jp">${k.kana}</span>
+          <div class="ro">${k.rom}</div>
+        </div>`;
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function updateFlashcard() {
+  const k = hiragana[currentKanaIdx];
+  flashRevealed = false;
+  const card = document.getElementById('flashcard');
+  card.classList.remove('revealed');
+  document.getElementById('flashKana').textContent = k.kana;
+  document.getElementById('flashHint').textContent = k.rom;
+  document.getElementById('kanaProgress').textContent = `${currentKanaIdx + 1} / ${hiragana.length}`;
+}
+
+function revealFlashcard() {
+  flashRevealed = !flashRevealed;
+  document.getElementById('flashcard').classList.toggle('revealed', flashRevealed);
+  if (flashRevealed) addXP(2, '👀');
+}
+
+function prevKana() {
+  currentKanaIdx = (currentKanaIdx - 1 + hiragana.length) % hiragana.length;
+  updateFlashcard();
+}
+
+function nextKana() {
+  currentKanaIdx = (currentKanaIdx + 1) % hiragana.length;
+  updateFlashcard();
+}
+
+function markLearned() {
+  if (!learnedKana.has(currentKanaIdx)) {
+    learnedKana.add(currentKanaIdx);
+    const card = document.getElementById('kcard' + currentKanaIdx);
+    if (card) { card.classList.add('learned'); }
+    addXP(5, '✅ 암기!');
+  }
+  nextKana();
+}
+
+function flashcardGo(idx) {
+  currentKanaIdx = idx;
+  updateFlashcard();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  switchTab('hiragana');
+}
+
+// ========== 애니 대사 ==========
+function renderAnimeDialogues(catIdx) {
+  const cat = animeCategories[catIdx];
+  const container = document.getElementById('animeDialogues');
+  let html = '';
+  cat.scenes.forEach(scene => {
+    html += `<div style="margin-bottom:20px;">
+      <span class="scene-tag" style="background:${scene.color||'linear-gradient(135deg,var(--pink),var(--purple))'}">${scene.tag}</span>`;
+    scene.dialogues.forEach((d, i) => {
+      const vocabHtml = d.vocab ? d.vocab.map(v =>
+        `<span class="vocab-highlight" title="${v.m}">📌 ${v.w} = ${v.m}</span>`
+      ).join('') : '';
+      const safeJp = d.jp.replace(/'/g, "\\'");
+      const bubbleId = `bubble_${Math.random().toString(36).slice(2,8)}`;
+      const speakId = `spk_${Math.random().toString(36).slice(2,8)}`;
+      html += `
+        <div class="dialogue-bubble" id="${bubbleId}" onclick="this.classList.toggle('revealed'); if(!this.dataset.xp){this.dataset.xp='1';addXP(3,'💬');}">
+          <div class="dialogue-char">${d.char}</div>
+          <div class="dialogue-jp">${d.jp}</div>
+          <div class="dialogue-romaji">${d.romaji}</div>
+          <span class="dialogue-kr">🇰🇷 ${d.kr}</span>
+          ${vocabHtml ? `<div style="margin-top:8px;">${vocabHtml}</div>` : ''}
+          <div style="margin-top:8px;">
+            <button class="speak-btn" id="${speakId}" onclick="event.stopPropagation(); speak('${safeJp}', document.getElementById('${speakId}'))">🔊 듣기</button>
+          </div>
+        </div>`;
+    });
+    html += '<div class="dialogue-tip">💡 탭해서 번역 보기</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function switchAnimeCategory(idx, btn) {
+  currentAnimeCategory = idx;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAnimeDialogues(idx);
+}
+
+// ========== 퀴즈 ==========
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initQuiz() {
+  quizQueue = shuffleArray(quizWords).slice(0, 10);
+  currentQuizIdx = 0;
+  quizCorrect = 0;
+  quizStreak = 0;
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('completeScreen').classList.remove('show');
+  renderQuiz();
+}
+
+function renderQuiz() {
+  if (currentQuizIdx >= quizQueue.length) {
+    showComplete();
+    return;
+  }
+  quizAnswered = false;
+  const q = quizQueue[currentQuizIdx];
+  const useJpToKr = Math.random() > 0.4;
+
+  document.getElementById('quizProgress').textContent = `문제 ${currentQuizIdx + 1} / ${quizQueue.length}`;
+  document.getElementById('streakBadge').textContent = `🔥 ${quizStreak}연속`;
+  document.getElementById('feedbackBox').classList.remove('show', 'correct-fb', 'wrong-fb');
+  document.getElementById('nextQuizBtn').classList.remove('show');
+
+  if (useJpToKr) {
+    document.getElementById('quizTypeBadge').textContent = '일본어 → 한국어';
+    document.getElementById('quizWord').textContent = q.jp;
+    document.getElementById('quizWord').style.fontFamily = "'Noto Sans JP', sans-serif";
+    document.getElementById('quizWordSub').textContent = q.rom;
+  } else {
+    document.getElementById('quizTypeBadge').textContent = '한국어 → 일본어';
+    document.getElementById('quizWord').textContent = q.kr;
+    document.getElementById('quizWord').style.fontFamily = "'Noto Sans KR', sans-serif";
+    document.getElementById('quizWordSub').textContent = q.rom;
+  }
+
+  // 보기 생성
+  const wrongPool = shuffleArray(quizWords.filter(w => w !== q)).slice(0, 3);
+  const correct = useJpToKr ? q.kr : q.jp;
+  const options = shuffleArray([
+    { text: correct, isCorrect: true },
+    ...wrongPool.map(w => ({ text: useJpToKr ? w.kr : w.jp, isCorrect: false }))
+  ]);
+
+  const optDiv = document.getElementById('quizOptions');
+  optDiv.innerHTML = options.map((opt, i) => `
+    <button class="quiz-option" onclick="answerQuiz(this, ${opt.isCorrect}, '${correct.replace(/'/g,"\\'")}')">
+      ${opt.text}
+    </button>
+  `).join('');
+}
+
+function answerQuiz(btn, isCorrect, correctAnswer) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+
+  const allBtns = document.querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.classList.add('disabled'));
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  const feedbackEmoji = document.getElementById('feedbackEmoji');
+  const feedbackText = document.getElementById('feedbackText');
+  const feedbackSub = document.getElementById('feedbackSub');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    quizStreak++;
+    quizCorrect++;
+    const bonusXP = quizStreak >= 3 ? 20 : 10;
+    addXP(bonusXP, quizStreak >= 3 ? '🔥 콤보!' : '⭕');
+    feedbackBox.classList.add('show', 'correct-fb');
+    feedbackEmoji.textContent = ['🎉','✨','🌟','💫','🔥'][Math.floor(Math.random()*5)];
+    feedbackText.textContent = ['정답! 완벽해!', '맞아! 최고야!', '잘 했어!', '천재인듯?!'][Math.floor(Math.random()*4)];
+    feedbackSub.textContent = quizStreak >= 3 ? `🔥 ${quizStreak}연속 콤보! +${bonusXP} XP` : `+${bonusXP} XP 획득!`;
+  } else {
+    btn.classList.add('wrong');
+    // 정답 버튼 찾아서 표시
+    allBtns.forEach(b => {
+      if (b.textContent.trim() === correctAnswer) b.classList.add('correct');
+    });
+    quizStreak = 0;
+    feedbackBox.classList.add('show', 'wrong-fb');
+    feedbackEmoji.textContent = '😅';
+    feedbackText.textContent = `정답: ${correctAnswer}`;
+    feedbackSub.textContent = '괜찮아! 다음엔 맞출 수 있어!';
+  }
+
+  document.getElementById('nextQuizBtn').classList.add('show');
+}
+
+function nextQuiz() {
+  currentQuizIdx++;
+  renderQuiz();
+}
+
+function showComplete() {
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('completeScreen').classList.add('show');
+  const pct = Math.round((quizCorrect / quizQueue.length) * 100);
+  const msgs = pct >= 90 ? '🏆 완벽해! 천재 등장!' : pct >= 70 ? '👏 잘 했어! 실력이 오르고 있어!' : '💪 괜찮아! 다시 도전해봐!';
+  document.getElementById('completeSummary').innerHTML = `
+    <div style="font-size:2em; margin-bottom:8px;">${pct}%</div>
+    <div>${quizCorrect}/${quizQueue.length} 정답</div>
+    <div style="margin-top:6px; color:var(--purple);">${msgs}</div>
+  `;
+  addXP(pct >= 90 ? 50 : pct >= 70 ? 30 : 15, '🎊 완료!');
+}
+
+function restartQuiz() { initQuiz(); }
+
+// ========== 회화 연습 ==========
+function renderSituations() {
+  const container = document.getElementById('situationCards');
+  container.innerHTML = situations.map((s, i) => `
+    <div class="situation-card" onclick="openSituation(${i})">
+      <span class="situation-icon">${s.icon}</span>
+      <div class="situation-name">${s.name}</div>
+      <div class="situation-name-jp">${s.nameJp}</div>
+    </div>
+  `).join('');
+}
+
+function openSituation(idx) {
+  const s = situations[idx];
+  document.getElementById('situationSelect').style.display = 'none';
+  document.getElementById('conversationScene').classList.add('active');
+  document.getElementById('convTitle').textContent = `${s.icon} ${s.name}`;
+
+  const msgs = document.getElementById('convMessages');
+  msgs.innerHTML = s.conv.map((m, i) => {
+    const safeJp = m.jp.replace(/'/g, "\\'");
+    const sid = `cs_${Math.random().toString(36).slice(2,8)}`;
+    return `
+    <div class="conv-msg ${m.side}" style="animation-delay:${i*0.1}s">
+      <div class="conv-char-name">${m.char}</div>
+      <div class="conv-bubble" onclick="this.classList.toggle('revealed'); if(!this.dataset.xp){this.dataset.xp='1';addXP(3,'💬');}">
+        <span class="conv-jp">${m.jp}</span>
+        <span class="conv-romaji">${m.romaji}</span>
+        <span class="conv-kr">${m.kr}</span>
+        <div style="margin-top:6px;">
+          <button class="speak-btn-light" id="${sid}" onclick="event.stopPropagation(); speak('${safeJp}', document.getElementById('${sid}'))">🔊 듣기</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const vocabSection = document.getElementById('convVocabSection');
+  if (s.vocab && s.vocab.length > 0) {
+    vocabSection.innerHTML = `
+      <div style="background:#f5e6ff; border-radius:16px; padding:14px; margin-top:10px;">
+        <div style="font-weight:900; color:var(--purple); margin-bottom:10px; font-size:0.9em;">📚 이 상황의 핵심 단어</div>
+        ${s.vocab.map(v => `
+          <div style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #e8d5f5;">
+            <span style="font-family:'Noto Sans JP',sans-serif; font-weight:700; font-size:1.1em; color:var(--dark); min-width:100px;">${v.w}</span>
+            <span style="color:#666; font-size:0.85em;">= ${v.m}</span>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+
+  addXP(5, '💬 회화!');
+}
+
+function backToSituations() {
+  document.getElementById('situationSelect').style.display = 'block';
+  document.getElementById('conversationScene').classList.remove('active');
+}
+
+// ========== 초기화 ==========
+document.addEventListener('DOMContentLoaded', () => {
+  initTTS();
+  initKanaTable();
+  updateFlashcard();
+  renderAnimeDialogues(0);
+  initQuiz();
+  renderSituations();
+});
+</script>
+
+</body>
+</html>
