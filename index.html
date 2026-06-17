@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오사카 가족여행 다이어리 🏯</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+  :root {
+    --red: #D64545;
+    --deep-red: #B23A3A;
+    --gold: #E0A030;
+    --navy: #1F3A5F;
+    --cream: #FFF8EE;
+    --green: #4C9A6A;
+    --gray: #888;
+    --light-gold: #FCE9C8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    color: #2b2b2b;
+  }
+
+  /* 헤더 */
+  header {
+    background: linear-gradient(135deg, var(--deep-red) 0%, var(--red) 60%, var(--gold) 130%);
+    padding: 22px 20px 50px;
+    text-align: center;
+    position: relative;
+    clip-path: ellipse(100% 100% at 50% 0%);
+  }
+
+  .header-emoji { font-size: 2.2em; }
+
+  .header-title {
+    color: white;
+    font-size: 1.5em;
+    font-weight: 900;
+    margin-top: 4px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  }
+
+  .header-dates {
+    color: rgba(255,255,255,0.95);
+    font-size: 0.95em;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  .header-fam {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-size: 0.8em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-top: 8px;
+    font-weight: 700;
+  }
+
+  /* 안내 배너 */
+  .notice-banner {
+    background: white;
+    border-radius: 18px;
+    margin: -28px 16px 14px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 20px rgba(178,58,58,0.15);
+    position: relative;
+    z-index: 5;
+    border: 2px solid var(--light-gold);
+  }
+
+  .notice-title {
+    font-weight: 900;
+    color: var(--deep-red);
+    font-size: 0.88em;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .notice-text {
+    font-size: 0.8em;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  /* 탭 */
+  .tab-nav {
+    display: flex;
+    gap: 8px;
+    padding: 0 16px;
+    margin-bottom: 14px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    background: white;
+    border: 2.5px solid #f0ddc0;
+    border-radius: 16px;
+    padding: 12px 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 800;
+    color: #999;
+    transition: all 0.2s;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--red), var(--deep-red));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(214,69,69,0.35);
+  }
+
+  .container { padding: 0 16px 60px; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* 일자 선택 */
+  .day-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .day-pills::-webkit-scrollbar { display: none; }
+
+  .day-pill {
+    flex: 0 0 auto;
+    background: white;
+    border: 2px solid #f0ddc0;
+    border-radius: 16px;
+    padding: 10px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 78px;
+  }
+
+  .day-pill.active {
+    background: linear-gradient(135deg, var(--gold), #c9871f);
+    border-color: transparent;
+    box-shadow: 0 4px 14px rgba(224,160,48,0.4);
+  }
+
+  .day-pill .d-date {
+    font-size: 0.95em;
+    font-weight: 900;
+    color: var(--navy);
+  }
+  .day-pill.active .d-date { color: white; }
+
+  .day-pill .d-tag {
+    font-size: 0.68em;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+  .day-pill.active .d-tag { color: rgba(255,255,255,0.9); }
+
+  /* 일정 카드 */
+  .day-header-card {
+    background: linear-gradient(135deg, var(--navy), #2c5180);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    color: white;
+  }
+
+  .day-header-card .dh-title {
+    font-size: 1.15em;
+    font-weight: 900;
+  }
+
+  .day-header-card .dh-sub {
+    font-size: 0.82em;
+    color: rgba(255,255,255,0.75);
+    margin-top: 4px;
+  }
+
+  .group-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .group-tab-btn {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 14px;
+    border: 2px solid var(--light-gold);
+    background: white;
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .group-tab-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: white;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #f0ddc0;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -22px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--red);
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--red);
+  }
+
+  .timeline-card {
+    background: white;
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 2px solid #f5ece0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  .tc-time {
+    display: inline-block;
+    background: var(--light-gold);
+    color: var(--deep-red);
+    font-size: 0.72em;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+
+  .tc-title {
+    font-size: 1em;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tc-desc {
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .tc-tip {
+    margin-top: 8px;
+    background: #f3f8f0;
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.76em;
+    color: #3f7a52;
+    line-height: 1.4;
+  }
+
+  .tc-alert {
+    margin-top: 8px;
+    background: #fff0ed;
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.76em;
+    color: var(--deep-red);
+    line-height: 1.4;
+  }
+
+  /* 맛집 탭 */
+  .restaurant-filters {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    margin-bottom: 14px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .restaurant-filters::-webkit-scrollbar { display: none; }
+
+  .filter-btn {
+    flex: 0 0 auto;
+    background: white;
+    border: 2px solid #f0ddc0;
+    border-radius: 14px;
+    padding: 7px 13px;
+    font-size: 0.78em;
+    font-weight: 700;
+    color: #999;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, var(--red), var(--deep-red));
+    color: white;
+    border-color: transparent;
+  }
+
+  .restaurant-card {
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 2px solid #f5ece0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+
+  .rc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .rc-name {
+    font-size: 1.02em;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  .rc-area {
+    font-size: 0.72em;
+    color: white;
+    background: var(--gold);
+    padding: 3px 9px;
+    border-radius: 10px;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .rc-type {
+    font-size: 0.78em;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .rc-desc {
+    font-size: 0.85em;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .rc-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .rc-tag {
+    font-size: 0.7em;
+    background: #f5ece0;
+    color: #8a6a30;
+    padding: 3px 9px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  .rc-price {
+    font-size: 0.78em;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .rc-note {
+    margin-top: 8px;
+    background: #fff8ee;
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.74em;
+    color: #a07418;
+    border-left: 3px solid var(--gold);
+  }
+
+  .section-label {
+    font-size: 0.95em;
+    font-weight: 900;
+    color: var(--navy);
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-emoji">🏯🎍</div>
+  <div class="header-title">오사카 가족여행 다이어리</div>
+  <div class="header-dates">2026.12.29 (화) - 2027.01.02 (토)</div>
+  <div class="header-fam">👨‍👩‍👧‍👦 2가족 · 총 7명</div>
+</header>
+
+<div class="notice-banner">
+  <div class="notice-title">✈️ 항공편 & 숙소 정보</div>
+  <div class="notice-text">
+    <b>가는 길</b> KE2171 · 12/29 08:25 서울 → 10:10 고베공항(UKB)<br>
+    <b>오는 길</b> KE2174 · 1/2 18:40 고베공항(UKB) → 20:40 서울<br>
+    <b>숙소</b> 요시노가와 하우스 Room401 (니혼바시역 도보 3분 · 구로몬시장 도보 2분, 예약번호 CX5F4V)<br>
+    <b>공항 이동</b> 고베공항 ↔ 니혼바시는 포트라이너(고베공항역→산노미야, 18분) + 한신난바선 직통열차(산노미야→오사카난바, 약 40분) + 도보·지하철로 니혼바시까지 환승 1~2회, 총 1시간~1시간 15분 정도 걸려요.
+  </div>
+</div>
+
+<div class="notice-banner">
+  <div class="notice-title">⚠️ 연말연시 방문 시 꼭 확인하세요</div>
+  <div class="notice-text">
+    12/31~1/3은 많은 음식점·박물관이 휴무이거나 영업시간이 단축돼요. 편의점·백화점·대형 쇼핑몰(USJ, 스파월드 등)은 평소처럼 영업하는 편이지만, 작은 식당은 사전에 영업 여부를 꼭 확인하세요. 1/1~1/3 신사는 새해 참배객으로 매우 혼잡해요.
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('itinerary')">📅 일정표</button>
+  <button class="tab-btn" onclick="switchTab('restaurant')">🍱 맛집 추천</button>
+</div>
+
+<div class="container">
+
+  <!-- ============ 일정표 탭 ============ -->
+  <div id="tab-itinerary" class="tab-content active">
+
+    <div class="day-pills" id="dayPills"></div>
+
+    <div id="dayContent"></div>
+
+  </div>
+
+  <!-- ============ 맛집 추천 탭 ============ -->
+  <div id="tab-restaurant" class="tab-content">
+
+    <div class="restaurant-filters" id="restaurantFilters"></div>
+
+    <div id="restaurantList"></div>
+
+  </div>
+
+</div>
+
+<script>
+// ========== 데이터 ==========
+
+const days = [
+  {
+    date: '12/29 (화)', tag: '도착일',
+    title: '🛫 오사카 도착 & 도톤보리 산책',
+    sub: 'KE2171 (08:25 서울 → 10:10 고베공항) · 오전 도착이라 일정이 여유로워요',
+    items: [
+      { time: '08:25~10:10', title: '✈️ KE2171 탑승 (서울→고베)', desc: '대한항공 KE2171편으로 인천 출발, 고베공항(UKB) 10:10 도착. 2026년 4월 개설된 인천-고베 신규 노선이에요.', tip: '비행 시간이 짧으니 기내에서 첫날 동선을 가족끼리 미리 정리해두면 좋아요.' },
+      { time: '10:10~10:40', title: '🛃 입국 수속 & 짐 찾기', desc: '입국심사·수하물 수령. 고베공항은 규모가 작아 수속이 비교적 빠른 편이에요.', tip: '7명 단체라 짐이 많을 수 있어요. 캐리어 개수를 미리 가족별로 나눠두면 수속이 빨라져요.' },
+      { time: '10:40~11:55', title: '🚇 고베공항 → 니혼바시 숙소 이동', desc: '포트라이너로 산노미야역까지 이동(약 18분) 후, 한신난바선 직통열차로 오사카난바역까지 이동(약 40분), 마지막으로 도보·지하철로 니혼바시역까지(약 5~10분).', tip: '포트라이너는 무인운전 모노레일이라 아이들이 맨 앞자리에 앉으면 좋아해요.' },
+      { time: '낮 12시경', title: '🏠 요시노가와 하우스 Room401 도착', desc: '니혼바시역 도보 3분, 구로몬시장 도보 2분 거리의 숙소에 짐 보관. 체크인이 보통 15시 이후라면 짐만 맡기고 바로 동네 구경을 시작해요.', tip: '체크인 전이라면 숙소 근처 코인로커나 호스트에게 짐 임시 보관을 미리 문의해두세요.' },
+      { time: '오후', title: '🦀 구로몬시장 구경 & 점심', desc: '숙소에서 2분 거리인 구로몬시장에서 해산물·과일·길거리 음식을 구경하며 가볍게 점심을 해결해요.', tip: '신선식품 시장이라 즉석에서 구워주는 해산물 꼬치나 와규 등이 인기예요. 현금을 조금 챙기면 편해요.' },
+      { time: '저녁', title: '🛶 도톤보리 리버크루즈 & 글리코상', desc: '구로몬시장에서 도톤보리까지는 도보 약 15분. 도톤보리강 유람선을 타고 야경 감상, 글리코상 간판 앞에서 가족사진. 이후 저녁식사.', tip: '숙소가 니혼바시라 도톤보리·신사이바시까지 걸어서 이동이 가능해요.' },
+    ]
+  },
+  {
+    date: '12/30 (수)', tag: 'USJ / 온천',
+    title: '🎢 그룹 분리의 날 — USJ팀 & 온천·쇼핑팀',
+    sub: '7명이 두 그룹으로 나뉘어 각자 원하는 하루를 보내고 저녁에 합류해요',
+    groups: [
+      {
+        name: '🎢 A팀 · 유니버설 스튜디오 재팬',
+        items: [
+          { time: '아침', title: '🎫 개장 전 입장 대기', desc: '개장 30분~1시간 전 도착 추천. 닌텐도월드, 해리포터 지역은 오전에 사람이 가장 적어요.', alert: '연말 시즌은 평소보다 혼잡할 수 있어요. 7명 단체면 익스프레스 패스를 미리 구매하는 걸 추천해요.' },
+          { time: '오전~오후', title: '🍄 닌텐도월드 & 해리포터 지역', desc: '마리오카트, 요시 어드벤처는 어린이~청소년 모두 인기. 해리포터 지역은 청소년에게 특히 추천.', tip: '같은 팀 안에서도 어린 아이는 미니언파크/유니버설원더랜드, 청소년은 어트랙션 위주로 따로 움직여도 좋아요.' },
+          { time: '저녁', title: '🍔 파크 내 식사 & 야간 퍼레이드', desc: '파크 내 레스토랑에서 저녁 식사 후 야간 일루미네이션·프로젝션 쇼 관람.', tip: '저녁 시간은 식당이 붐비니 17시 이전 식사를 추천해요.' },
+        ]
+      },
+      {
+        name: '🎌 B팀 · 애니 덕후 성지순례',
+        items: [
+          { time: '오전', title: '🏙️ 덴덴타운(닛폰바시) 굿즈샵 투어', desc: '오사카의 아키하바라로 불리는 덴덴타운에서 애니메이트 닛폰바시점, 슈퍼키즈랜드(피규어·건담·프라모델), 정글 오사카(중고 피규어·식완) 등을 돌아보며 좋아하는 애니 굿즈를 구경·구매해요.', tip: '숙소(니혼바시역 도보 3분)에서 덴덴타운까지 걸어서 5분 정도라 아침에 여유롭게 출발해도 돼요. 매장이 여러 층 건물에 흩어져 있으니 시간을 넉넉히 잡으세요.' },
+          { time: '낮', title: '🍜 난바·덴덴타운 인근 점심', desc: '난바역 주변 라멘·돈카츠 등으로 가볍게 점심 해결.', tip: '오타쿠 굿즈샵은 점심시간에도 한산한 편이라 여유롭게 둘러보고 와도 좋아요.' },
+          { time: '오후', title: '🎮 신사이바시 만다라케 & 포켓몬센터 오사카 DX', desc: '아메리카무라에 있는 만다라케 그랜드 카오스(중고 만화·피규어·굿즈 4층 규모)와 신사이바시의 포켓몬센터 오사카 DX를 방문해요.', tip: '만다라케는 중고 굿즈라 가격이 합리적인 편이에요. 포켓몬센터는 한정판 굿즈가 많아 인기템은 일찍 동날 수 있어요.' },
+          { time: '저녁', title: '🤝 A팀과 도톤보리에서 합류', desc: '숙소나 도톤보리 식당에서 다시 만나 함께 저녁식사. 오늘 산 굿즈 자랑하는 시간!', tip: '짐이 늘어날 수 있으니 숙소에 짐을 미리 가져다 두고 나오면 편해요.' },
+        ]
+      }
+    ]
+  },
+  {
+    date: '12/31 (목)', tag: '한 해의 마무리',
+    title: '♨️ 스파월드 온천 & 오사카성 일루미네이션',
+    sub: '낮엔 온천에서 몸 풀고, 밤엔 빛의 성으로 한 해 마무리',
+    items: [
+      { time: '오전', title: '♨️ 스파월드 (신세카이)', desc: '신세카이의 24시간 온천 테마파크. 유럽관·아시아관 등 세계 각국 테마탕을 즐길 수 있어요. 입장료 어른 2,000엔·아동 1,200엔. 숙소(니혼바시)에서 도보 약 15분 거리예요.', tip: '한 해 마무리로 온 가족이 몸을 푸는 코스예요. 수영복 착용 구역도 있어 아이와 함께해도 좋아요. 타올·수영복은 현장 대여 가능.' },
+      { time: '낮', title: '🍢 신세카이에서 점심', desc: '온천 후 신세카이 명물 쿠시카츠(꼬치튀김)로 가볍게 점심. 다루마 본점이 대표 노포예요.', tip: '소스는 한 번만 찍는 게 매너! 츠텐카쿠 타워 전망대도 같은 동네라 시간이 되면 들러보기 좋아요.' },
+      { time: '오후', title: '🎡 덴포잔 대관람차 & 마켓플레이스', desc: '신세카이에서 지하철로 약 25~30분 이동. 대관람차에서 오사카 베이 전경 감상 후, 텐포잔 마켓플레이스 푸드코트에서 간식.', tip: '푸드코트는 메뉴가 다양해서 아이 입맛부터 어른 입맛까지 한자리에서 해결 가능해요.' },
+      { time: '저녁', title: '🏯 오사카성 일루미네이션', desc: '오사카성은 매년 11월~2월 대규모 일루미네이션을 운영해요. 전국시대 테마의 빛 장식이 인상적.', tip: '저녁식사는 토시코시소바(년말 메밀국수)를 파는 식당에서 일본 전통을 체험해보세요.' },
+      { time: '밤', title: '🎆 새해 전야', desc: '숙소 인근에서 가볍게 새해를 맞이하거나, 도톤보리 주변 카운트다운 분위기를 즐겨요.', alert: '12/31 밤~1/1 새벽은 일부 매장이 일찍 닫거나 휴무일 수 있어요.' },
+    ]
+  },
+  {
+    date: '1/1 (금)', tag: '새해',
+    title: '🌅 새해 첫날 — 여유로운 아침 & 신세카이',
+    sub: '느긋한 아침 + 쿠시카츠의 본고장 신세카이',
+    items: [
+      { time: '오전', title: '☕ 여유로운 아침 & 동네 산책', desc: '1/1은 많은 곳이 휴무이니 무리하지 않고 늦은 아침을 먹으며 시작해요. 도톤보리·난바 주변을 가볍게 산책하거나 숙소에서 여유를 즐겨요.', tip: '문 연 카페나 패밀리레스토랑을 미리 검색해두면 아침 메뉴 고민이 줄어요.' },
+      { time: '낮', title: '🍜 도톤보리·신사이바시 점심', desc: '어제 신세카이는 다녀왔으니, 오늘은 숙소 근처 도톤보리·신사이바시에서 가볍게 점심을 먹어요.', tip: '1/1은 휴무 매장이 많으니 체인점이나 영업 중인 곳을 미리 검색해두면 좋아요.' },
+      { time: '오후~저녁', title: '🏮 호젠지요코초 골목 & 저녁식사', desc: '레트로한 분위기의 좁은 골목을 산책하고 주변 식당에서 저녁식사.', alert: '새해 연휴라 일부 개인 식당은 휴무일 수 있어요. 영업 여부를 미리 확인하거나 체인점/대형 식당 위주로 준비하세요.' },
+    ]
+  },
+  {
+    date: '1/2 (토)', tag: '출국일',
+    title: '🛍️ 아메리카무라·신사이바시 쇼핑 & 출국',
+    sub: 'KE2174 (18:40 고베공항 → 20:40 서울) · 저녁 비행이라 오후까지 여유있게 사용 가능',
+    items: [
+      { time: '오전', title: '🧳 요시노가와 하우스 체크아웃', desc: '보통 체크아웃은 10~11시경. 짐은 숙소 근처 코인로커나 니혼바시역 로커에 맡기고 가볍게 움직여요.', tip: '호스트에게 체크아웃 후 짐 보관이 가능한지 미리 물어보면 편해요.' },
+      { time: '오전~낮', title: '🛍️ 아메리카무라 빈티지·구제샵 투어', desc: '숙소에서 도톤보리 방향으로 도보 약 15분, 신사이바시역에서 도보 5분인 아메리카무라(아메무라)는 오사카 최대의 빈티지·구제 의류 거리예요. 좁은 골목 곳곳에 구제샵이 모여있어 둘러보는 재미가 커요.', tip: '청소년들이 특히 좋아할 코스예요. 구제샵은 현금 결제만 받는 곳도 있으니 여유 현금을 챙기세요.' },
+      { time: '낮', title: '🛒 돈키호테 도톤보리점 & 신사이바시 쇼핑', desc: '도톤보리강변에 있는 돈키호테에서 과자·화장품·기념품을 한 번에 구매. 신사이바시 상점가도 같은 동선에서 들를 수 있어요.', tip: '면세 쇼핑은 여권을 꼭 챙기고, 7명 단체 구매 시 일부 매장은 단체 할인도 있어요.' },
+      { time: '13:00경', title: '🍜 마지막 한 끼', desc: '난바역 인근에서 라멘이나 우동으로 가볍게 마무리 식사.', tip: '비행 시간이 저녁이라 점심을 든든하게 먹어두면 좋아요.' },
+      { time: '14:00~15:15', title: '🚇 도톤보리 → 고베공항 이동', desc: '난바역에서 한신난바선 직통열차로 산노미야역까지 이동(약 40분) 후, 포트라이너로 환승해 고베공항역까지(약 18분).', tip: '짐을 숙소나 니혼바시역 로커에서 미리 찾아 이동해야 해요. 7명 단체 짐 이동이라 출발 시간을 넉넉하게 잡는 게 안전해요.' },
+      { time: '15:10~17:00', title: '🛃 공항 도착 & 출국 수속', desc: '체크인, 짐 부치기, 출국심사까지 여유 있게 진행. KE2174편은 18:40 출발이에요.', tip: '국제선은 출발 2~3시간 전 도착을 권장해요. 7명이면 카운터 수속 시간이 더 걸릴 수 있어요.' },
+      { time: '18:40~20:40', title: '✈️ KE2174 탑승 (고베→서울)', desc: '대한항공 KE2174편으로 고베공항 출발, 인천 20:40 도착으로 여행을 마무리해요.', tip: '수고했어요! 다음 여행을 위한 사진 정리는 비행기 안에서 ✨' },
+    ]
+  },
+];
+
+const restaurants = [
+  {
+    name: '구로몬시장 먹거리', area: '니혼바시/구로몬시장', type: '시장 길거리음식·해산물', price: '1인 1,000~3,000엔',
+    desc: '숙소(요시노가와 하우스)에서 도보 2분! 즉석에서 구워주는 해산물 꼬치, 와규 스테이크, 과일 등을 자유롭게 골라먹기 좋아요.',
+    tags: ['숙소근처', '자유선택', '아이~어른 모두'],
+    note: '아침 일찍 또는 도착 직후 가볍게 들르기 좋은 위치예요.'
+  },
+  {
+    name: '와나카 타코야키', area: '도톤보리', type: '타코야키', price: '1인 500~800엔',
+    desc: '오사카 대표 타코야키 노포. 겉바속촉 타코야키를 가볍게 즐기기 좋아요. 줄은 있지만 회전이 빨라요.',
+    tags: ['아이 추천', '간식', '단체가능'],
+    note: '포장도 가능해서 숙소에서 먹기에도 좋아요.'
+  },
+  {
+    name: '즌자몬자 도톤보리점', area: '도톤보리', type: '오코노미야키', price: '1인 1,200~1,800엔',
+    desc: '직접 구워먹는 체험형 오코노미야키 식당. 아이들도 재미있게 참여할 수 있어요.',
+    tags: ['체험형', '가족추천', '단체가능'],
+    note: '7명이면 미리 전화 예약을 추천해요.'
+  },
+  {
+    name: '야키니쿠 다이보쿠죠 도톤보리', area: '도톤보리', type: '야키니쿠(소고기구이)', price: '1인 2,500~4,000엔',
+    desc: '6인 이상 단체석과 유모차 이용이 가능한 넓은 좌석. 무한리필 옵션도 있어 가족 모임에 좋아요.',
+    tags: ['단체석', '무한리필', '청소년 인기'],
+    note: '연말연시는 예약 필수 — 늦어도 2~3일 전 예약 권장.'
+  },
+  {
+    name: '간코 텐마바시점', area: '오사카성 인근', type: '스시·일본가정식', price: '1인 1,500~4,500엔',
+    desc: '넓은 홀과 프라이빗 룸이 있어 2가족이 한 공간에서 편하게 식사할 수 있어요.',
+    tags: ['룸예약', '가족추천', '다양한메뉴'],
+    note: '룸 이용 시 사전 예약이 필요해요.'
+  },
+  {
+    name: '하카타 하나미도리 우메다점', area: '우메다', type: '미즈타키(닭백숙전골)', price: '1인 3,000엔대',
+    desc: 'JR 오사카역 도보 2분. 단체 이용 가능한 룸이 마련되어 있어 가족 모임에 적합해요.',
+    tags: ['룸예약', '전골', '단체가능'],
+    note: 'JR 오사카역과 가까워 USJ나 우메다 쇼핑 후 들르기 좋아요.'
+  },
+  {
+    name: '신세카이 다루마 본점', area: '신세카이', type: '쿠시카츠(꼬치튀김)', price: '1인 1,500~2,500엔',
+    desc: '쿠시카츠의 본고장 신세카이 대표 노포. 1/1 신년 나들이 후 점심으로 추천.',
+    tags: ['노포', '아이~어른 모두', '명물'],
+    note: '소스는 한 번만 찍는 게 매너예요 (2번 찍기 금지)!'
+  },
+  {
+    name: '텐포잔 마켓플레이스 푸드코트', area: '텐포잔', type: '푸드코트(다양한메뉴)', price: '1인 800~1,500엔',
+    desc: '타코야키, 우동, 돈카츠 등 다양한 메뉴가 모여있어 입맛이 다른 가족이 각자 골라먹기 좋아요.',
+    tags: ['키즈메뉴', '다양한선택', '덴포잔 근처'],
+    note: '덴포잔 대관람차 관람과 묶어서 일정 짜기 좋은 위치예요.'
+  },
+  {
+    name: 'USJ 파크 내 레스토랑 (피니어스퍼브 등)', area: 'USJ', type: '양식·캐릭터다이닝', price: '1인 1,500~3,000엔',
+    desc: '테마파크 내에서 캐릭터 분위기를 느끼며 식사. 아이들이 특히 좋아해요.',
+    tags: ['캐릭터다이닝', '아이 추천'],
+    note: '12~13시는 매우 혼잡하니 11시 또는 14시 이후를 추천해요.'
+  },
+  {
+    name: '도톤보리 킨류라멘', area: '도톤보리', type: '라멘', price: '1인 800~1,200엔',
+    desc: '24시간 영업하는 오사카 명물 라멘집. 늦은 시간 도착이나 마지막날 가벼운 식사에 좋아요.',
+    tags: ['24시간', '가벼운식사', '단체가능'],
+    note: '연말연시에도 영업하는 경우가 많지만 당일 확인을 추천해요.'
+  },
+  {
+    name: '토시코시소바 식당 (오쇼·마루카메제면 등)', area: '시내 전역', type: '소바(메밀국수)', price: '1인 500~1,000엔',
+    desc: '12/31 밤, 한 해를 마무리하며 먹는 일본 전통 메밀국수. 체인 우동/소바집에서도 맛볼 수 있어요.',
+    tags: ['새해전야', '전통문화체험', '저가'],
+    note: '12/31 저녁은 일부 매장이 일찍 마감하니 19시 이전 방문을 추천해요.'
+  },
+];
+
+// ========== 일정표 ==========
+let currentDayIdx = 0;
+
+function renderDayPills() {
+  const container = document.getElementById('dayPills');
+  container.innerHTML = days.map((d, i) => `
+    <div class="day-pill ${i === currentDayIdx ? 'active' : ''}" onclick="selectDay(${i})">
+      <div class="d-date">${d.date}</div>
+      <div class="d-tag">${d.tag}</div>
+    </div>
+  `).join('');
+}
+
+function selectDay(idx) {
+  currentDayIdx = idx;
+  currentGroupIdx = 0;
+  renderDayPills();
+  renderDayContent();
+}
+
+let currentGroupIdx = 0;
+
+function renderTimeline(items) {
+  return items.map(item => `
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-card">
+        <span class="tc-time">${item.time}</span>
+        <div class="tc-title">${item.title}</div>
+        <div class="tc-desc">${item.desc}</div>
+        ${item.tip ? `<div class="tc-tip">💡 ${item.tip}</div>` : ''}
+        ${item.alert ? `<div class="tc-alert">⚠️ ${item.alert}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectGroup(idx) {
+  currentGroupIdx = idx;
+  renderDayContent();
+}
+
+function renderDayContent() {
+  const d = days[currentDayIdx];
+  const container = document.getElementById('dayContent');
+
+  if (d.groups) {
+    const safeIdx = currentGroupIdx < d.groups.length ? currentGroupIdx : 0;
+    const groupTabsHtml = d.groups.map((g, i) => `
+      <button class="group-tab-btn ${i === safeIdx ? 'active' : ''}" onclick="selectGroup(${i})">${g.name}</button>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="day-header-card">
+        <div class="dh-title">${d.title}</div>
+        <div class="dh-sub">${d.sub}</div>
+      </div>
+      <div class="group-tabs">${groupTabsHtml}</div>
+      <div class="timeline">${renderTimeline(d.groups[safeIdx].items)}</div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="day-header-card">
+      <div class="dh-title">${d.title}</div>
+      <div class="dh-sub">${d.sub}</div>
+    </div>
+    <div class="timeline">${renderTimeline(d.items)}</div>
+  `;
+}
+
+// ========== 맛집 추천 ==========
+let currentFilter = '전체';
+
+function getAreas() {
+  const areas = ['전체', ...new Set(restaurants.map(r => r.area))];
+  return areas;
+}
+
+function renderRestaurantFilters() {
+  const container = document.getElementById('restaurantFilters');
+  container.innerHTML = getAreas().map(a => `
+    <button class="filter-btn ${a === currentFilter ? 'active' : ''}" onclick="filterRestaurants('${a}')">${a}</button>
+  `).join('');
+}
+
+function filterRestaurants(area) {
+  currentFilter = area;
+  renderRestaurantFilters();
+  renderRestaurantList();
+}
+
+function renderRestaurantList() {
+  const container = document.getElementById('restaurantList');
+  const list = currentFilter === '전체' ? restaurants : restaurants.filter(r => r.area === currentFilter);
+
+  container.innerHTML = list.map(r => `
+    <div class="restaurant-card">
+      <div class="rc-top">
+        <div class="rc-name">${r.name}</div>
+        <div class="rc-area">${r.area}</div>
+      </div>
+      <div class="rc-type">${r.type}</div>
+      <div class="rc-desc">${r.desc}</div>
+      <div class="rc-tags">
+        ${r.tags.map(t => `<span class="rc-tag">#${t}</span>`).join('')}
+      </div>
+      <div class="rc-price">💴 ${r.price}</div>
+      <div class="rc-note">📌 ${r.note}</div>
+    </div>
+  `).join('');
+}
+
+// ========== 탭 전환 ==========
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabMap = { itinerary: 0, restaurant: 1 };
+  document.querySelectorAll('.tab-btn')[tabMap[tab]].classList.add('active');
+}
+
+// ========== 초기화 ==========
+document.addEventListener('DOMContentLoaded', () => {
+  renderDayPills();
+  renderDayContent();
+  renderRestaurantFilters();
+  renderRestaurantList();
+});
+</script>
+
+</body>
+</html>
