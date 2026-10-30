@@ -1,0 +1,286 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>수행평가 스티커북</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 모눈 공책 위에 과목별 스티커 카드, 항목을 누르면 아래에서 올라오는 준비 노트 */
+:root{
+  --paper:#FBF8FF; --grid:#ECE6F8; --card:#FFFFFF; --ink:#3B3553; --soft:#7A7294; --line:#E4DDF2;
+  --pink:#FF8FB1; --mint:#5CCDAE; --butter:#FFD45E; --sky:#7DB8FF; --lilac:#B49BFF; --peach:#FFA77D;
+  --pinkbg:#FFE8F0; --mintbg:#DDF6EE; --butterbg:#FFF5D6; --skybg:#E3F0FF; --lilacbg:#EEE8FF; --peachbg:#FFEDE3;
+  --done:#5CCDAE; --shadow:0 3px 0 #E4DDF2;
+  --display:"Jua","Gowun Dodum",system-ui,sans-serif;
+  --body:"Gowun Dodum",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1E1B2E; --grid:#282440; --card:#2A2640; --ink:#F1ECFF; --soft:#A9A1C6; --line:#3A3456;
+  --pinkbg:#4A2A3C; --mintbg:#1F4038; --butterbg:#463C1F; --skybg:#22344F; --lilacbg:#352C55; --peachbg:#48301F;
+  --shadow:0 3px 0 #15121F; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#1E1B2E; --grid:#282440; --card:#2A2640; --ink:#F1ECFF; --soft:#A9A1C6; --line:#3A3456;
+  --pinkbg:#4A2A3C; --mintbg:#1F4038; --butterbg:#463C1F; --skybg:#22344F; --lilacbg:#352C55; --peachbg:#48301F;
+  --shadow:0 3px 0 #15121F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.6;
+}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 60px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--lilac);outline-offset:2px}
+
+/* header */
+.top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+.hello{font-size:13px;color:var(--soft);letter-spacing:.06em}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.15;margin-top:4px}
+h1 .tape{background:linear-gradient(transparent 55%,var(--butterbg) 55%);padding:0 4px}
+.dday{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:8px 14px;text-align:center;box-shadow:4px 4px 0 var(--pink);transform:rotate(2deg)}
+.dday b{display:block;font-family:var(--display);font-size:26px;font-weight:400;line-height:1.1}
+.dday span{font-size:12px;color:var(--soft)}
+
+.board{margin-top:20px;background:var(--card);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow);display:grid;gap:10px}
+.board-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.board h2{font-size:20px}
+.board .cnt{font-variant-numeric:tabular-nums;color:var(--soft)}
+.shelf{display:flex;flex-wrap:wrap;gap:4px;min-height:30px}
+.shelf svg{width:26px;height:26px}
+.shelf .empty{width:26px;height:26px;border:2px dashed var(--line);border-radius:50%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 14px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:5px 13px;font-size:14px}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+
+/* subject cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.subj{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;min-width:0}
+.subj-head{padding:14px 16px 10px;background:var(--tint);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.subj-head h3{font-size:21px}
+.subj-head .tag{font-size:12px;background:var(--card);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.bar{height:8px;background:var(--card);border-radius:99px;margin:0 16px 0;overflow:hidden}
+.subj-head + .barbox{background:var(--tint);padding-bottom:12px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.items{list-style:none;margin:0;padding:6px 8px 10px}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:9px 8px}
+.item:hover{background:var(--paper)}
+.item .nm{min-width:0}
+.item .nm b{font-weight:400;display:block}
+.item .nm small{color:var(--soft);font-size:12px}
+.pct{font-variant-numeric:tabular-nums;font-size:13px;color:var(--soft)}
+.dot{width:26px;height:26px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center}
+.dot.s1{border:2px solid var(--accent);background:var(--tint)}
+.dot.s1::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.dot.s2{border:0}
+.dot svg{width:28px;height:28px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(30,20,50,.35);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:88vh;overflow:auto;background:var(--paper);
+  border-radius:24px 24px 0 0;box-shadow:0 -8px 30px rgba(30,20,50,.2);
+  padding-block:0 calc(24px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){.sheet{left:50%;width:720px;transform:translateX(-50%);bottom:24px;border-radius:24px;max-height:calc(100vh - 48px)}}
+.sheet-in{max-width:680px;margin:0 auto}
+.sheet-top{position:sticky;top:0;background:var(--paper);padding:14px 0 10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;z-index:2}
+.sheet-top .sub{font-size:13px;color:var(--soft)}
+.sheet-top h2{font-size:24px;line-height:1.25}
+.x{border:2px solid var(--line);background:var(--card);border-radius:50%;width:38px;height:38px;flex:none;font-size:18px;line-height:1}
+.status{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+.status button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px}
+.status button[aria-pressed="true"]{border-color:var(--accent);background:var(--tint)}
+.box{background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.box h3{font-size:17px;margin-bottom:8px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.steps label{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;cursor:pointer;padding:4px 0}
+.steps input{appearance:none;width:22px;height:22px;border:2px solid var(--line);border-radius:7px;margin:1px 0 0;background:var(--card);display:grid;place-items:center;cursor:pointer}
+.steps input:checked{background:var(--accent);border-color:var(--accent)}
+.steps input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.steps input:checked + span{color:var(--soft);text-decoration:line-through;text-decoration-color:var(--accent)}
+.tip{background:var(--butterbg);border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+.tip b{font-family:var(--display);font-weight:400;margin-right:6px}
+.note-sec{display:grid;gap:4px;margin-top:12px}
+.note-sec label{font-family:var(--display);font-size:15px}
+.note-sec small{color:var(--soft);font-size:12px}
+textarea{width:100%;min-height:92px;resize:vertical;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);color:var(--ink);font:inherit;line-height:1.7;
+  background-image:linear-gradient(transparent 26px,var(--line) 27px);background-size:100% 27px;background-attachment:local}
+.wc{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-top:10px;font-variant-numeric:tabular-nums}
+.saved{color:var(--mint)}
+.foot{margin-top:28px;font-size:12px;color:var(--soft);text-align:center}
+.cheer{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%) scale(.6);opacity:0;z-index:40;pointer-events:none;transition:all .35s}
+.cheer.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.cheer svg{width:120px;height:120px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.12))}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:480px){.top{grid-template-columns:1fr}.dday{justify-self:start;transform:rotate(-1.5deg)}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="hello">세종중 1학년 · 2학기</div>
+      <h1><span class="tape">수행평가</span> 스티커북</h1>
+    </div>
+    <div class="dday" aria-live="polite"><span>정기시험 12.8(화)</span><b id="dday">D-?</b></div>
+  </header>
+
+  <section class="board" aria-label="모은 스티커">
+    <div class="board-row"><h2>모은 스티커</h2><span class="cnt" id="cnt"></span></div>
+    <div class="shelf" id="shelf"></div>
+    <div class="legend"><span><i style="background:var(--line)"></i>시작 전</span><span><i style="background:var(--lilac)"></i>준비 중</span><span><i style="background:var(--mint)"></i>제출 완료 = 스티커!</span></div>
+  </section>
+
+  <nav class="chips" id="chips" aria-label="과목 고르기"></nav>
+  <main class="grid" id="grid"></main>
+  <p class="foot">체크한 내용과 쓴 글은 이 기기(브라우저)에만 저장돼요. 다른 폰이나 컴퓨터에서는 보이지 않아요.</p>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-title" hidden></div>
+<div class="cheer" id="cheer" aria-hidden="true"></div>
+
+<script>
+const STICK = {
+  star:c=>`<svg viewBox="0 0 40 40"><path d="M20 3l5 10.5 11.5 1.6-8.3 8 2 11.4L20 29l-10.2 5.5 2-11.4-8.3-8L15 13.5z" fill="${c}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+  heart:c=>`<svg viewBox="0 0 40 40"><path d="M20 35S5 25.5 5 15a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 10.5-15 20-15 20z" fill="${c}" stroke="#fff" stroke-width="2.5"/></svg>`,
+  flower:c=>`<svg viewBox="0 0 40 40"><g fill="${c}" stroke="#fff" stroke-width="2">${[0,72,144,216,288].map(a=>`<circle cx="20" cy="10" r="7.5" transform="rotate(${a} 20 20)"/>`).join('')}</g><circle cx="20" cy="20" r="6" fill="#FFD45E" stroke="#fff" stroke-width="2"/></svg>`,
+  cloud:c=>`<svg viewBox="0 0 40 40"><path d="M11 31a7 7 0 0 1-1-14 9 9 0 0 1 17-3 7.5 7.5 0 0 1 3 17z" fill="${c}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>`
+};
+const SUBJ = [
+ {k:'국어',c:'pink',st:'heart',exam:true,items:[
+  {t:'주장을 담은 글 쓰기',w:25,form:'논술',steps:['찬반이 나뉘는 주제 하나 고르기','내 주장을 한 문장으로 쓰기','근거 2~3개 모으기 (통계, 전문가 의견, 경험)','반대 의견을 예상하고 반박 준비하기','서론-본론-결론으로 써 보고 맞춤법 점검'],tip:'근거는 "믿을 만한가, 주장과 연결되는가" 두 가지를 꼭 확인해요.',tpl:[['서론','문제 상황 + 나의 주장'],['본론 1','첫 번째 근거와 자료'],['본론 2','두 번째 근거와 자료'],['반론과 반박','이런 의견도 있지만…'],['결론','주장 다시 강조 + 제안']]},
+  {t:'정서를 표현하는 글 쓰기',w:25,form:'논술',steps:['마음이 크게 움직였던 경험 하나 고르기','그때 장면을 떠올리며 보이고 들린 것 메모','감정을 "좋았다" 대신 구체적인 말로 바꾸기','비유나 감각적 표현 2개 이상 넣기','경험을 통해 느끼거나 깨달은 점으로 마무리'],tip:'"슬펐다"보다 "목 끝이 뜨거워졌다"처럼 몸의 느낌으로 써 보면 좋아요.',tpl:[['그 장면','언제, 어디서, 무슨 일이'],['그때의 마음','감정을 구체적으로'],['표현 연습','비유, 감각 표현'],['깨달은 점','지금 생각해 보면…']]}
+ ]},
+ {k:'사회',c:'sky',st:'cloud',exam:true,items:[
+  {t:'뉴스 기사 비평하기',w:20,form:'논술',steps:['최근 기사 하나 고르고 언론사·날짜 적기','기사 내용을 세 줄로 요약','사실과 의견 문장을 구분해 표시','빠진 관점이나 치우친 표현이 있는지 찾기','기사에 대한 나의 평가 쓰기'],tip:'제목이 내용보다 과장되어 있지 않은지도 비평 포인트예요.',tpl:[['기사 정보','제목, 언론사, 날짜'],['요약','세 줄 요약'],['사실 vs 의견','예시 문장 구분'],['비평','공정성, 신뢰성, 빠진 관점'],['나의 생각','']]},
+  {t:'민주주의의 발전 분석하기',w:15,form:'논술',steps:['고대 아테네 민주주의 특징 정리 (직접 민주주의, 시민 범위 제한)','근대 시민 혁명 정리 (영국 명예혁명, 미국 독립 혁명, 프랑스 혁명)','현대 민주주의 정리 (보통 선거 확대, 대의제)','시기별로 무엇이 달라졌는지 비교','오늘날 우리에게 주는 의미 쓰기'],tip:'"누가 정치에 참여할 수 있었나"를 기준으로 비교하면 흐름이 잘 보여요.',tpl:[['고대','아테네 민주주의'],['근대','시민 혁명'],['현대','보통 선거, 대의제'],['비교와 의미','']]},
+  {t:'학습일지',w:15,form:'포트폴리오',steps:['수업마다 날짜와 배운 개념 적기','궁금한 점 한 가지씩 남기기','빠진 날 없는지 확인','제출 전 깔끔하게 정리']}
+ ]},
+ {k:'수학',c:'lilac',st:'star',exam:true,items:[
+  {t:'정비례와 반비례 문제 해결',w:20,form:'논술',steps:['정비례 y=ax, 반비례 y=a/x 식 구하기 연습','표 → 식 → 그래프로 바꾸는 연습','그래프 모양 비교 (원점 지나는 직선 / 한 쌍의 곡선)','실생활 문제를 식으로 세우기','풀이 과정을 문장으로 서술하는 연습'],tip:'논술형은 답보다 과정! "x가 2배가 되면 y는…"처럼 이유를 써요.',tpl:[['문제 이해','무엇을 구하나'],['식 세우기','정비례? 반비례?'],['풀이','과정을 차례대로'],['확인','답이 맞는지 검산']]},
+  {t:'삼각형 작도하기',w:10,form:'실험·실습',steps:['준비물: 눈금 없는 자, 컴퍼스, 연필','세 변의 길이가 주어질 때 작도','두 변과 그 끼인각이 주어질 때 작도','한 변과 양 끝 각이 주어질 때 작도','삼각형이 하나로 정해지지 않는 경우 알기'],tip:'컴퍼스 흔적(호)은 지우지 말고 남겨 두세요. 작도 과정이 점수예요.'},
+  {t:'회전체 겉넓이와 부피',w:20,form:'논술',steps:['회전축을 기준으로 어떤 입체가 생기는지 그려 보기','원기둥: 부피 πr²h, 겉넓이 2πr²+2πrh','원뿔: 부피 ⅓πr²h','구: 부피 ⁴⁄₃πr³, 겉넓이 4πr²','단위(cm², cm³)까지 정확히 쓰기'],tip:'원뿔 부피는 같은 밑면·높이의 원기둥의 ⅓이라는 걸 기억해요.',tpl:[['어떤 회전체?','그림과 설명'],['필요한 값','반지름, 높이'],['풀이','공식 → 대입 → 계산'],['답','단위 포함']]}
+ ]},
+ {k:'과학',c:'mint',st:'flower',exam:true,items:[
+  {t:'보일 법칙 탐구 실험',w:25,form:'실험·논술',steps:['온도가 일정할 때 압력과 부피의 관계 예상하기','주사기 실험 과정 정리 (누르는 힘과 부피 변화)','결과를 표와 그래프로 정리','압력↑ → 부피↓ (반비례) 결론 쓰기','생활 속 예 찾기 (과자 봉지, 공기 주입 운동화 등)'],tip:'"온도는 일정하게"라는 조건을 꼭 써야 해요.',tpl:[['가설','압력이 커지면 부피는…'],['실험 과정',''],['결과','표, 그래프 해석'],['결론과 생활 예','']]},
+  {t:'태양계 행성 탐사 계획서',w:25,form:'논술',steps:['탐사할 행성 하나 고르기','행성 특징 조사 (크기, 대기, 온도, 위성, 표면)','탐사 목적 정하기','탐사 방법 정하기 (궤도선, 착륙선, 로버)','예상되는 어려움과 해결 방법'],tip:'목적과 방법이 행성 특징과 연결되면 설득력이 올라가요. 예: 금성은 고온·두꺼운 대기 → 착륙선 내열 설계.',tpl:[['행성과 특징',''],['탐사 목적',''],['탐사 방법',''],['어려움과 해결','']]}
+ ]},
+ {k:'영어',c:'peach',st:'heart',exam:true,items:[
+  {t:'우리 동네 명소 소개하기',w:25,form:'논술·토의',steps:['소개할 명소 고르기 (예: 신륵사, 세종대왕릉)','위치와 특징 조사','그곳에서 할 수 있는 일 정리','추천 이유 쓰기','친구 발표를 듣고 질문·의견 나누기 연습'],tip:'유용한 표현: There is/are…, You can…, It is famous for…, I recommend it because…',tpl:[['Introduction','Name and location'],['What to do','You can…'],['Why I recommend it','because…'],['Closing','']]},
+  {t:'일상적 대화하기',w:15,form:'구술·발표',steps:['교과서 대화문 소리 내어 따라 읽기','짝과 역할 바꿔 연습','발음·억양 녹음해서 들어 보기','상대를 보며 자연스럽게 말하기']},
+  {t:'친숙한 주제 영어 듣기',w:10,form:'기타',steps:['교과서 듣기 파일 반복 듣기','들으며 핵심 단어 메모하는 연습','모르는 단어 정리']}
+ ]},
+ {k:'한문',c:'butter',st:'star',exam:true,items:[
+  {t:'고사성어 풀이하기',w:20,form:'논술',steps:['한자 하나하나의 음과 뜻 적기','글자 풀이로 직역하기','유래 이야기 정리','오늘날 쓰이는 뜻과 예문 만들기'],tip:'"글자 풀이 → 유래 → 실제 뜻" 순서로 쓰면 깔끔해요.',tpl:[['고사성어',''],['글자 풀이','음과 뜻'],['유래',''],['뜻과 예문','']]},
+  {t:'한문 격언 풀이하기',w:20,form:'논술',steps:['격언을 소리 내어 읽기 (음 달기)','해석하기','담긴 가르침 정리','내 생활에 적용한 예 쓰기'],tpl:[['격언',''],['해석',''],['가르침',''],['나에게 적용하면','']]},
+  {t:'신습한자 포트폴리오',w:10,form:'포트폴리오',steps:['새로 배운 한자 모두 정리','음·훈·부수 적기','한자가 들어간 단어 예시 쓰기']}
+ ]},
+ {k:'도덕',c:'lilac',st:'flower',exam:false,items:[
+  {t:'도덕적 성찰 기록장',w:10,form:'포트폴리오',steps:['수업마다 성찰 기록 남기기','빠진 날 채우기']},
+  {t:'인권 신문 만들기',w:30,form:'프로젝트·논술',steps:['다룰 인권 문제 정하기','관련 기사·사례 모으기','원인과 해결 방안 정리','신문 지면 구성 (제목, 기사, 그림)','나의 주장 칼럼 쓰기']},
+  {t:'다른 문화 바라보는 관점 비교',w:30,form:'논술',steps:['자문화 중심주의 뜻과 예','문화 사대주의 뜻과 예','문화 상대주의 뜻과 예','보편 윤리에 어긋나는 문화는 존중할 수 없다는 점','바람직한 태도 정리'],tip:'문화 상대주의도 "인권을 해치는 문화까지 인정"하는 건 아니라는 점이 핵심이에요.',tpl:[['세 가지 관점',''],['비교',''],['바람직한 태도','']]},
+  {t:'도덕적 고려의 범위 분석',w:30,form:'논술',steps:['도덕적으로 배려해야 할 대상 생각하기 (사람, 동물, 미래 세대, 자연)','각 대상을 배려해야 하는 근거 찾기','범위를 넓힐 때의 의미 정리','내 생각 정리'],tpl:[['대상',''],['근거',''],['나의 생각','']]}
+ ]},
+ {k:'기술·가정',c:'mint',st:'cloud',exam:false,items:[
+  {t:'청소년기 영양의 중요성',w:20,form:'논술',steps:['청소년기 성장 특징 정리','특히 필요한 영양소 (단백질, 칼슘, 철 등)','나의 식습관 문제점 찾기','개선 계획 세우기'],tpl:[['청소년기 특징',''],['필요한 영양소',''],['나의 식습관',''],['개선 계획','']]},
+  {t:'TPO 옷차림 발표하기',w:30,form:'실습·발표',steps:['TPO 뜻 알기 (시간, 장소, 상황)','상황 2~3개 정하고 옷차림 고르기','고른 이유 설명 준비','발표 연습 (시간 재기)']},
+  {t:'제품 설계하고 제작하기',w:30,form:'프로젝트',steps:['해결할 생활 속 불편함 찾기','아이디어 스케치','치수 넣은 설계도','제작하기','사용해 보고 고칠 점 찾기']},
+  {t:'제품 보고서 작성하기',w:10,form:'논술',steps:['설계 의도 정리','제작 과정 기록','평가와 개선점'],tpl:[['설계 의도',''],['제작 과정',''],['평가와 개선점','']]},
+  {t:'기술적 문제 해결 포트폴리오',w:10,form:'논술',steps:['문제 이해 → 탐색 → 실현 → 평가 단계별 기록','단계마다 사진이나 메모 첨부']}
+ ]},
+ {k:'체육',c:'sky',st:'star',exam:false,items:[
+  {t:'제자리멀리뛰기',w:20,form:'실기',steps:['팔을 크게 흔들어 반동 만들기','양발을 동시에 구르기','45도 방향으로 멀리 뛰기','착지 때 무릎 굽히고 앞으로 몸 기울이기','기록 재고 적어 두기']},
+  {t:'축구 리프팅',w:25,form:'실기',steps:['발등 가운데로 공 맞히기','공 높이는 허리 아래로 낮게','하루 10분씩 연습','최고 기록 적어 두기']},
+  {t:'축구 슈팅',w:25,form:'실기',steps:['디딤발은 공 옆에','인사이드·인스텝 차기 연습','차는 순간 공 보기','목표 지점 정해 정확도 연습']},
+  {t:'축구 경기 분석, 과학 원리 설명',w:30,form:'논술',steps:['경기 하나 보고 장면 메모','포지션과 전술 정리','과학 원리 연결 (마그누스 효과로 휘는 공, 마찰력, 작용·반작용)','분석 글 쓰기'],tip:'"이 장면에서 공이 휜 이유는…"처럼 장면 하나를 원리로 설명하면 좋아요.',tpl:[['경기와 장면',''],['전술 분석',''],['과학 원리',''],['정리','']]}
+ ]},
+ {k:'음악',c:'pink',st:'flower',exam:false,items:[
+  {t:'생활 속 클래식 음악',w:20,form:'논술',steps:['광고·영화·게임 속 클래식 찾기','곡명과 작곡가 확인','쓰인 장면과 효과 설명'],tpl:[['곡명·작곡가',''],['쓰인 곳',''],['효과','']]},
+  {t:'서양음악사 감상',w:30,form:'실기',steps:['시대별 특징 정리 (바로크, 고전, 낭만, 근현대)','대표 작곡가와 곡 듣기 (바흐, 모차르트, 베토벤, 쇼팽 등)','들으며 느낀 점 메모']},
+  {t:'우쿨렐레 연주하기',w:30,form:'실기',steps:['C, Am, F, G7 코드 잡기','코드 바꾸기 속도 연습','스트로크 박자 맞추기','과제곡 처음부터 끝까지 연주']},
+  {t:'노래 부르기',w:20,form:'실기',steps:['가사 외우기','호흡 위치 표시하기','음정 정확히 연습','반주에 맞춰 불러 보기']}
+ ]}
+];
+SUBJ.forEach((s,si)=>s.items.forEach((it,ii)=>it.id=si+'-'+ii));
+
+const KEY='suhaeng-sticker-v1';
+let S={status:{},steps:{},notes:{}};
+try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const col=c=>`var(--${c})`, tint=c=>`var(--${c}bg)`;
+let filter='전체', openId=null;
+
+function dday(){
+  const now=new Date(), t=new Date(2026,11,8);
+  const d=Math.ceil((t-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/864e5);
+  document.getElementById('dday').textContent=d>0?'D-'+d:d===0?'D-day':'끝!';
+}
+function render(){
+  const chips=document.getElementById('chips');
+  chips.innerHTML=['전체',...SUBJ.map(s=>s.k)].map(k=>`<button class="chip" aria-pressed="${k===filter}" data-f="${k}">${k}</button>`).join('');
+  const all=SUBJ.flatMap(s=>s.items.map(it=>({s,it})));
+  const done=all.filter(x=>S.status[x.it.id]===2);
+  document.getElementById('cnt').textContent=`${done.length} / ${all.length}개`;
+  document.getElementById('shelf').innerHTML=all.map(x=>S.status[x.it.id]===2?STICK[x.s.st](`var(--${x.s.c})`):'<span class="empty"></span>').join('');
+  document.getElementById('grid').innerHTML=SUBJ.filter(s=>filter==='전체'||s.k===filter).map(s=>{
+    const n=s.items.length, d=s.items.filter(i=>S.status[i.id]===2).length;
+    return `<section class="subj" style="--tint:${tint(s.c)};--accent:${col(s.c)}">
+      <div class="subj-head"><h3>${s.k}</h3><span class="tag">${s.exam?'시험 50 + 수행 50':'수행평가 100%'}</span></div>
+      <div class="barbox"><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${d}" aria-label="${s.k} 완료"><i style="width:${d/n*100}%"></i></div></div>
+      <ul class="items">${s.items.map(it=>{const st=S.status[it.id]||0;
+        return `<li><button class="item" data-id="${it.id}"><span class="dot s${st}">${st===2?STICK[s.st](col(s.c)):''}</span><span class="nm"><b>${it.t}</b><small>${it.form}${it.tpl?' · 연습장 있음':''}</small></span><span class="pct">${it.w}%</span></button></li>`}).join('')}</ul>
+    </section>`}).join('');
+}
+function find(id){for(const s of SUBJ)for(const it of s.items)if(it.id===id)return{s,it};}
+function openSheet(id){
+  openId=id; const {s,it}=find(id); const st=S.status[id]||0; const steps=S.steps[id]||[]; const notes=S.notes[id]||{};
+  const sh=document.getElementById('sheet');
+  sh.style.setProperty('--tint',tint(s.c)); sh.style.setProperty('--accent',col(s.c));
+  sh.innerHTML=`<div class="sheet-in">
+    <div class="sheet-top"><div><div class="sub">${s.k} · ${it.form} · 성적 반영 ${it.w}%</div><h2 id="sh-title">${it.t}</h2></div><button class="x" id="close" aria-label="닫기">✕</button></div>
+    <div class="status" role="group" aria-label="진행 상태">${['시작 전','준비 중','제출 완료'].map((l,i)=>`<button data-st="${i}" aria-pressed="${st===i}">${l}</button>`).join('')}</div>
+    ${it.tip?`<div class="tip"><b>꿀팁</b>${it.tip}</div>`:''}
+    <div class="box"><h3>이렇게 준비해요</h3><ul class="steps">${it.steps.map((t,i)=>`<li><label><input type="checkbox" id="stp-${id}-${i}" data-i="${i}" ${steps[i]?'checked':''}><span>${t}</span></label></li>`).join('')}</ul></div>
+    ${it.tpl?`<div class="box"><h3>글쓰기 연습장</h3><div style="font-size:13px;color:var(--soft)">칸마다 짧게라도 써 보면 실제 평가 때 훨씬 수월해요.</div>
+      ${it.tpl.map((p,i)=>`<div class="note-sec"><label for="nt-${id}-${i}">${p[0]}</label>${p[1]?`<small>${p[1]}</small>`:''}<textarea id="nt-${id}-${i}" data-i="${i}">${(notes[i]||'').replace(/</g,'&lt;')}</textarea></div>`).join('')}
+      <div class="wc"><span id="wc"></span><span id="sv" class="saved"></span></div></div>`:''}
+  </div>`;
+  document.getElementById('scrim').hidden=false; sh.hidden=false; sh.scrollTop=0;
+  updWc(); document.getElementById('close').focus();
+}
+function updWc(){const el=document.getElementById('wc'); if(!el)return;
+  const n=Object.values(S.notes[openId]||{}).join('').replace(/\s/g,'').length; el.textContent=`공백 빼고 ${n}자`;}
+function closeSheet(){document.getElementById('sheet').hidden=true;document.getElementById('scrim').hidden=true;
+  const b=document.querySelector(`.item[data-id="${openId}"]`); openId=null; if(b)b.focus();}
+function cheer(s){const c=document.getElementById('cheer'); c.innerHTML=STICK[s.st](col(s.c)); c.classList.add('on'); setTimeout(()=>c.classList.remove('on'),900);}
+
+document.addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]'); if(f){filter=f.dataset.f;render();return;}
+  const it=e.target.closest('.item'); if(it){openSheet(it.dataset.id);return;}
+  if(e.target.closest('#close')||e.target.id==='scrim'){closeSheet();return;}
+  const st=e.target.closest('[data-st]'); if(st&&openId){const v=+st.dataset.st; const prev=S.status[openId]||0; S.status[openId]=v; save();
+    document.querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.st===v)); render();
+    if(v===2&&prev!==2) cheer(find(openId).s);}
+});
+document.addEventListener('change',e=>{
+  if(e.target.matches('.steps input')&&openId){const a=S.steps[openId]||[]; a[+e.target.dataset.i]=e.target.checked; S.steps[openId]=a;
+    if(e.target.checked&&!(S.status[openId]>0)){S.status[openId]=1; document.querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.st==='1'));}
+    save(); render();}
+});
+let tmr;
+document.addEventListener('input',e=>{
+  if(e.target.matches('.note-sec textarea')&&openId){const o=S.notes[openId]||{}; o[+e.target.dataset.i]=e.target.value; S.notes[openId]=o; updWc();
+    const sv=document.getElementById('sv'); sv.textContent=''; clearTimeout(tmr); tmr=setTimeout(()=>{save(); sv.textContent='저장됨';},500);}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&openId)closeSheet();});
+dday(); render();
+</script>
+
+</body></html>
