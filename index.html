@@ -1,0 +1,761 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>수행평가 스티커북</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+/* Layout: 모눈 공책 위에 과목별 스티커 카드, 항목을 누르면 아래에서 올라오는 준비 노트 */
+:root{
+  --paper:#FBF8FF; --grid:#ECE6F8; --card:#FFFFFF; --ink:#3B3553; --soft:#7A7294; --line:#E4DDF2;
+  --pink:#FF8FB1; --mint:#5CCDAE; --butter:#FFD45E; --sky:#7DB8FF; --lilac:#B49BFF; --peach:#FFA77D;
+  --pinkbg:#FFE8F0; --mintbg:#DDF6EE; --butterbg:#FFF5D6; --skybg:#E3F0FF; --lilacbg:#EEE8FF; --peachbg:#FFEDE3;
+  --done:#5CCDAE; --shadow:0 3px 0 #E4DDF2;
+  --display:"Jua","Gowun Dodum",system-ui,sans-serif;
+  --body:"Gowun Dodum",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1E1B2E; --grid:#282440; --card:#2A2640; --ink:#F1ECFF; --soft:#A9A1C6; --line:#3A3456;
+  --pinkbg:#4A2A3C; --mintbg:#1F4038; --butterbg:#463C1F; --skybg:#22344F; --lilacbg:#352C55; --peachbg:#48301F;
+  --shadow:0 3px 0 #15121F; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#1E1B2E; --grid:#282440; --card:#2A2640; --ink:#F1ECFF; --soft:#A9A1C6; --line:#3A3456;
+  --pinkbg:#4A2A3C; --mintbg:#1F4038; --butterbg:#463C1F; --skybg:#22344F; --lilacbg:#352C55; --peachbg:#48301F;
+  --shadow:0 3px 0 #15121F; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink); font-family:var(--body); font-size:15px; line-height:1.6;
+}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 60px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;letter-spacing:.01em}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--lilac);outline-offset:2px}
+
+/* header */
+.top{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+.hello{font-size:13px;color:var(--soft);letter-spacing:.06em}
+h1{font-size:clamp(30px,6vw,44px);line-height:1.15;margin-top:4px}
+h1 .tape{background:linear-gradient(transparent 55%,var(--butterbg) 55%);padding:0 4px}
+.dday{background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:8px 14px;text-align:center;box-shadow:4px 4px 0 var(--pink);transform:rotate(2deg)}
+.dday b{display:block;font-family:var(--display);font-size:26px;font-weight:400;line-height:1.1}
+.dday span{font-size:12px;color:var(--soft)}
+
+.board{margin-top:20px;background:var(--card);border-radius:20px;padding:16px 18px;box-shadow:var(--shadow);display:grid;gap:10px}
+.board-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.board h2{font-size:20px}
+.board .cnt{font-variant-numeric:tabular-nums;color:var(--soft)}
+.shelf{display:flex;flex-wrap:wrap;gap:4px;min-height:30px}
+.shelf svg{width:26px;height:26px}
+.shelf .empty{width:26px;height:26px;border:2px dashed var(--line);border-radius:50%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 14px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:5px 13px;font-size:14px}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+
+/* subject cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.subj{background:var(--card);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;min-width:0}
+.subj-head{padding:14px 16px 10px;background:var(--tint);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.subj-head h3{font-size:21px}
+.subj-head .tag{font-size:12px;background:var(--card);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.bar{height:8px;background:var(--card);border-radius:99px;margin:0 16px 0;overflow:hidden}
+.subj-head + .barbox{background:var(--tint);padding-bottom:12px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.items{list-style:none;margin:0;padding:6px 8px 10px}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;border-radius:12px;padding:9px 8px}
+.item:hover{background:var(--paper)}
+.item .nm{min-width:0}
+.item .nm b{font-weight:400;display:block}
+.item .nm small{color:var(--soft);font-size:12px}
+.pct{font-variant-numeric:tabular-nums;font-size:13px;color:var(--soft)}
+.dot{width:26px;height:26px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center}
+.dot.s1{border:2px solid var(--accent);background:var(--tint)}
+.dot.s1::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.dot.s2{border:0}
+.dot svg{width:28px;height:28px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(30,20,50,.35);z-index:20}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-height:88vh;overflow:auto;background:var(--paper);
+  border-radius:24px 24px 0 0;box-shadow:0 -8px 30px rgba(30,20,50,.2);
+  padding-block:0 calc(24px + env(safe-area-inset-bottom,0px));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){.sheet{left:50%;width:720px;transform:translateX(-50%);bottom:24px;border-radius:24px;max-height:calc(100vh - 48px)}}
+.sheet-in{max-width:680px;margin:0 auto}
+.sheet-top{position:sticky;top:0;background:var(--paper);padding:14px 0 10px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;z-index:2}
+.sheet-top .sub{font-size:13px;color:var(--soft)}
+.sheet-top h2{font-size:24px;line-height:1.25}
+.x{border:2px solid var(--line);background:var(--card);border-radius:50%;width:38px;height:38px;flex:none;font-size:18px;line-height:1}
+.status{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 18px}
+.status button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px}
+.status button[aria-pressed="true"]{border-color:var(--accent);background:var(--tint)}
+.box{background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.box h3{font-size:17px;margin-bottom:8px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.steps label{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;cursor:pointer;padding:4px 0}
+.steps input{appearance:none;width:22px;height:22px;border:2px solid var(--line);border-radius:7px;margin:1px 0 0;background:var(--card);display:grid;place-items:center;cursor:pointer}
+.steps input:checked{background:var(--accent);border-color:var(--accent)}
+.steps input:checked::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.steps input:checked + span{color:var(--soft);text-decoration:line-through;text-decoration-color:var(--accent)}
+.tip{background:var(--butterbg);border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:14px}
+.tip b{font-family:var(--display);font-weight:400;margin-right:6px}
+.note-sec{display:grid;gap:4px;margin-top:12px}
+.note-sec label{font-family:var(--display);font-size:15px}
+.note-sec small{color:var(--soft);font-size:12px}
+textarea{width:100%;min-height:92px;resize:vertical;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--paper);color:var(--ink);font:inherit;line-height:1.7;
+  background-image:linear-gradient(transparent 26px,var(--line) 27px);background-size:100% 27px;background-attachment:local}
+.wc{display:flex;justify-content:space-between;font-size:12px;color:var(--soft);margin-top:10px;font-variant-numeric:tabular-nums}
+.saved{color:var(--mint)}
+.foot{margin-top:28px;font-size:12px;color:var(--soft);text-align:center}
+.cheer{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%) scale(.6);opacity:0;z-index:40;pointer-events:none;transition:all .35s}
+.cheer.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.cheer svg{width:120px;height:120px;filter:drop-shadow(0 6px 0 rgba(0,0,0,.12))}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:480px){.top{grid-template-columns:1fr}.dday{justify-self:start;transform:rotate(-1.5deg)}}
+
+/* modes + mock exam */
+.modes{display:flex;gap:6px;margin-top:22px;background:var(--card);padding:5px;border-radius:999px;box-shadow:var(--shadow);width:fit-content;max-width:100%}
+.modes button{border:0;background:none;border-radius:999px;padding:8px 18px;font-family:var(--display);font-size:16px;color:var(--soft)}
+.modes button[aria-selected="true"]{background:var(--pink);color:#fff}
+.exam-note{margin:18px 0 14px;font-size:13px;color:var(--soft);background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:10px 14px}
+.ecard{display:grid;gap:8px;text-align:left;background:var(--card);border:0;border-radius:20px;padding:16px;box-shadow:var(--shadow);border-top:8px solid var(--accent);min-width:0}
+.ecard:hover{transform:translateY(-2px)}
+.ecard-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ecard h3{font-size:22px}
+.ecard .range{font-size:13px;color:var(--soft)}
+.ecard .meta{font-size:12px;background:var(--tint);border-radius:999px;padding:3px 10px;width:fit-content}
+.stamp{font-family:var(--display);font-size:18px;color:var(--accent);border:3px solid var(--accent);border-radius:12px;padding:0 10px;transform:rotate(-6deg);font-variant-numeric:tabular-nums}
+.ecard .tag{font-size:12px;color:var(--soft)}
+.scorebar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;background:var(--tint);border-radius:16px;padding:12px 16px;margin-bottom:14px}
+.scorebar b{font-family:var(--display);font-weight:400;font-size:30px;font-variant-numeric:tabular-nums}
+.scorebar span{font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums}
+.passage{background:var(--card);border-left:5px solid var(--accent);border-radius:6px 14px 14px 6px;padding:12px 16px;margin:6px 0 12px;white-space:pre-line;font-size:14.5px;line-height:1.8}
+.passage small{display:block;color:var(--soft);font-size:12px;margin-bottom:4px}
+.q{background:var(--card);border-radius:18px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:12px}
+.q.ok{box-shadow:0 0 0 2px var(--mint)}
+.q.no{box-shadow:0 0 0 2px var(--pink)}
+.qh{margin-bottom:10px;white-space:pre-line}
+.qh b{font-family:var(--display);font-weight:400;font-size:17px;margin-right:4px}
+.pt{font-size:12px;color:var(--soft);white-space:nowrap}
+.chs{display:grid;gap:6px}
+.chs button{display:grid;grid-template-columns:28px 1fr;gap:6px;text-align:left;border:2px solid var(--line);background:var(--paper);border-radius:12px;padding:7px 10px;align-items:start}
+.chs button[aria-pressed="true"]{border-color:var(--accent);background:var(--tint)}
+.chs button.right{border-color:var(--mint);background:var(--mintbg)}
+.chs button.wrong{border-color:var(--pink);background:var(--pinkbg);text-decoration:line-through}
+.chs button:disabled{cursor:default;color:var(--ink)}
+.ex{margin-top:10px;font-size:13.5px;background:var(--paper);border-radius:12px;padding:8px 12px}
+.ex b{font-family:var(--display);font-weight:400}
+.model{margin-top:10px;font-size:14px;background:var(--mintbg);border-radius:12px;padding:10px 14px;white-space:pre-line}
+.crit{margin:8px 0 0;padding-left:18px;font-size:13px}
+.selfg{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center;font-size:13px}
+.selfg button{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px}
+.selfg button[aria-pressed="true"]{border-color:var(--accent);background:var(--tint)}
+.actions{display:flex;gap:12px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.actions span{font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums}
+.big{border:0;background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 22px;font-family:var(--display);font-size:17px;box-shadow:3px 3px 0 var(--accent)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="hello">세종중 1학년 · 2학기</div>
+      <h1><span class="tape">수행평가</span> 스티커북</h1>
+    </div>
+    <div class="dday" aria-live="polite"><span>정기시험 12.8(화)</span><b id="dday">D-?</b></div>
+  </header>
+
+  <section class="board" aria-label="모은 스티커">
+    <div class="board-row"><h2>모은 스티커</h2><span class="cnt" id="cnt"></span></div>
+    <div class="shelf" id="shelf"></div>
+    <div class="legend"><span><i style="background:var(--line)"></i>시작 전</span><span><i style="background:var(--lilac)"></i>준비 중</span><span><i style="background:var(--mint)"></i>제출 완료 = 스티커!</span></div>
+  </section>
+
+  <div class="modes" role="tablist" aria-label="보기 선택">
+    <button role="tab" id="tab-task" data-mode="task" aria-selected="true">수행평가 체크</button>
+    <button role="tab" id="tab-exam" data-mode="exam" aria-selected="false">모의시험</button>
+  </div>
+  <div id="taskView">
+    <nav class="chips" id="chips" aria-label="과목 고르기"></nav>
+    <main class="grid" id="grid"></main>
+  </div>
+  <div id="examView" hidden></div>
+  <p class="foot">체크한 내용, 쓴 글, 시험 답안은 이 기기(브라우저)에만 저장돼요. 다른 폰이나 컴퓨터에서는 보이지 않아요.</p>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-title" hidden></div>
+<div class="cheer" id="cheer" aria-hidden="true"></div>
+
+<script>
+/* 모의시험 1회 — 예상 범위 기반 연습 문제. 지문은 연습용으로 새로 쓴 글. 선택형 9문항(각 10점) + 서술형 1문항(10점) */
+const EXAM1=[
+{k:'국어',c:'pink',st:'heart',range:'예상 범위: 주장하는 글, 비유·감각 표현, 품사',
+ P:{A:'요즘 많은 청소년이 잠들기 직전까지 스마트폰을 본다. 그러나 우리는 잠자리에서 스마트폰 사용을 줄여야 한다. ㉠ 한 연구에 따르면 잠들기 전 1시간 동안 화면을 본 학생은 그렇지 않은 학생보다 잠드는 데 평균 20분이 더 걸렸다. 또한 밤늦게까지 이어지는 메시지 알림은 깊은 잠을 방해한다.\n㉡ 물론 스마트폰으로 하루를 정리하며 쉬는 것도 필요하다는 의견이 있다. 하지만 휴식은 책 읽기나 가벼운 스트레칭으로도 충분히 할 수 있다.'},
+ qs:[
+ {p:'A',q:'윗글에서 글쓴이가 내세우는 주장으로 알맞은 것은?',ch:['청소년은 책을 더 많이 읽어야 한다.','잠자리에서 스마트폰 사용을 줄여야 한다.','메시지 알림 기능을 없애야 한다.','잠들기 전에 반드시 스트레칭을 해야 한다.','스마트폰으로 하루를 정리하는 것이 좋다.'],a:1,ex:'둘째 문장 "우리는 잠자리에서 스마트폰 사용을 줄여야 한다"가 주장이에요. 나머지는 근거나 반박에 쓰인 내용이에요.'},
+ {p:'A',q:'㉠에서 사용한 근거의 종류로 가장 알맞은 것은?',ch:['글쓴이의 개인 경험','속담이나 격언','연구 결과와 수치','전문가와의 면담','비유를 이용한 설명'],a:2,ex:'"한 연구에 따르면 … 평균 20분"처럼 연구 결과와 수치를 근거로 들었어요.'},
+ {p:'A',q:'㉡ 문단의 역할로 가장 알맞은 것은?',ch:['문제 상황을 처음 소개한다.','글쓴이의 주장을 처음 밝힌다.','예상되는 반론을 제시하고 반박한다.','앞의 근거를 다시 요약한다.','새로운 주제로 화제를 바꾼다.'],a:2,ex:'"물론 ~라는 의견이 있다. 하지만 ~"은 반론을 받아들이는 척하며 반박하는 전형적인 구조예요.'},
+ {q:'주장하는 글의 근거를 점검할 때 확인할 내용으로 알맞지 않은 것은?',ch:['근거가 주장과 관련이 있는가?','근거의 출처를 믿을 수 있는가?','자료가 너무 오래되지 않았는가?','근거가 화려하고 긴 표현으로 쓰였는가?','근거가 사실에 바탕을 두었는가?'],a:3,ex:'근거는 타당성(관련성)과 신뢰성(출처, 사실, 최신성)으로 점검해요. 표현이 화려한지는 기준이 아니에요.'},
+ {q:'"내 마음은 호수요"에 쓰인 표현 방법은?',ch:['직유법','은유법','의인법','과장법','반복법'],a:1,ex:'"~처럼, ~같이" 없이 "A는 B이다"로 빗대었으니 은유법이에요.'},
+ {q:'다음 중 사람이 아닌 대상을 사람처럼 표현한 문장은?',ch:['그의 손은 얼음처럼 차가웠다.','바람이 창문을 똑똑 두드린다.','하늘이 무너질 듯 비가 쏟아졌다.','산 넘어 산, 고개 넘어 고개.','시간은 금이다.'],a:1,ex:'바람이 사람처럼 창문을 "두드린다"고 했으니 의인법이에요. ①은 직유, ③은 과장, ⑤는 은유예요.'},
+ {q:'다음 중 정서를 가장 구체적이고 생생하게 표현한 문장은?',ch:['합격 소식을 듣고 기뻤다.','합격 소식을 듣고 정말 좋았다.','합격 소식에 심장이 쿵쾅거려 휴대폰을 쥔 손이 떨렸다.','합격 소식을 들었다.','합격해서 행복한 하루였다.'],a:2,ex:'몸의 반응과 장면을 그려 감정을 보여 주는 문장이 가장 생생해요.'},
+ {q:'"우와, 저 새 신발 정말 예쁘다!"에서 \'새\'의 품사는?',ch:['명사','관형사','형용사','부사','감탄사'],a:1,ex:'\'새\'는 뒤의 체언 \'신발\'을 꾸미고 모양이 바뀌지 않으니 관형사예요. (\'우와\'는 감탄사, \'정말\'은 부사, \'예쁘다\'는 형용사)'},
+ {q:'다음 중 품사가 나머지와 다른 하나는?',ch:['달리다','먹다','예쁘다','읽다','웃다'],a:2,ex:'\'예쁘다\'는 성질·상태를 나타내는 형용사, 나머지는 동작을 나타내는 동사예요.'}
+ ],
+ essay:{q:'윗글의 ㉡처럼 "반론 + 반박" 구조를 이용하여, \'학교에서 수업 시간에는 휴대폰을 걷어야 한다\'는 주장에 대한 예상 반론과 그에 대한 반박을 각각 한 문장으로 쓰시오.',model:'반론: 갑자기 급한 일이 생기면 가족과 연락할 수 없다는 의견이 있다.\n반박: 하지만 급한 일은 교무실 전화나 담임 선생님을 통해 충분히 연락할 수 있다.',crit:['주장에 맞서는 반론을 알맞게 썼다 (5점)','반론에 직접 대응하는 반박을 썼다 (5점)']}},
+
+{k:'사회',c:'sky',st:'cloud',range:'예상 범위: 민주주의의 발전, 정치 과정과 참여, 미디어',
+ P:{B:'[신문 기사의 일부]\nㄱ. 시는 지난달 시청 옆에 새 도서관을 열었다.\nㄴ. 개관 첫 주 방문객은 약 3천 명이었다.\nㄷ. 이 도서관은 시민 모두가 반드시 가 봐야 할 최고의 공간이다.\nㄹ. 도서관은 평일 오후 9시까지 운영한다.'},
+ qs:[
+ {q:'고대 아테네 민주 정치에 대한 설명으로 옳은 것은?',ch:['모든 주민이 정치에 참여하였다.','시민이 민회에 모여 나랏일을 직접 결정하였다.','대표를 뽑아 의회에서 결정하는 방식이었다.','여성에게도 참정권이 보장되었다.','국왕이 모든 일을 최종 결정하였다.'],a:1,ex:'아테네는 시민이 민회에서 직접 결정한 직접 민주 정치였어요. 다만 여성, 노예, 외국인은 시민에서 제외되었어요.'},
+ {q:'다음 중 근대 시민 혁명에 해당하지 않는 것은?',ch:['영국 명예혁명','미국 독립 혁명','프랑스 혁명','산업 혁명'],a:3,ex:'산업 혁명은 기계 발명으로 생산 방식이 바뀐 경제·사회 변화예요. 시민 혁명이 아니에요.'},
+ {q:'차티스트 운동과 여성 참정권 운동의 공통된 목적으로 알맞은 것은?',ch:['국왕의 권력 강화','참정권의 확대','세금 인상','식민지 확대','종교의 자유'],a:1,ex:'노동자와 여성도 선거권을 갖게 하려는 운동으로, 보통 선거 실현에 이바지했어요.'},
+ {q:'민주주의가 추구하는 근본이념은?',ch:['국민 주권','인간의 존엄성','권력 분립','입헌주의','다수결'],a:1,ex:'민주주의의 근본이념은 인간의 존엄성이고, 이를 실현하는 수단으로 자유와 평등을 보장해요. 나머지는 민주 정치의 원리예요.'},
+ {q:'민주 정치의 원리와 설명을 바르게 연결한 것은?',ch:['국민 주권 - 헌법에 따라 나라를 다스린다.','입헌주의 - 국가의 최고 권력은 국민에게 있다.','권력 분립 - 국가 권력을 나누어 서로 견제하게 한다.','국민 자치 - 왕이 국민을 대신해 다스린다.','다수결 - 소수의 의견만 따른다.'],a:2,ex:'권력 분립은 입법·행정·사법으로 권력을 나누어 견제와 균형을 이루게 하는 원리예요. ①과 ②는 설명이 서로 바뀌었어요.'},
+ {q:'"유권자 한 사람에게 똑같이 한 표씩, 같은 가치를 준다"는 선거의 원칙은?',ch:['보통 선거','평등 선거','직접 선거','비밀 선거'],a:1,ex:'투표의 수와 가치를 똑같이 하는 것은 평등 선거예요. 일정 나이 이상 누구나 투표하는 것은 보통 선거예요.'},
+ {q:'정권을 얻는 것을 목적으로 사람들이 모여 만든 집단은?',ch:['정당','이익 집단','시민 단체','언론','법원'],a:0,ex:'정당은 정권 획득을 목표로 해요. 이익 집단은 자기 집단의 이익, 시민 단체는 공익을 추구해요.'},
+ {p:'B',q:'위 기사에서 기자의 \'의견\'에 해당하는 문장은?',ch:['ㄱ','ㄴ','ㄷ','ㄹ'],a:2,ex:'"반드시 가 봐야 할 최고의 공간"은 확인할 수 있는 사실이 아니라 판단이 담긴 의견이에요.'},
+ {q:'미디어 정보를 받아들이는 태도로 바람직하지 않은 것은?',ch:['정보의 출처와 작성 날짜를 확인한다.','같은 사건을 다룬 여러 매체를 비교한다.','사실과 의견을 구분하며 읽는다.','조회 수가 많은 정보는 사실이므로 바로 공유한다.','제목과 본문 내용이 일치하는지 살핀다.'],a:3,ex:'조회 수와 사실 여부는 관계가 없어요. 확인 없이 공유하면 가짜 뉴스를 퍼뜨릴 수 있어요.'}
+ ],
+ essay:{q:'고대 아테네 민주 정치와 오늘날 민주 정치의 차이점을 ① 참여 방식 ② 참여할 수 있는 사람의 범위 두 가지 측면에서 서술하시오.',model:'① 아테네는 시민이 민회에서 직접 결정하는 직접 민주 정치였지만, 오늘날은 대표를 뽑아 맡기는 대의 민주 정치가 중심이다.\n② 아테네에서는 성인 남성 시민만 참여했고 여성·노예·외국인은 제외되었지만, 오늘날은 보통 선거로 일정 나이 이상의 모든 국민이 참정권을 가진다.',crit:['참여 방식 차이(직접 ↔ 대의)를 썼다 (5점)','참여 범위 차이(제한 ↔ 보통 선거)를 썼다 (5점)']}},
+
+{k:'수학',c:'lilac',st:'star',range:'예상 범위: 좌표평면과 그래프(정비례·반비례), 기본 도형과 작도, 평면·입체도형',
+ qs:[
+ {q:'좌표평면에서 점 (−3, 2)는 제몇 사분면 위의 점인가?',ch:['제1사분면','제2사분면','제3사분면','제4사분면','어느 사분면에도 속하지 않는다'],a:1,ex:'x좌표는 음수, y좌표는 양수이므로 제2사분면이에요.'},
+ {q:'y가 x에 정비례하고 x = 3일 때 y = −12이다. x = −2일 때 y의 값은?',ch:['−8','−6','6','8','12'],a:3,ex:'y = ax에 대입하면 −12 = 3a, a = −4. 따라서 y = −4 × (−2) = 8이에요.'},
+ {q:'y가 x에 반비례하고 x = 2일 때 y = 6이다. x = 4일 때 y의 값은?',ch:['1.5','3','6','12','24'],a:1,ex:'y = a/x에서 a = xy = 2 × 6 = 12. 따라서 y = 12/4 = 3이에요.'},
+ {q:'정비례 관계 y = ax (a ≠ 0)의 그래프에 대한 설명으로 옳지 않은 것은?',ch:['원점을 지나는 직선이다.','a > 0이면 제1사분면과 제3사분면을 지난다.','a < 0이면 x의 값이 증가할 때 y의 값은 감소한다.','a의 절댓값이 클수록 y축에 가까워진다.','a < 0이면 제1사분면과 제3사분면을 지난다.'],a:4,ex:'a < 0이면 제2사분면과 제4사분면을 지나요.'},
+ {q:'두 직선이 한 점에서 만나 생긴 맞꼭지각의 크기가 각각 (3x + 10)°, (x + 50)°일 때 x의 값은?',ch:['10','15','20','25','30'],a:2,ex:'맞꼭지각은 크기가 같아요. 3x + 10 = x + 50 → 2x = 40 → x = 20.'},
+ {q:'다음 중 삼각형 ABC가 하나로 정해지지 않는 것은?',ch:['AB = 3cm, BC = 4cm, CA = 5cm','AB = 4cm, BC = 5cm, ∠B = 60°','BC = 6cm, ∠B = 40°, ∠C = 70°','∠A = 50°, ∠B = 60°, ∠C = 70°'],a:3,ex:'세 각의 크기만 주어지면 모양은 같고 크기가 다른 삼각형이 무수히 많아요.'},
+ {q:'정팔각형의 한 내각의 크기는?',ch:['120°','135°','140°','144°','150°'],a:1,ex:'내각의 합 = 180° × (8 − 2) = 1080°, 한 내각 = 1080° ÷ 8 = 135°.'},
+ {q:'다음 중 회전체가 아닌 것은?',ch:['원기둥','원뿔','구','원뿔대','삼각기둥'],a:4,ex:'회전체는 평면도형을 한 직선을 축으로 회전시켜 만든 입체예요. 삼각기둥은 다면체예요.'},
+ {q:'밑면의 반지름이 3cm, 높이가 5cm인 원기둥의 부피는?',ch:['15π cm³','30π cm³','45π cm³','48π cm³','90π cm³'],a:2,ex:'부피 = π × 3² × 5 = 45π cm³.'}
+ ],
+ essay:{q:'밑면의 반지름이 3cm, 높이가 4cm, 모선의 길이가 5cm인 원뿔의 부피와 겉넓이를 풀이 과정과 함께 구하시오.',model:'부피 = ⅓ × π × 3² × 4 = 12π (cm³)\n겉넓이 = 밑넓이 + 옆넓이 = π × 3² + π × 3 × 5 = 9π + 15π = 24π (cm²)',crit:['부피 식과 답(12π cm³) (5점)','겉넓이 식과 답(24π cm²) (5점)']}},
+
+{k:'과학',c:'mint',st:'flower',range:'예상 범위: 기체의 성질(입자 운동, 압력, 보일·샤를 법칙), 태양계',
+ qs:[
+ {q:'방 한쪽에 뿌린 향수 냄새가 방 전체로 퍼지는 까닭으로 가장 알맞은 것은?',ch:['향수 입자의 크기가 커지기 때문','향수 입자가 끊임없이 스스로 움직이기 때문','향수 입자의 수가 늘어나기 때문','공기 입자가 사라지기 때문','향수 입자가 멈춰 있기 때문'],a:1,ex:'입자가 스스로 끊임없이 운동하여 퍼져 나가는 현상을 확산이라고 해요.'},
+ {q:'기체의 압력이 생기는 까닭은?',ch:['기체 입자가 서로 붙어 있기 때문','기체 입자가 용기 벽에 충돌하기 때문','기체 입자의 크기가 변하기 때문','기체 입자가 무거워지기 때문','기체 입자가 움직이지 않기 때문'],a:1,ex:'운동하는 기체 입자가 용기 벽에 부딪치며 힘을 가해 압력이 생겨요.'},
+ {q:'온도가 일정할 때, 1기압에서 부피가 60mL인 기체에 3기압의 압력을 가하면 부피는 몇 mL가 되는가?',ch:['10mL','20mL','30mL','60mL','180mL'],a:1,ex:'보일 법칙: 압력 × 부피 = 일정. 1 × 60 = 3 × V → V = 20mL.'},
+ {q:'다음 중 보일 법칙으로 설명할 수 있는 현상은?',ch:['찌그러진 탁구공을 뜨거운 물에 넣으면 펴진다.','여름철에 자동차 타이어가 팽팽해진다.','높은 산에 올라가면 과자 봉지가 부풀어 오른다.','열기구 속 공기를 가열하면 열기구가 떠오른다.','추운 겨울 바깥에 둔 풍선이 쪼그라든다.'],a:2,ex:'높은 곳은 바깥 압력이 낮아 봉지 속 기체의 부피가 커져요(보일 법칙). 나머지는 온도 변화에 따른 샤를 법칙이에요.'},
+ {q:'압력이 일정할 때 기체의 온도를 높이면 나타나는 변화로 옳은 것은?',ch:['입자의 수가 늘어난다.','입자 하나의 크기가 커진다.','입자 운동이 활발해지고 입자 사이 거리가 멀어진다.','입자의 질량이 늘어난다.','입자 운동이 느려진다.'],a:2,ex:'샤를 법칙: 온도가 높아지면 입자 운동이 활발해져 부피가 커져요. 입자의 수, 크기, 질량은 그대로예요.'},
+ {q:'목성형 행성의 특징으로 옳은 것은?',ch:['반지름과 질량이 작다.','단단한 암석 표면이 있다.','위성이 없거나 적다.','고리가 있고 위성이 많다.','평균 밀도가 크다.'],a:3,ex:'목성형 행성(목성, 토성, 천왕성, 해왕성)은 크고, 밀도가 작으며, 고리와 많은 위성을 가져요.'},
+ {q:'태양계에서 가장 크고, 표면에 거대한 소용돌이인 대적점이 있는 행성은?',ch:['수성','화성','목성','토성','해왕성'],a:2,ex:'목성은 태양계에서 가장 큰 행성이고 대적점이 있어요.'},
+ {q:'두꺼운 이산화 탄소 대기로 온실 효과가 커서 표면 온도가 태양계 행성 중 가장 높은 행성은?',ch:['수성','금성','지구','화성','천왕성'],a:1,ex:'태양에 가장 가까운 것은 수성이지만, 표면 온도가 가장 높은 행성은 금성이에요.'},
+ {q:'태양 표면의 흑점이 검게 보이는 까닭은?',ch:['주변보다 온도가 낮기 때문','주변보다 온도가 높기 때문','구멍이 뚫려 있기 때문','달의 그림자이기 때문','빛을 전혀 내지 않기 때문'],a:0,ex:'흑점은 주변보다 온도가 낮아 상대적으로 어둡게 보여요.'}
+ ],
+ essay:{q:'공기를 넣고 끝을 막은 주사기의 피스톤을 누를 때, 주사기 속 기체의 부피와 압력이 어떻게 변하는지 \'입자\'라는 말을 사용하여 서술하시오. (온도는 일정)',model:'피스톤을 누르면 기체의 부피가 줄어든다. 입자의 수와 크기는 변하지 않지만 입자 사이의 거리가 가까워져, 입자가 용기 벽에 충돌하는 횟수가 늘어나므로 압력이 커진다.',crit:['부피 감소, 압력 증가를 썼다 (4점)','입자 사이 거리와 충돌 횟수 증가로 설명했다 (6점)']}},
+
+{k:'영어',c:'peach',st:'heart',range:'예상 범위: 장소 소개, 길 묻기·계획 말하기, 과거형·비교급·to부정사',
+ P:{C:'Hi, I\'m Mina. Let me introduce my town, Yeoju. There is a beautiful old temple near the river. It is called Silleuksa. You can walk along the river and see an old brick pagoda. Last weekend, I visited it with my family. We rode bikes and ate delicious sweet potatoes. Yeoju is famous for its sweet potatoes and rice. I think Yeoju is more peaceful than big cities. Come and visit Yeoju!'},
+ qs:[
+ {p:'C',q:'윗글의 목적으로 가장 알맞은 것은?',ch:['to ask for directions','to introduce her town','to sell sweet potatoes','to invite friends to a party','to complain about a city'],a:1,ex:'"Let me introduce my town, Yeoju."로 시작하는 동네 소개 글이에요.'},
+ {p:'C',q:'윗글의 내용과 일치하지 않는 것은?',ch:['The temple is near the river.','Mina visited the temple with her family.','Mina and her family rode bikes.','Yeoju is famous for apples.','Mina thinks Yeoju is peaceful.'],a:3,ex:'여주는 apples가 아니라 sweet potatoes and rice로 유명하다고 했어요.'},
+ {p:'C',q:'밑줄 친 It(It is called Silleuksa)이 가리키는 것은?',ch:['my town','the river','the temple','the pagoda','my family'],a:2,ex:'바로 앞 문장의 a beautiful old temple을 가리켜요.'},
+ {q:'빈칸에 알맞은 말은?\nThis bag is ______ than that one. (heavy)',ch:['heavy','heavyer','heavier','more heavy','heaviest'],a:2,ex:'자음 + y로 끝나는 형용사는 y를 i로 바꾸고 -er: heavier.'},
+ {q:'다음 중 어법상 틀린 문장은?',ch:['I visited my uncle yesterday.','She went to the library.','We eated lunch at noon.','They played soccer after school.','He came home late.'],a:2,ex:'eat의 과거형은 불규칙 변화 ate예요. eated는 틀려요.'},
+ {q:'빈칸에 알맞은 말은?\nThere ______ many trees in the park.',ch:['is','are','be','was','am'],a:1,ex:'뒤에 복수 명사(many trees)가 오면 There are.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: How can I get to the library?\nB: ______',ch:['It\'s on Monday.','Go straight two blocks and turn left.','I like reading books.','Yes, I can.','It\'s ten dollars.'],a:1,ex:'길을 묻는 말에는 길 안내로 답해요.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: What are you going to do this weekend?\nB: ______',ch:['I visited my grandma.','I\'m going to visit my grandma.','I visit my grandma every day.','I was at home.','Yes, I am.'],a:1,ex:'be going to로 물었으니 앞으로의 계획을 같은 형태로 답해요.'},
+ {q:'빈칸에 알맞은 말은?\nI want ______ Yeoju again.',ch:['visit','visits','visited','to visit','visiting'],a:3,ex:'want는 목적어로 to부정사를 써요: want to visit.'}
+ ],
+ essay:{q:'다음 세 가지 표현을 모두 사용하여 우리 동네 명소를 소개하는 영어 문장 3개를 쓰시오.\n• There is ~  • You can ~  • It is famous for ~',model:'There is a big park in my town.\nYou can ride a bike there.\nIt is famous for its beautiful cherry blossoms.',crit:['세 표현을 모두 사용했다 (5점)','문법과 철자가 정확하다 (5점)']}},
+
+{k:'한문',c:'butter',st:'star',range:'예상 범위: 고사성어, 한문 격언, 한자의 음과 뜻',
+ qs:[
+ {q:'漁父之利(어부지리)의 뜻으로 알맞은 것은?',ch:['어부가 물고기를 많이 잡음','두 사람이 다투는 사이에 엉뚱한 사람이 이익을 봄','열심히 노력하여 성공함','은혜를 잊지 않고 갚음','어릴 때부터 사귄 친구'],a:1,ex:'도요새와 조개가 다투는 사이 어부가 둘 다 잡았다는 이야기에서 나왔어요.'},
+ {q:'塞翁之馬(새옹지마)에 담긴 뜻은?',ch:['말을 잘 기르는 방법','인생의 길흉화복은 예측하기 어려움','노인을 공경해야 함','힘을 합치면 이길 수 있음','한 번 보는 것이 백 번 듣는 것보다 나음'],a:1,ex:'변방 노인의 말 이야기로, 좋은 일과 나쁜 일은 서로 바뀔 수 있다는 뜻이에요.'},
+ {q:'螢雪之功(형설지공)의 뜻으로 알맞은 것은?',ch:['반딧불과 눈빛으로 공부하듯 어렵게 공부하여 이룬 성공','눈이 많이 와서 풍년이 듦','반딧불이를 잡는 재주','겨울에 공을 세움','친구와의 우정'],a:0,ex:'螢(반딧불 형), 雪(눈 설), 之(어조사 지), 功(공 공). 가난해도 반딧불과 눈빛으로 공부했다는 이야기예요.'},
+ {q:'"어릴 때부터 함께 놀며 자란 친구"를 뜻하는 고사성어는?',ch:['竹馬故友','漁父之利','塞翁之馬','螢雪之功','結草報恩'],a:0,ex:'竹馬故友(죽마고우): 대나무 말을 타고 놀던 옛 친구.'},
+ {q:'百聞不如一見(백문불여일견)의 풀이로 알맞은 것은?',ch:['백 번 보는 것이 한 번 듣는 것만 못하다.','백 번 듣는 것이 한 번 보는 것만 못하다.','백 번 들으면 한 번 볼 수 있다.','백 사람이 한 번에 본다.','백 번 묻는 것이 좋다.'],a:1,ex:'聞(들을 문), 不如(~만 못하다), 見(볼 견). 직접 보고 경험하는 것이 중요하다는 뜻이에요.'},
+ {q:'學而時習之 不亦說乎(학이시습지 불역열호)에서 \'說\'의 음은?',ch:['설','열','세','탈','수'],a:1,ex:'여기서 說은 "기쁘다"는 뜻으로 쓰여 \'열\'로 읽어요. "배우고 때때로 익히면 또한 기쁘지 아니한가."'},
+ {q:'한자와 음·뜻(훈)의 연결이 바른 것은?',ch:['聞 - 물을 문','見 - 볼 견','馬 - 소 우','友 - 벗 붕','雪 - 비 우'],a:1,ex:'聞은 들을 문, 馬는 말 마, 友는 벗 우, 雪은 눈 설이에요.'},
+ {q:'結草報恩(결초보은)의 뜻으로 알맞은 것은?',ch:['풀을 묶어 집을 지음','죽어서도 은혜를 잊지 않고 갚음','풀처럼 약한 사람','은혜를 원수로 갚음','농사를 열심히 지음'],a:1,ex:'풀을 묶어 은혜를 갚았다는 이야기에서 나온 말이에요.'},
+ {q:'三人行 必有我師(삼인행 필유아사)에 담긴 교훈으로 알맞은 것은?',ch:['여행은 세 사람이 함께 가야 한다.','누구에게나 배울 점이 있다.','스승은 한 명이면 충분하다.','혼자 공부하는 것이 좋다.','어른의 말을 무조건 따라야 한다.'],a:1,ex:'세 사람이 길을 가면 반드시 나의 스승이 있다. 좋은 점은 본받고 나쁜 점은 고치라는 뜻이에요.'}
+ ],
+ essay:{q:'塞翁之馬(새옹지마)를 ① 한 글자씩 음과 뜻으로 풀이하고, ② 이 말을 사용한 생활 속 예문을 한 문장 쓰시오.',model:'① 塞(변방 새) 翁(늙은이 옹) 之(어조사 지) 馬(말 마): 변방 노인의 말\n② 시험을 망쳐 속상했지만 그 덕분에 공부 습관을 바꿔 다음 시험을 더 잘 봤으니 새옹지마다.',crit:['네 글자의 음과 뜻을 바르게 풀이했다 (5점)','뜻에 맞는 예문을 썼다 (5점)']}}
+];
+
+const EXAM2=[
+{k:'국어',c:'pink',st:'heart',range:'예상 범위: 시의 표현과 정서, 주장하는 글의 근거, 품사',
+ P:{D:'할머니 댁 마당에는\n감나무 한 그루가 서 있다\n가을이면 빨간 등불을 켜 들고\n나를 기다리는 감나무\n떠나는 버스 창밖으로\n감나무가 손을 흔든다'},
+ qs:[
+ {p:'D',q:'윗글에서 \'빨간 등불\'이 빗대어 나타낸 것은?',ch:['할머니의 얼굴','잘 익은 감','저녁노을','버스의 불빛','마당의 꽃'],a:1,ex:'가을에 감나무에 매달린 빨갛게 익은 감을 등불에 빗대었어요.'},
+ {p:'D',q:'"감나무가 손을 흔든다"에 쓰인 표현 방법은?',ch:['직유법','은유법','의인법','과장법','대구법'],a:2,ex:'감나무를 사람처럼 손을 흔든다고 표현했으니 의인법이에요.'},
+ {p:'D',q:'윗글에 드러난 말하는 이의 정서로 가장 알맞은 것은?',ch:['할머니 댁에 대한 그리움과 따뜻함','감나무에 대한 두려움','버스에 대한 불만','친구에 대한 부러움','가을에 대한 지루함'],a:0,ex:'자신을 기다려 주고 배웅하는 감나무를 통해 할머니 댁의 정겨움과 그리움을 드러내요.'},
+ {q:'다음 중 직유법이 쓰인 문장은?',ch:['솜사탕 같은 구름이 떠 있다.','꽃이 웃으며 인사한다.','내 동생은 우리 집 비타민이다.','눈물이 강물이 되어 흘렀다.','시간은 화살이다.'],a:0,ex:'"~같은"을 써서 직접 빗대었으니 직유법이에요. ②는 의인, ③⑤는 은유, ④는 과장이에요.'},
+ {q:'주장하는 글의 \'서론\'에 들어갈 내용으로 가장 알맞은 것은?',ch:['근거를 자세히 설명한다.','문제 상황을 소개하고 주장을 밝힌다.','예상 반론을 반박한다.','주장을 요약하고 다짐을 밝힌다.','참고 자료의 목록을 정리한다.'],a:1,ex:'서론: 문제 상황 + 주장, 본론: 근거·반론 반박, 결론: 요약·강조.'},
+ {q:'"학교 급식에 채식 선택 메뉴를 늘려야 한다"는 주장의 근거로 가장 적절하지 않은 것은?',ch:['육류 생산이 온실가스 배출에 큰 영향을 준다는 조사 결과','우리 학교 학생 설문에서 채식 메뉴를 원하는 학생이 적지 않다는 결과','종교나 건강 등 다양한 식습관을 존중할 필요','내 친구 한 명이 고기를 싫어한다는 사실','균형 잡힌 채식 식단도 성장기 영양을 채울 수 있다는 전문가 의견'],a:3,ex:'친구 한 명의 취향은 개인적인 사례라 전체 학생을 대표하지 못해 근거로 약해요.'},
+ {q:'"나는 친구와 도서관에 갔다."에서 조사가 아닌 것은?',ch:['는','와','에','도서관'],a:3,ex:'\'도서관\'은 명사예요. \'는, 와, 에\'는 다른 말에 붙어 관계를 나타내는 조사예요.'},
+ {q:'형태가 변하지 않는 품사끼리만 묶은 것은?',ch:['명사, 동사','형용사, 부사','명사, 부사, 감탄사','동사, 형용사','동사, 감탄사'],a:2,ex:'동사와 형용사는 \'먹다-먹고-먹어\'처럼 형태가 바뀌어요(용언). 명사, 부사, 감탄사는 바뀌지 않아요.'},
+ {q:'"강아지가 빠르게 달린다."에서 \'빠르게\'의 품사는?',ch:['명사','부사','형용사','동사','관형사'],a:2,ex:'\'빠르게\'는 형용사 \'빠르다\'의 형태가 바뀐 것이라 품사는 형용사예요. 문장에서 꾸미는 역할을 해도 품사는 그대로예요.'}
+ ],
+ essay:{q:'자신의 경험 하나를 떠올려, 비유법(직유법 또는 은유법)을 한 번 이상 사용하여 그때의 감정을 두 문장으로 쓰시오.',model:'발표 순서를 기다리는 동안 내 심장은 북처럼 쿵쿵 울렸다.\n발표를 마치고 박수 소리를 들었을 때 마음이 솜사탕처럼 가볍게 부풀었다.',crit:['직유법이나 은유법을 바르게 사용했다 (5점)','감정을 구체적으로 드러냈다 (5점)']}},
+
+{k:'사회',c:'sky',st:'cloud',range:'예상 범위: 정치의 의미, 민주주의 이념과 원리, 선거와 정치 참여, 미디어',
+ qs:[
+ {q:'넓은 의미의 정치에 해당하는 사례로 알맞은 것은?',ch:['국회가 법률을 만든다.','대통령이 정책을 결정한다.','학급 회의에서 체험 학습 장소를 정한다.','정부가 예산안을 만든다.','법원이 재판을 한다.'],a:2,ex:'넓은 의미의 정치는 사회 여러 집단에서 의견 차이를 조정하고 갈등을 해결하는 활동 전체예요. 국가 기관의 활동은 좁은 의미의 정치예요.'},
+ {q:'프랑스 인권 선언에 담긴 핵심 내용으로 알맞은 것은?',ch:['왕의 권력은 신이 준 것이다.','사람은 태어날 때부터 자유롭고 평등한 권리를 가진다.','귀족만 정치에 참여할 수 있다.','국가는 시민의 재산을 마음대로 쓸 수 있다.','종교 지도자가 나라를 다스린다.'],a:1,ex:'프랑스 혁명 때 발표된 인권 선언은 천부 인권, 자유와 평등, 국민 주권을 밝혔어요.'},
+ {q:'오늘날 대부분의 나라가 대의 민주 정치를 하는 까닭으로 가장 알맞은 것은?',ch:['국민이 정치에 관심이 없어서','인구가 많고 영토가 넓어 모든 국민이 한곳에 모이기 어려워서','왕이 대표를 정해 주어서','법으로 직접 참여를 금지해서','투표가 비용이 들지 않아서'],a:1,ex:'현대 국가는 규모가 커서 모두가 직접 모이기 어려워 대표를 뽑아 정치를 맡겨요.'},
+ {q:'민주주의의 이념 중 \'평등\'의 의미로 알맞은 것은?',ch:['모든 사람이 똑같은 재산을 가져야 한다.','성별, 신분, 재산 등을 이유로 부당하게 차별받지 않는다.','다수의 의견만 따른다.','국가의 간섭 없이 마음대로 행동한다.','능력과 관계없이 같은 결과를 받는다.'],a:1,ex:'평등은 부당한 차별을 받지 않고 같은 조건과 기회를 보장받는 것이에요.'},
+ {q:'국민 주권의 원리가 드러난 사례로 가장 알맞은 것은?',ch:['국민이 선거로 대표를 뽑는다.','법원이 다른 기관의 간섭 없이 재판한다.','정부가 헌법에 따라 정책을 집행한다.','국회와 정부가 서로 견제한다.','판사가 법에 따라 판결한다.'],a:0,ex:'나라의 주인인 국민이 선거로 대표를 뽑는 것이 국민 주권이에요. ②④는 권력 분립, ③은 입헌주의와 관련돼요.'},
+ {q:'투표소의 기표소에 가림막을 설치하는 것과 관련 깊은 선거의 원칙은?',ch:['보통 선거','평등 선거','직접 선거','비밀 선거'],a:3,ex:'누구에게 투표했는지 다른 사람이 알 수 없게 하는 것은 비밀 선거예요.'},
+ {q:'환경 보호, 인권 보장 등 사회 전체의 이익(공익)을 위해 시민들이 자발적으로 만든 단체는?',ch:['정당','이익 집단','시민 단체','언론','정부'],a:2,ex:'시민 단체는 공익을 추구해요. 이익 집단은 자기 집단의 특수한 이익을 추구해요.'},
+ {q:'정치 과정에서 시민의 요구를 받아들여 정책을 결정하는 주체로 가장 알맞은 것은?',ch:['언론','국회와 정부','이익 집단','시민 단체','개인'],a:1,ex:'시민·이익 집단·언론 등이 요구를 표출하면, 정책 결정은 국회와 정부가 맡아요.'},
+ {q:'가짜 뉴스를 가려내는 방법으로 알맞지 않은 것은?',ch:['기사를 쓴 사람과 언론사를 확인한다.','다른 언론에서도 같은 내용을 보도했는지 찾아본다.','기사에 나온 자료의 출처를 확인한다.','제목만 읽고 내용을 판단한다.','작성 날짜가 최신인지 확인한다.'],a:3,ex:'자극적인 제목만 보고 판단하면 내용을 잘못 받아들이기 쉬워요.'}
+ ],
+ essay:{q:'시민이 정치에 참여하는 방법 두 가지를 쓰고, 각각 어떻게 참여하는 것인지 설명하시오.',model:'① 선거: 투표를 통해 나라나 지역의 대표를 직접 뽑는다.\n② 국민 청원·민원 제기: 정부나 지방 자치 단체에 의견이나 요구를 직접 전달한다.\n(그 밖에 시민 단체 활동, 공청회 참여, 서명 운동 등도 정답)',crit:['참여 방법 두 가지를 바르게 썼다 (각 2점, 4점)','각 방법을 알맞게 설명했다 (각 3점, 6점)']}},
+
+{k:'수학',c:'lilac',st:'star',range:'예상 범위: 좌표평면과 그래프(정비례·반비례), 기본 도형과 작도, 평면·입체도형',
+ qs:[
+ {q:'점 (2a − 6, a + 1)이 y축 위에 있을 때, a의 값은?',ch:['−1','1','2','3','4'],a:3,ex:'y축 위의 점은 x좌표가 0이에요. 2a − 6 = 0 → a = 3.'},
+ {q:'다음 중 정비례 관계 y = 3x의 그래프 위의 점은?',ch:['(1, −3)','(−2, −6)','(2, 5)','(3, 1)','(0, 3)'],a:1,ex:'x = −2를 대입하면 y = 3 × (−2) = −6이므로 (−2, −6)이 그래프 위에 있어요.'},
+ {q:'반비례 관계 y = −6/x의 그래프에 대한 설명으로 옳은 것은?',ch:['원점을 지나는 직선이다.','제1사분면과 제3사분면을 지난다.','점 (2, 3)을 지난다.','제2사분면과 제4사분면을 지나는 한 쌍의 곡선이다.','x의 값이 커지면 y의 값은 항상 작아진다.'],a:3,ex:'a = −6 < 0이므로 제2, 4사분면을 지나는 한 쌍의 곡선이에요. 각 사분면에서 x가 커지면 y도 커져요.'},
+ {q:'빈 물통에 1분에 4L씩 물을 넣을 때, 60L를 채우는 데 걸리는 시간은?',ch:['12분','15분','16분','20분','24분'],a:1,ex:'x분 후 물의 양 y = 4x. 60 = 4x → x = 15.'},
+ {q:'넓이가 24cm²인 직사각형의 가로가 x cm, 세로가 y cm일 때, 가로가 6cm이면 세로는?',ch:['2cm','3cm','4cm','6cm','18cm'],a:2,ex:'xy = 24이므로 y = 24/x (반비례). x = 6이면 y = 4.'},
+ {q:'평행한 두 직선 l, m이 다른 한 직선과 만나서 생기는 엇각 중 하나가 65°일 때, 다른 엇각의 크기는?',ch:['25°','65°','115°','130°','180°'],a:1,ex:'두 직선이 평행하면 엇각의 크기는 같아요.'},
+ {q:'다음 중 두 삼각형이 합동이 되는 조건이 아닌 것은?',ch:['세 쌍의 대응변의 길이가 각각 같다.','두 쌍의 대응변의 길이가 각각 같고, 그 끼인각의 크기가 같다.','한 쌍의 대응변의 길이가 같고, 그 양 끝 각의 크기가 각각 같다.','세 쌍의 대응각의 크기가 각각 같다.'],a:3,ex:'세 각만 같으면 모양은 같아도 크기가 다를 수 있어요. 합동 조건은 SSS, SAS, ASA예요.'},
+ {q:'한 원에서 부채꼴의 중심각에 대한 설명으로 옳지 않은 것은?',ch:['호의 길이는 중심각의 크기에 정비례한다.','부채꼴의 넓이는 중심각의 크기에 정비례한다.','중심각의 크기가 같으면 현의 길이도 같다.','현의 길이는 중심각의 크기에 정비례한다.','중심각의 크기가 같으면 호의 길이도 같다.'],a:3,ex:'현의 길이는 중심각에 정비례하지 않아요. 중심각이 2배여도 현은 2배보다 짧아요.'},
+ {q:'반지름이 6cm, 중심각이 60°인 부채꼴의 넓이는?',ch:['3π cm²','6π cm²','12π cm²','18π cm²','36π cm²'],a:1,ex:'π × 6² × 60/360 = 36π × 1/6 = 6π cm².'}
+ ],
+ essay:{q:'반지름이 6cm인 반구의 부피와 겉넓이를 풀이 과정과 함께 구하시오.',model:'부피 = ½ × ⁴⁄₃ × π × 6³ = 144π (cm³)\n겉넓이 = 구 겉넓이의 절반 + 밑면(원) = ½ × 4π × 6² + π × 6² = 72π + 36π = 108π (cm²)',crit:['부피 식과 답(144π cm³) (5점)','겉넓이 식과 답(108π cm²), 밑면 포함 (5점)']}},
+
+{k:'과학',c:'mint',st:'flower',range:'예상 범위: 기체의 성질(입자 운동, 보일·샤를 법칙), 태양계',
+ qs:[
+ {q:'다음 중 입자의 운동으로 설명하기 어려운 현상은?',ch:['젖은 빨래가 마른다.','물에 떨어뜨린 잉크가 퍼진다.','빵 굽는 냄새가 거실까지 퍼진다.','얼음이 물 위에 뜬다.','어항의 물이 조금씩 줄어든다.'],a:3,ex:'얼음이 뜨는 것은 얼음의 밀도가 물보다 작기 때문이에요. 나머지는 증발과 확산으로, 입자 운동 때문이에요.'},
+ {q:'온도가 일정할 때 기체의 압력과 부피의 관계로 옳은 것은?',ch:['압력이 2배가 되면 부피도 2배가 된다.','압력이 2배가 되면 부피는 ½배가 된다.','압력과 관계없이 부피는 일정하다.','압력이 커지면 입자의 수가 줄어든다.','압력이 커지면 입자의 크기가 작아진다.'],a:1,ex:'보일 법칙: 압력과 부피는 반비례해요. 입자의 수와 크기는 변하지 않아요.'},
+ {q:'온도가 일정할 때, 2기압에서 부피가 30mL인 기체의 압력을 1기압으로 낮추면 부피는?',ch:['15mL','30mL','45mL','60mL','90mL'],a:3,ex:'2 × 30 = 1 × V → V = 60mL.'},
+ {q:'다음 중 샤를 법칙으로 설명할 수 있는 현상은?',ch:['높은 산에서 과자 봉지가 부푼다.','잠수부가 내뿜은 공기 방울이 위로 갈수록 커진다.','주사기 끝을 막고 피스톤을 누르면 부피가 줄어든다.','찌그러진 탁구공을 뜨거운 물에 넣으면 펴진다.','비행기 안에서 귀가 먹먹해진다.'],a:3,ex:'온도가 높아져 기체 부피가 커지는 현상이에요. 나머지는 압력 변화(보일 법칙)와 관련 있어요.'},
+ {q:'압력이 일정할 때 기체의 온도를 낮추면 나타나는 변화로 옳은 것은?',ch:['입자 운동이 둔해지고 부피가 줄어든다.','입자 운동이 활발해지고 부피가 커진다.','입자의 수가 줄어든다.','입자의 크기가 작아진다.','부피는 변하지 않는다.'],a:0,ex:'온도가 낮아지면 입자 운동이 둔해지고 입자 사이 거리가 가까워져 부피가 줄어요.'},
+ {q:'지구형 행성끼리만 짝지은 것은?',ch:['수성, 화성','목성, 토성','지구, 해왕성','금성, 천왕성','토성, 화성'],a:0,ex:'지구형 행성은 수성, 금성, 지구, 화성이에요.'},
+ {q:'표면이 붉게 보이고, 극지방에 하얀 극관이 있으며, 과거에 물이 흘렀던 흔적이 있는 행성은?',ch:['수성','금성','화성','목성','천왕성'],a:2,ex:'화성은 표면의 산화철 때문에 붉게 보이고, 극관과 물이 흐른 자국이 발견됐어요.'},
+ {q:'뚜렷하고 아름다운 고리가 있고, 평균 밀도가 물보다 작은 행성은?',ch:['지구','화성','목성','토성','수성'],a:3,ex:'토성은 뚜렷한 고리가 있고, 태양계 행성 중 평균 밀도가 가장 작아 물보다 작아요.'},
+ {q:'태양 활동이 활발할 때 나타나는 현상으로 옳지 않은 것은?',ch:['흑점 수가 많아진다.','오로라가 자주 나타난다.','자기 폭풍이 생길 수 있다.','인공위성이 고장 날 수 있다.','흑점 수가 줄어든다.'],a:4,ex:'태양 활동이 활발할수록 흑점 수가 늘어나요.'}
+ ],
+ essay:{q:'잠수부가 물속에서 내뿜은 공기 방울은 수면으로 올라갈수록 커진다. 그 까닭을 \'압력\', \'입자\'라는 말을 사용하여 서술하시오.',model:'수면에 가까워질수록 공기 방울에 작용하는 물의 압력이 작아진다. 그래서 공기 방울 속 기체 입자 사이의 거리가 멀어져 부피가 커진다(보일 법칙). 이때 입자의 수와 크기는 변하지 않는다.',crit:['위로 갈수록 압력이 작아진다는 것을 썼다 (5점)','입자 사이 거리가 멀어져 부피가 커진다고 설명했다 (5점)']}},
+
+{k:'영어',c:'peach',st:'heart',range:'예상 범위: 편지글 읽기, 감정·초대 대화, 최상급·미래·동명사',
+ P:{E:'Dear Jake,\nHow are you? I\'m writing to tell you about my school festival. It was last Friday. My class made a small café. I made cookies with my friends, and they were sold out in an hour! The most popular food was sweet potato pizza. In the afternoon, we watched a dance show. It was the best part of the day. Next year, I\'m going to join the dance club. Please write back soon.\nYour friend, Mina'},
+ qs:[
+ {p:'E',q:'Mina가 편지를 쓴 목적으로 가장 알맞은 것은?',ch:['to invite Jake to her house','to tell Jake about her school festival','to ask Jake for a recipe','to say sorry to Jake','to sell cookies'],a:1,ex:'"I\'m writing to tell you about my school festival."에 목적이 나와 있어요.'},
+ {p:'E',q:'윗글의 내용과 일치하지 않는 것은?',ch:['The festival was last Friday.','Mina made cookies with her friends.','The cookies were sold out in an hour.','The most popular food was cookies.','Mina is going to join the dance club.'],a:3,ex:'가장 인기 있던 음식은 sweet potato pizza였어요.'},
+ {p:'E',q:'Mina가 꼽은 축제의 가장 좋았던 부분은?',ch:['making cookies','eating pizza','the dance show','the café','writing a letter'],a:2,ex:'"we watched a dance show. It was the best part of the day."'},
+ {q:'빈칸에 알맞은 말은?\nSeoul is the ______ city in Korea. (big)',ch:['big','bigger','biggest','more big','most big'],a:2,ex:'최상급은 the + -est. big은 단모음 + 단자음이라 g를 하나 더 써서 biggest.'},
+ {q:'"I\'m going to join the dance club."과 뜻이 가장 가까운 것은?',ch:['I joined the dance club.','I will join the dance club.','I am joining the dance club now.','I can\'t join the dance club.','I join the dance club every day.'],a:1,ex:'be going to와 will은 모두 미래를 나타내요.'},
+ {q:'빈칸에 가장 알맞은 말은?\nYou ______ wear a helmet when you ride a bike.',ch:['should','didn\'t','wasn\'t','does','was'],a:0,ex:'should + 동사원형: "~해야 한다(충고)". 나머지는 뒤에 동사원형 wear와 어울리지 않아요.'},
+ {q:'빈칸에 알맞은 말은?\nI enjoy ______ cookies.',ch:['make','to make','making','made','makes'],a:2,ex:'enjoy는 목적어로 동명사(-ing)를 써요.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: What\'s wrong? You look sick.\nB: ______',ch:['I have a headache.','I\'m going to the park.','It\'s sunny today.','Thank you for the gift.','I like pizza.'],a:0,ex:'아파 보인다는 말에 증상을 말하는 답이 자연스러워요.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: Would you like to come to my party?\nB: ______\nA: That\'s too bad.',ch:['Sure, I\'d love to.','Sorry, I can\'t. I have to study.','Yes, it is.','Here you are.','Good idea!'],a:1,ex:'A가 "That\'s too bad."라고 했으니 B는 초대를 거절했어요.'}
+ ],
+ essay:{q:'Mina에게 답장을 쓴다고 생각하고, ① 지난 주말에 한 일 두 문장(과거형)과 ② 다음 주 계획 한 문장(be going to)을 영어로 쓰시오.',model:'Last weekend, I went to the beach with my family.\nWe swam and ate fried chicken.\nNext week, I\'m going to visit my cousin.',crit:['과거형 두 문장을 바르게 썼다 (6점)','be going to로 계획 한 문장을 썼다 (4점)']}},
+
+{k:'한문',c:'butter',st:'star',range:'예상 범위: 고사성어, 한문 격언, 한자의 짜임과 한자어',
+ qs:[
+ {q:'有備無患(유비무환)의 뜻으로 알맞은 것은?',ch:['미리 준비해 두면 걱정할 것이 없다.','근심이 있으면 병이 생긴다.','가진 것이 없으면 걱정도 없다.','준비하지 않아도 된다.','환자를 잘 돌보아야 한다.'],a:0,ex:'有(있을 유) 備(갖출 비) 無(없을 무) 患(근심 환): 준비가 있으면 근심이 없다.'},
+ {q:'"한 가지 일로 두 가지 이익을 얻음"을 뜻하는 고사성어는?',ch:['一石二鳥','有備無患','苦盡甘來','愚公移山','竹馬故友'],a:0,ex:'一石二鳥(일석이조): 돌 하나로 새 두 마리를 잡는다.'},
+ {q:'"힘든 훈련을 참고 견딘 끝에 대회에서 우승했다."는 상황에 어울리는 고사성어는?',ch:['漁父之利','苦盡甘來','塞翁之馬','一石二鳥','結草報恩'],a:1,ex:'苦盡甘來(고진감래): 쓴 것이 다하면 단 것이 온다, 고생 끝에 즐거움이 온다.'},
+ {q:'愚公移山(우공이산)에 담긴 교훈은?',ch:['산은 옮길 수 없다.','어리석은 사람은 성공할 수 없다.','어떤 일이든 끊임없이 노력하면 이룰 수 있다.','이사를 자주 하면 안 된다.','자연을 함부로 바꾸면 안 된다.'],a:2,ex:'우공이라는 노인이 산을 옮기려 꾸준히 노력했다는 이야기에서 나왔어요.'},
+ {q:'少年易老學難成(소년이로학난성)에 담긴 교훈으로 알맞은 것은?',ch:['젊을 때는 놀아도 된다.','시간을 아껴 부지런히 공부해야 한다.','나이가 들면 공부가 쉬워진다.','학문은 쉽게 이룰 수 있다.','어른을 공경해야 한다.'],a:1,ex:'소년은 늙기 쉽고 학문은 이루기 어렵다. 그러니 짧은 시간도 가볍게 여기지 말라는 뜻이에요.'},
+ {q:'知之爲知之 不知爲不知 是知也(지지위지지 부지위부지 시지야)의 뜻으로 알맞은 것은?',ch:['아는 것은 안다 하고 모르는 것은 모른다 하는 것이 참으로 아는 것이다.','모르는 것도 아는 척해야 한다.','아는 것을 남에게 숨겨야 한다.','많이 알수록 말을 많이 해야 한다.','모르는 것은 배울 필요가 없다.'],a:0,ex:'『논어』의 구절로, 자신이 아는 것과 모르는 것을 정직하게 구분하는 태도를 강조해요.'},
+ {q:'\'休(쉴 휴)\'는 두 글자의 뜻을 합해 만든 한자이다. 휴를 이루는 두 글자로 알맞은 것은?',ch:['人 + 木','日 + 月','女 + 子','口 + 木','山 + 石'],a:0,ex:'사람(人, 亻)이 나무(木)에 기대어 쉰다는 뜻을 합한 회의자예요.'},
+ {q:'뜻이 서로 반대되는 한자끼리 짝지어지지 않은 것은?',ch:['大 - 小','上 - 下','長 - 短','學 - 習','前 - 後'],a:3,ex:'學(배울 학)과 習(익힐 습)은 뜻이 비슷한 한자예요.'},
+ {q:'한자어 \'讀書\'의 독음으로 알맞은 것은?',ch:['독서','매서','속서','독일','매일'],a:0,ex:'讀(읽을 독) 書(글 서): 책을 읽음.'}
+ ],
+ essay:{q:'有備無患(유비무환)을 ① 한 글자씩 음과 뜻으로 풀이하고, ② 이 말을 사용한 생활 속 예문을 한 문장 쓰시오.',model:'① 有(있을 유) 備(갖출 비) 無(없을 무) 患(근심 환): 준비가 되어 있으면 근심이 없다.\n② 시험 한 달 전부터 계획을 세워 공부했더니 시험 날 떨리지 않았다. 역시 유비무환이다.',crit:['네 글자의 음과 뜻을 바르게 풀이했다 (5점)','뜻에 맞는 예문을 썼다 (5점)']}}
+];
+/* 문항 확장: 과목별 선택형 11문항 + 서술형 1문항 추가 → 선택형 20(1~10번 4점, 11~20번 5점) + 서술형 2(각 5점) */
+const ADD={1:{
+'국어':{P:{F:'아침 버스 정류장에 서 있으면 늘 같은 할아버지를 만난다. 할아버지는 내게 먼저 "오늘도 힘내라." 하고 웃으신다. 처음에는 쑥스러워 고개만 끄덕였다. 그런데 어느 날 할아버지가 보이지 않자 정류장이 텅 빈 운동장처럼 느껴졌다. 그제야 나는 그 짧은 인사가 내 하루를 데워 주는 ㉢ 난로였다는 것을 알았다. 다음에 만나면 내가 먼저 인사하리라 다짐했다.'},qs:[
+ {p:'F',q:'"정류장이 텅 빈 운동장처럼 느껴졌다"와 같은 표현 방법이 쓰인 것은?',ch:['얼음처럼 차가운 손','나뭇잎이 춤을 춘다.','너는 나의 햇살이다.','눈이 빠지도록 기다렸다.','산은 높고 물은 깊다.'],a:0,ex:'"~처럼"을 써서 직접 빗댄 직유법이에요. ②는 의인, ③은 은유, ④는 과장, ⑤는 대구예요.'},
+ {p:'F',q:'㉢ \'난로\'가 빗대어 나타낸 것으로 가장 알맞은 것은?',ch:['추운 겨울 날씨','버스 정류장','할아버지의 따뜻한 인사','글쓴이의 쑥스러운 마음','아침 버스'],a:2,ex:'할아버지의 짧은 인사가 하루를 따뜻하게 해 준다는 뜻으로 \'난로\'에 빗댄 은유예요.'},
+ {p:'F',q:'윗글에 나타난 글쓴이의 마음 변화로 알맞은 것은?',ch:['기쁨 → 분노 → 슬픔','쑥스러움 → 허전함 → 고마움과 다짐','두려움 → 안심 → 지루함','부러움 → 질투 → 후회','설렘 → 실망 → 무관심'],a:1,ex:'처음엔 쑥스러웠고, 할아버지가 안 보이자 허전했으며, 인사의 소중함을 깨닫고 먼저 인사하겠다고 다짐해요.'},
+ {p:'F',q:'윗글과 같은 갈래(수필)의 특징으로 알맞은 것은?',ch:['글쓴이가 직접 겪은 일과 생각을 자유롭게 쓴 글이다.','등장인물의 대사로만 이루어진 글이다.','운율이 있는 짧은 시이다.','객관적인 정보만 전달하는 글이다.','상상으로 꾸며 낸 이야기이다.'],a:0,ex:'수필은 글쓴이의 실제 경험과 느낌을 형식에 얽매이지 않고 쓴 글이에요.'},
+ {q:'"어머나, 벌써 눈이 오네."의 단어와 품사를 잘못 연결한 것은?',ch:['어머나 - 감탄사','벌써 - 부사','눈 - 명사','이 - 조사','오네 - 형용사'],a:4,ex:'\'오다\'는 움직임을 나타내는 동사예요.'},
+ {q:'"학생 셋이 교실에 들어왔다."에서 \'셋\'의 품사는?',ch:['명사','대명사','수사','관형사','부사'],a:2,ex:'사물의 수량을 나타내고 조사 \'이\'가 붙었으니 수사예요. (\'세 명\'의 \'세\'는 관형사)'},
+ {q:'"그는 어제 도서관에 갔다."에서 대명사는?',ch:['그','어제','도서관','에','갔다'],a:0,ex:'\'그\'는 사람의 이름을 대신 가리키는 대명사예요.'},
+ {q:'"교실에 공기 청정기를 설치해야 한다"는 주장의 근거로 가장 알맞은 것은?',ch:['공기 청정기는 디자인이 예쁘다.','미세 먼지가 심한 날 공기 청정기를 켠 교실의 미세 먼지 농도가 크게 낮아졌다는 측정 결과','우리 집에는 공기 청정기가 두 대 있다.','공기 청정기는 여러 회사에서 만든다.','교실은 넓을수록 좋다.'],a:1,ex:'주장과 직접 관련되고, 측정 결과라 믿을 만한 근거예요.'},
+ {q:'주장하는 글의 \'결론\'에 들어갈 내용으로 가장 알맞은 것은?',ch:['처음으로 문제 상황을 소개한다.','새로운 근거를 길게 추가한다.','주장을 요약·강조하고 실천을 당부한다.','반론을 처음 제시한다.','글과 상관없는 경험을 쓴다.'],a:2,ex:'결론에서는 주장을 다시 정리해 강조하고 독자의 실천을 당부해요.'},
+ {q:'주장하는 글을 읽는 태도로 가장 알맞은 것은?',ch:['글쓴이의 주장을 무조건 받아들인다.','주장과 근거를 구분하고 근거가 타당한지 따지며 읽는다.','근거보다 글의 길이를 중요하게 본다.','제목만 읽고 판단한다.','나와 생각이 다르면 읽지 않는다.'],a:1,ex:'비판적으로 읽으려면 주장과 근거를 나누고, 근거가 믿을 만하고 주장과 관련 있는지 살펴요.'},
+ {q:'"고소한 냄새가 코끝을 간지럽혔다."에 주로 쓰인 감각은?',ch:['시각','청각','후각','미각','촉각'],a:2,ex:'\'냄새\'를 표현했으니 후각적 표현이에요.'}
+ ],essay2:{q:'윗글의 ㉢처럼 은유법을 사용하여 나에게 소중한 사람을 표현하는 문장 한 개와, 그렇게 표현한 이유 한 문장을 쓰시오.',model:'우리 엄마는 나의 등대이다.\n길을 잃은 것처럼 막막할 때마다 엄마의 말씀이 갈 방향을 비춰 주기 때문이다.',crit:['"A는 B이다" 형태의 은유를 바르게 썼다','빗댄 대상과 이유가 자연스럽게 이어진다']}},
+'사회':{qs:[
+ {q:'민주주의의 이념 중 \'자유\'의 의미로 알맞은 것은?',ch:['다른 사람에게 피해를 주어도 하고 싶은 대로 한다.','국가나 다른 사람에게 부당한 간섭을 받지 않고 스스로 결정한다.','모든 사람이 똑같은 결과를 얻는다.','다수의 결정에 무조건 따른다.','법을 지키지 않아도 된다.'],a:1,ex:'자유는 부당한 간섭이나 강제를 받지 않고 스스로 결정하고 행동하는 것이에요. 다른 사람의 자유를 해치면 안 돼요.'},
+ {q:'입헌주의에 대한 설명으로 옳은 것은?',ch:['왕의 명령에 따라 나라를 다스린다.','헌법에 따라 나라를 다스려 국가 권력을 제한하고 국민의 기본권을 보장한다.','국가 권력을 한 기관에 모은다.','국민이 직접 모든 법을 만든다.','다수의 의견만 따른다.'],a:1,ex:'입헌주의는 헌법으로 국가 권력을 제한해 국민의 권리를 지키는 원리예요.'},
+ {q:'우리나라에서 법을 만드는 입법권을 가진 기관은?',ch:['국회','정부','법원','헌법 재판소','선거 관리 위원회'],a:0,ex:'입법권은 국회, 행정권은 정부, 사법권은 법원이 가져요.'},
+ {q:'법에 따라 재판을 하는 사법권을 가진 기관은?',ch:['국회','정부','법원','시청','언론'],a:2,ex:'사법권은 법원에 있어요.'},
+ {q:'"유권자가 다른 사람을 거치지 않고 자신이 직접 투표한다"는 선거의 원칙은?',ch:['보통 선거','평등 선거','직접 선거','비밀 선거'],a:2,ex:'대리인 없이 본인이 직접 투표하는 것이 직접 선거예요.'},
+ {q:'현재 우리나라 대통령 선거와 국회 의원 선거에서 투표할 수 있는 나이는?',ch:['만 16세 이상','만 17세 이상','만 18세 이상','만 19세 이상','만 20세 이상'],a:2,ex:'2020년부터 선거권 나이가 만 18세 이상으로 낮아졌어요.'},
+ {q:'다음 중 이익 집단의 활동으로 가장 알맞은 것은?',ch:['정당이 선거에 후보를 낸다.','의사들이 만든 협회가 자신들과 관련된 의료 정책에 의견을 낸다.','법원이 판결을 내린다.','국회가 예산을 심의한다.','언론이 사건을 보도한다.'],a:1,ex:'이익 집단은 같은 직업이나 이해관계를 가진 사람들이 자신들의 이익을 위해 활동하는 집단이에요.'},
+ {q:'언론의 역할로 알맞지 않은 것은?',ch:['사회의 여러 소식과 정보를 전달한다.','여론을 형성하는 데 영향을 준다.','정부와 정치인의 활동을 감시하고 비판한다.','법률을 직접 제정한다.','다양한 의견을 소개한다.'],a:3,ex:'법률 제정은 국회의 일이에요.'},
+ {q:'정치 과정의 흐름으로 알맞은 것은?',ch:['정책 집행 → 요구 표출 → 정책 결정','요구 표출 → 정책 결정 → 정책 집행 → 평가','정책 결정 → 평가 → 요구 표출','평가 → 정책 집행 → 정책 결정','요구 표출 → 평가 → 정책 결정'],a:1,ex:'시민 요구가 표출되면 국회·정부가 정책을 결정하고 집행하며, 그 결과를 평가해 다시 새로운 요구로 이어져요.'},
+ {q:'\'미디어 리터러시\'의 의미로 가장 알맞은 것은?',ch:['미디어를 오래 사용하는 능력','미디어 정보를 비판적으로 이해하고 책임 있게 활용·생산하는 능력','미디어 기기를 고치는 능력','광고를 많이 보는 습관','인터넷 속도를 빠르게 하는 기술'],a:1,ex:'미디어 리터러시는 정보를 비판적으로 읽고 올바르게 활용하며 책임 있게 만드는 능력이에요.'},
+ {q:'SNS에 정보를 올릴 때 바람직한 태도는?',ch:['재미있으면 사실 확인 없이 올린다.','출처를 밝히고 확인된 내용만 올린다.','다른 사람의 글을 내 글처럼 올린다.','자극적인 제목을 붙여 관심을 끈다.','친구의 사진을 허락 없이 올린다.'],a:1,ex:'정보를 만드는 사람도 사실 확인과 출처 표시, 저작권과 초상권 존중의 책임이 있어요.'}
+ ],essay2:{q:'권력 분립의 의미를 쓰고, 권력 분립이 필요한 까닭을 서술하시오.',model:'권력 분립은 국가 권력을 입법권(국회), 행정권(정부), 사법권(법원)으로 나누어 서로 견제하고 균형을 이루게 하는 원리이다.\n권력이 한곳에 모이면 함부로 쓰여 국민의 자유와 권리가 침해될 수 있기 때문에 필요하다.',crit:['세 권력으로 나누어 견제한다는 의미를 썼다','권력 남용을 막아 국민 권리를 보호한다는 필요성을 썼다']}},
+'수학':{qs:[
+ {q:'좌표평면에서 점 (4, −1)은 제몇 사분면 위의 점인가?',ch:['제1사분면','제2사분면','제3사분면','제4사분면','어느 사분면에도 속하지 않는다'],a:3,ex:'x좌표 양수, y좌표 음수이므로 제4사분면이에요.'},
+ {q:'점 (a + 2, a − 3)이 x축 위에 있을 때, a의 값은?',ch:['−3','−2','1','2','3'],a:4,ex:'x축 위의 점은 y좌표가 0이에요. a − 3 = 0 → a = 3.'},
+ {q:'세 점 A(1, 1), B(5, 1), C(5, 4)를 꼭짓점으로 하는 삼각형 ABC의 넓이는?',ch:['6','8','10','12','20'],a:0,ex:'밑변 AB = 4, 높이 BC = 3인 직각삼각형이므로 넓이 = ½ × 4 × 3 = 6.'},
+ {q:'다음 중 y가 x에 정비례하는 것은?',ch:['한 자루에 500원인 연필 x자루의 값 y원','넓이가 20cm²인 직사각형의 가로 x cm와 세로 y cm','나이가 x살인 사람의 1년 후 나이 y살','100쪽짜리 책을 x쪽 읽고 남은 쪽수 y','12개의 사탕을 x명에게 똑같이 나눌 때 한 명이 받는 개수 y'],a:0,ex:'y = 500x로 정비례예요. ②⑤는 반비례, ③은 y = x + 1, ④는 y = 100 − x예요.'},
+ {q:'다음 중 y가 x에 반비례하는 것은?',ch:['시속 x km로 2시간 동안 간 거리 y km','24km를 시속 x km로 갈 때 걸리는 시간 y시간','한 변이 x cm인 정사각형의 둘레 y cm','x개에 300원씩인 지우개의 값 y원','x분 동안 1분에 3L씩 받은 물의 양 y L'],a:1,ex:'시간 = 거리 ÷ 속력이므로 y = 24/x (반비례).'},
+ {q:'반비례 관계 y = a/x의 그래프가 점 (3, −4)를 지날 때, a의 값은?',ch:['−12','−7','−1','7','12'],a:0,ex:'a = xy = 3 × (−4) = −12.'},
+ {q:'사각뿔에서 교선(모서리)의 개수는?',ch:['4개','5개','6개','8개','10개'],a:3,ex:'밑면 사각형의 모서리 4개 + 옆면 모서리 4개 = 8개. (교점은 꼭짓점 5개)'},
+ {q:'공간에서 두 직선이 만나지도 않고 평행하지도 않을 때, 두 직선의 위치 관계는?',ch:['한 점에서 만난다','평행하다','일치한다','꼬인 위치에 있다','수직이다'],a:3,ex:'공간에서 만나지도, 평행하지도 않은 두 직선은 꼬인 위치에 있어요.'},
+ {q:'육각형의 대각선의 개수는?',ch:['5개','6개','8개','9개','12개'],a:3,ex:'n각형의 대각선 개수 = n(n − 3)/2 = 6 × 3 / 2 = 9.'},
+ {q:'삼각형의 두 내각의 크기가 40°, 75°일 때, 이 두 각과 이웃하지 않는 나머지 한 내각의 외각의 크기는?',ch:['65°','105°','115°','125°','140°'],a:2,ex:'한 외각의 크기 = 이웃하지 않는 두 내각의 합 = 40° + 75° = 115°.'},
+ {q:'면의 모양이 정오각형인 정다면체는?',ch:['정사면체','정육면체','정팔면체','정십이면체','정이십면체'],a:3,ex:'정십이면체는 정오각형 12개로 이루어져요. 정사면체·정팔면체·정이십면체는 정삼각형, 정육면체는 정사각형이에요.'}
+ ],essay2:{q:'6명이 하면 8일 걸리는 일을 x명이 하면 y일 걸린다고 한다. (모든 사람이 같은 빠르기로 일한다.) y를 x에 대한 식으로 나타내고, 12명이 하면 며칠 걸리는지 풀이 과정과 함께 구하시오.',model:'전체 일의 양 = 6 × 8 = 48이므로 xy = 48, y = 48/x\nx = 12일 때 y = 48/12 = 4 → 4일',crit:['y = 48/x를 바르게 세웠다','4일을 구했다']}},
+'과학':{qs:[
+ {q:'온도가 높을수록 확산이 빠르게 일어나는 까닭은?',ch:['입자의 크기가 커지기 때문','입자의 운동이 빨라지기 때문','입자의 수가 늘어나기 때문','입자가 서로 달라붙기 때문','입자의 질량이 커지기 때문'],a:1,ex:'온도가 높아지면 입자 운동이 활발해져 더 빨리 퍼져요.'},
+ {q:'증발이 잘 일어나는 조건으로 알맞은 것은?',ch:['온도가 낮고 습도가 높을 때','온도가 높고 습도가 낮으며 바람이 불 때','바람이 없고 그늘질 때','표면적이 좁을 때','비가 올 때'],a:1,ex:'온도가 높고, 습도가 낮고, 바람이 불고, 표면적이 넓을수록 증발이 잘 일어나요.'},
+ {q:'일정한 공간에서 기체 입자가 벽에 충돌하는 횟수가 많아지면 압력은?',ch:['작아진다','커진다','변하지 않는다','0이 된다','처음엔 커지다 작아진다'],a:1,ex:'충돌 횟수가 많을수록 벽에 작용하는 힘이 커져 압력이 커져요.'},
+ {q:'온도가 일정할 때, 일정량의 기체에서 압력과 부피의 곱은?',ch:['점점 커진다','점점 작아진다','항상 일정하다','0이 된다','압력이 클수록 커진다'],a:2,ex:'보일 법칙: 압력 × 부피 = 일정.'},
+ {q:'온도가 일정할 때, 4기압에서 부피가 15mL인 기체의 압력을 2기압으로 낮추면 부피는?',ch:['7.5mL','15mL','30mL','45mL','60mL'],a:2,ex:'4 × 15 = 2 × V → V = 30mL.'},
+ {q:'압력이 일정할 때 기체의 온도와 부피의 관계로 옳은 것은?',ch:['온도가 높아지면 부피가 일정하게 늘어난다.','온도가 높아지면 부피가 줄어든다.','온도와 부피는 관계가 없다.','온도가 낮아지면 부피가 늘어난다.','온도가 높아지면 입자 수가 늘어난다.'],a:0,ex:'샤를 법칙: 압력이 일정할 때 온도가 높아지면 기체의 부피는 일정한 비율로 늘어나요.'},
+ {q:'다음 중 샤를 법칙과 관련된 현상은?',ch:['여름철에 자전거 타이어가 팽팽해진다.','높은 산에서 귀가 먹먹해진다.','주사기를 누르면 부피가 줄어든다.','깊은 바닷속 공기 방울이 작다.','비행기 안에서 과자 봉지가 부푼다.'],a:0,ex:'기온이 올라 타이어 속 기체 부피가 커지려 하기 때문이에요. 나머지는 압력 변화(보일 법칙)와 관련 있어요.'},
+ {q:'태양에서 가까운 순서대로 바르게 나열한 것은?',ch:['수성 - 금성 - 지구 - 화성','금성 - 수성 - 지구 - 화성','지구 - 금성 - 화성 - 수성','수성 - 지구 - 금성 - 화성','화성 - 지구 - 금성 - 수성'],a:0,ex:'수성, 금성, 지구, 화성, 목성, 토성, 천왕성, 해왕성 순서예요.'},
+ {q:'대기가 거의 없어 낮과 밤의 표면 온도 차이가 매우 크고, 표면에 운석 구덩이가 많은 행성은?',ch:['수성','금성','지구','목성','해왕성'],a:0,ex:'수성은 대기가 거의 없어 열을 붙잡지 못해 낮밤 온도 차가 매우 커요.'},
+ {q:'자전축이 공전 궤도면에 거의 누운 채로 자전하는 행성은?',ch:['화성','목성','토성','천왕성','수성'],a:3,ex:'천왕성은 자전축이 크게 기울어 거의 누운 채로 돌아요.'},
+ {q:'개기 일식 때 잘 관찰할 수 있는 태양의 바깥 대기층은?',ch:['흑점','쌀알 무늬','코로나','대적점','극관'],a:2,ex:'코로나와 홍염은 평소엔 광구가 밝아 보기 어렵고, 개기 일식 때 잘 보여요.'}
+ ],essay2:{q:'지구형 행성과 목성형 행성의 차이점을 두 가지 서술하시오.',model:'① 지구형 행성은 반지름과 질량이 작고, 목성형 행성은 반지름과 질량이 크다.\n② 지구형 행성은 평균 밀도가 크고 위성이 없거나 적으며 고리가 없지만, 목성형 행성은 밀도가 작고 위성이 많으며 고리가 있다.',crit:['차이점 한 가지를 바르게 썼다','다른 차이점 한 가지를 바르게 썼다']}},
+'영어':{P:{G:'Tom: Excuse me. Where is the post office?\nYuna: Go straight one block and turn right. It\'s next to the bank.\nTom: Thank you. Is it far from here?\nYuna: No, it isn\'t. It takes about five minutes on foot.\nTom: Great. Thanks a lot!'},qs:[
+ {p:'G',q:'우체국(the post office)은 어디에 있는가?',ch:['across from the bank','next to the bank','behind the school','in front of the park','between two banks'],a:1,ex:'"It\'s next to the bank." 은행 옆에 있어요.'},
+ {p:'G',q:'우체국까지 걸리는 시간은?',ch:['about one minute by bus','about five minutes on foot','about fifteen minutes on foot','about an hour by car','about five minutes by bike'],a:1,ex:'"It takes about five minutes on foot."'},
+ {p:'G',q:'Tom이 우체국에 가는 방법으로 알맞은 것은?',ch:['두 블록 직진 후 왼쪽','한 블록 직진 후 오른쪽','한 블록 직진 후 왼쪽','오른쪽으로 돌아 두 블록','버스를 타고 간다'],a:1,ex:'"Go straight one block and turn right."'},
+ {p:'G',q:'\'on foot\'의 뜻으로 알맞은 것은?',ch:['버스로','걸어서','자전거로','뛰어서','택시로'],a:1,ex:'on foot은 "걸어서"라는 뜻이에요.'},
+ {q:'빈칸에 알맞은 말은?\nI ______ go to school yesterday. I was sick.',ch:['don\'t','doesn\'t','didn\'t','wasn\'t','am not'],a:2,ex:'과거의 부정은 didn\'t + 동사원형이에요.'},
+ {q:'빈칸에 알맞은 말은?\n______ you watch the movie last night?',ch:['Do','Does','Did','Are','Were'],a:2,ex:'last night(과거)이므로 Did + 주어 + 동사원형?'},
+ {q:'빈칸에 알맞은 말은?\nThis book is ______ than that one. (interesting)',ch:['interesting','interestinger','more interesting','most interesting','the interesting'],a:2,ex:'3음절 이상의 긴 형용사는 more를 붙여 비교급을 만들어요.'},
+ {q:'빈칸에 알맞은 말은?\nMy brother is as tall ______ my father.',ch:['than','as','so','to','for'],a:1,ex:'as + 형용사 + as: "~만큼 …한"'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: I won first prize in the contest!\nB: ______',ch:['I\'m sorry to hear that.','Congratulations!','That\'s too bad.','No, thank you.','See you later.'],a:1,ex:'좋은 소식에는 축하하는 말이 어울려요.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: Can I use your pen?\nB: ______',ch:['Sure. Here you are.','Yes, I am.','No, I don\'t.','It\'s Monday.','I\'m fine, thanks.'],a:0,ex:'허락을 구하는 말에 "Sure. Here you are."로 답해요.'},
+ {q:'빈칸에 알맞은 말은?\nI went to the library ______ some books.',ch:['borrow','borrowed','to borrow','borrows','borrowing'],a:2,ex:'"~하기 위해"(목적)는 to부정사로 나타내요.'}
+ ],essay2:{q:'학교에서 공원까지 가는 길을 안내하는 영어 문장 두 개를 쓰시오. (go straight, turn left/right, next to 중 두 가지 이상 사용)',model:'Go straight two blocks and turn left.\nThe park is next to the hospital.',crit:['길 안내 표현을 두 가지 이상 사용했다','문법과 철자가 정확하다']}},
+'한문':{qs:[
+ {q:'한자와 음·뜻(훈)의 연결이 바른 것은?',ch:['七 - 여덟 칠','九 - 열 구','五 - 다섯 오','四 - 셋 사','六 - 일곱 육'],a:2,ex:'七은 일곱 칠, 九는 아홉 구, 四는 넉 사, 六은 여섯 육이에요.'},
+ {q:'\'하늘 천\'에 해당하는 한자는?',ch:['天','地','人','日','月'],a:0,ex:'天(하늘 천), 地(땅 지), 人(사람 인), 日(날 일), 月(달 월).'},
+ {q:'사물의 모양을 본떠 만든 상형자가 아닌 것은?',ch:['日','山','木','休','月'],a:3,ex:'休는 人과 木의 뜻을 합한 회의자예요.'},
+ {q:'점이나 선으로 눈에 보이지 않는 뜻을 나타낸 지사자는?',ch:['上','木','林','明','休'],a:0,ex:'上(윗 상)은 기준선 위에 점을 찍어 \'위\'를 나타낸 지사자예요.'},
+ {q:'日과 月을 합하여 만든 한자 \'明\'의 뜻은?',ch:['어둡다','밝다','달리다','쉬다','많다'],a:1,ex:'해와 달이 함께 있어 밝다는 뜻의 밝을 명(明)이에요.'},
+ {q:'守株待兔(수주대토)의 뜻으로 알맞은 것은?',ch:['노력하지 않고 요행만 바람','토끼를 잘 기름','나무를 잘 지킴','친구를 기다림','부지런히 일함'],a:0,ex:'나무 그루터기에 토끼가 부딪혀 죽기를 기다렸다는 이야기로, 노력 없이 요행만 바라는 어리석음을 뜻해요.'},
+ {q:'刻舟求劍(각주구검)의 뜻으로 알맞은 것은?',ch:['배를 잘 만듦','융통성 없이 어리석게 고집함','칼을 잘 다룸','물건을 잘 찾음','배를 타고 여행함'],a:1,ex:'물에 빠뜨린 칼을 찾으려고 움직이는 배에 표시를 했다는 이야기에서 나왔어요.'},
+ {q:'朝三暮四(조삼모사)의 뜻으로 알맞은 것은?',ch:['아침과 저녁에 꼭 밥을 먹음','눈앞의 차이만 알고 결과가 같음을 모름','아침에 일찍 일어남','세 번 생각하고 네 번 말함','계획을 잘 세움'],a:1,ex:'아침에 셋, 저녁에 넷과 아침에 넷, 저녁에 셋은 결과가 같은데 원숭이들이 눈앞의 차이에만 기뻐했다는 이야기예요.'},
+ {q:'歲月不待人(세월부대인)에 담긴 교훈은?',ch:['시간을 아껴 써야 한다.','기다리면 좋은 일이 생긴다.','사람을 기다려 주어야 한다.','나이가 많을수록 좋다.','달을 보며 소원을 빈다.'],a:0,ex:'세월은 사람을 기다려 주지 않는다는 뜻으로, 시간을 소중히 하라는 교훈이에요.'},
+ {q:'한자어 \'父母\'의 뜻으로 알맞은 것은?',ch:['형과 동생','아버지와 어머니','스승과 제자','할아버지와 할머니','아들과 딸'],a:1,ex:'父(아비 부) 母(어미 모).'},
+ {q:'\'讀書(독서)\'처럼 "~을 ~하다"를 나타내는 한문의 짜임에서 글자의 순서는?',ch:['목적어 + 서술어','서술어 + 목적어','주어 + 목적어','수식어 + 주어','주어 + 수식어'],a:1,ex:'讀(읽다) + 書(책): 한문은 서술어가 먼저, 목적어가 뒤에 와요. 우리말 "책을 읽다"와 순서가 반대예요.'}
+ ],essay2:{q:'守株待兔(수주대토)의 유래를 간단히 쓰고, 이 말에 담긴 교훈을 서술하시오.',model:'한 농부가 밭의 나무 그루터기에 토끼가 부딪혀 죽은 것을 줍고는, 일은 하지 않고 토끼가 또 오기만 기다렸다.\n노력은 하지 않고 우연한 행운만 바라는 것은 어리석다는 교훈을 준다.',crit:['유래(그루터기, 토끼, 기다림)를 썼다','요행을 바라지 말라는 교훈을 썼다']}}
+},2:{
+'국어':{P:{H:'우리 학교 앞 횡단보도는 신호등이 없어 등굣길마다 아찔한 순간이 생긴다. 따라서 학교 앞 횡단보도에 신호등을 설치해야 한다.\n첫째, 지난해 학생회 조사에서 학교 주변에서 학생이 다칠 뻔한 일이 열 건 넘게 보고되었다. 둘째, 신호등이 있으면 운전자가 속도를 줄이고 학생들도 정해진 때에 안전하게 건널 수 있다.\n신호등 설치에 비용이 많이 든다는 의견도 있다. 그러나 학생의 안전은 어떤 비용과도 바꿀 수 없다.'},qs:[
+ {p:'H',q:'윗글의 주장으로 알맞은 것은?',ch:['학교 앞 도로를 넓혀야 한다.','학교 앞 횡단보도에 신호등을 설치해야 한다.','학생회 활동을 늘려야 한다.','등교 시간을 늦춰야 한다.','운전자 교육을 강화해야 한다.'],a:1,ex:'"따라서 학교 앞 횡단보도에 신호등을 설치해야 한다."가 주장이에요.'},
+ {p:'H',q:'\'첫째\'에서 사용한 근거의 종류는?',ch:['속담','조사 결과','개인적인 느낌','비유','상상한 이야기'],a:1,ex:'학생회 조사 결과라는 사실 자료를 근거로 들었어요.'},
+ {p:'H',q:'윗글에서 글쓴이가 예상한 반론의 내용은?',ch:['신호등이 고장 날 수 있다.','신호등 설치에 비용이 많이 든다.','학생들이 신호를 지키지 않는다.','운전자가 불편해한다.','횡단보도를 없애야 한다.'],a:1,ex:'"신호등 설치에 비용이 많이 든다는 의견도 있다."'},
+ {p:'H',q:'윗글의 짜임으로 알맞은 것은?',ch:['주장 → 반론 → 문제 상황','문제 상황·주장 → 근거 두 가지 → 반론과 반박','근거 → 결론 → 주장','반론 → 근거 → 문제 상황','문제 상황 → 결론 → 근거'],a:1,ex:'문제 상황과 주장을 밝히고, 근거 두 가지를 든 뒤, 반론을 반박했어요.'},
+ {p:'H',q:'윗글의 근거를 보강할 자료로 가장 알맞은 것은?',ch:['신호등의 색깔이 정해진 역사','신호등을 설치한 뒤 사고가 줄어든 다른 학교의 통계','우리 동네 맛집 목록','자동차 회사 광고','학생들이 좋아하는 색깔 조사'],a:1,ex:'주장(신호등 설치)과 직접 관련되고 효과를 보여 주는 통계가 가장 적절해요.'},
+ {q:'"산은 높고 물은 맑다."처럼 비슷한 짜임의 문장을 짝지어 나란히 놓는 표현 방법은?',ch:['직유법','은유법','의인법','대구법','과장법'],a:3,ex:'비슷한 구조의 문장을 나란히 놓아 리듬감을 주는 것은 대구법이에요.'},
+ {q:'"가자 가자 바다로 가자"에 주로 쓰인 표현 방법은?',ch:['반복법','은유법','과장법','설의법','의인법'],a:0,ex:'같은 말을 되풀이해 리듬과 강조 효과를 주는 반복법이에요.'},
+ {q:'"아, 정말 아름답구나!"에서 \'아\'의 품사는?',ch:['명사','부사','감탄사','조사','관형사'],a:2,ex:'느낌이나 놀람을 나타내는 감탄사예요.'},
+ {q:'\'-어라/-아라\'를 붙여 명령하는 말을 만들 수 있는 것은?',ch:['예쁘다','작다','읽다','높다','춥다'],a:2,ex:'동사는 명령형이 자연스러워요(읽어라). 형용사는 어색해요(예뻐라? 작아라?).'},
+ {q:'밑줄 친 말이 관형사가 아닌 것은?',ch:['헌 옷','새 책','온갖 물건','예쁜 꽃','이 사람'],a:3,ex:'\'예쁜\'은 형용사 \'예쁘다\'의 형태가 바뀐 것이에요. 나머지는 형태가 바뀌지 않는 관형사예요.'},
+ {q:'"동생이 밥을 아주 많이 먹었다."에서 부사는 몇 개인가?',ch:['0개','1개','2개','3개','4개'],a:2,ex:'\'아주\'와 \'많이\' 두 개가 부사예요.'}
+ ],essay2:{q:'윗글의 주장을 뒷받침할 근거를 한 가지 더 쓰고, 그 근거가 타당한 이유를 한 문장으로 쓰시오.',model:'근거: 우리 학교 앞 도로는 차량 통행량이 많아 아침마다 차가 빠르게 지나간다.\n이유: 차가 많고 빠를수록 사고 위험이 커지므로, 신호등이 필요하다는 주장과 직접 연결되기 때문이다.',crit:['주장과 관련된 근거를 썼다','근거가 타당한 이유를 설명했다']}},
+'사회':{qs:[
+ {q:'고대 아테네 민주 정치의 한계로 알맞은 것은?',ch:['시민이 직접 정치에 참여하였다.','여성, 노예, 외국인은 정치에 참여할 수 없었다.','민회에서 중요한 일을 결정하였다.','추첨으로 관리를 뽑기도 하였다.','시민의 토론을 중요하게 여겼다.'],a:1,ex:'아테네 시민은 성인 남성으로 한정되어, 여성·노예·외국인은 배제되었어요.'},
+ {q:'영국 명예혁명의 결과로 알맞은 것은?',ch:['국왕이 모든 권력을 갖게 되었다.','권리 장전을 승인하여 의회 중심 정치의 기틀을 마련하였다.','미국이 독립하였다.','보통 선거가 바로 실시되었다.','공산주의 국가가 세워졌다.'],a:1,ex:'명예혁명 후 권리 장전이 승인되어 왕권이 제한되고 의회 정치가 발전했어요.'},
+ {q:'영국의 식민 통치에 맞서 독립을 선언하고 민주 공화국을 세운 혁명은?',ch:['영국 명예혁명','미국 독립 혁명','프랑스 혁명','산업 혁명'],a:1,ex:'미국 독립 혁명은 독립 선언서를 발표하고 민주 공화국을 세웠어요.'},
+ {q:'\'국민 자치\'의 원리에 대한 설명으로 알맞은 것은?',ch:['국민이 스스로 또는 대표를 통해 나라를 다스린다.','왕이 국민을 대신해 모든 결정을 한다.','법원이 모든 정책을 결정한다.','외국 정부가 우리나라를 다스린다.','소수의 귀족이 나라를 다스린다.'],a:0,ex:'국민 자치는 국민이 직접 또는 대표를 통해 스스로 나라를 다스리는 원리예요.'},
+ {q:'다수결의 원칙을 사용할 때 주의할 점으로 가장 알맞은 것은?',ch:['토론 없이 바로 투표한다.','충분히 토론하고 소수의 의견도 존중한다.','다수의 의견이면 무엇이든 옳다.','소수 의견은 무시한다.','한 사람이 결정한다.'],a:1,ex:'다수의 의견이 항상 옳은 것은 아니므로 충분한 토론과 소수 의견 존중이 필요해요.'},
+ {q:'선거의 기능으로 알맞지 않은 것은?',ch:['국민의 대표를 뽑는다.','정치권력에 정당성을 부여한다.','국민 주권을 실현한다.','법원의 판결을 바꾼다.','대표자를 평가하고 책임을 묻는다.'],a:3,ex:'선거로 법원의 판결을 바꿀 수는 없어요.'},
+ {q:'정당의 역할로 알맞지 않은 것은?',ch:['정책을 만들어 제시한다.','선거에 후보자를 추천한다.','여론을 모아 정부에 전달한다.','재판을 한다.','정부를 감시하고 비판한다.'],a:3,ex:'재판은 법원의 역할이에요.'},
+ {q:'선거와 국민 투표를 공정하게 관리하기 위해 설치된 기관은?',ch:['국회','법원','선거 관리 위원회','교육청','헌법 재판소'],a:2,ex:'선거 관리 위원회는 선거가 공정하게 치러지도록 관리하는 독립 기관이에요.'},
+ {q:'여주시의 주민이 선거로 뽑으며, 여주시의 행정을 책임지는 사람은?',ch:['국회 의원','여주시장','대법원장','국무총리','교육부 장관'],a:1,ex:'지방 자치 단체장(시장·군수·도지사 등)은 주민이 선거로 뽑아요.'},
+ {q:'미디어 정보가 사실인지 확인하는 방법으로 가장 알맞은 것은?',ch:['친구가 맞다고 하면 믿는다.','공공 기관의 통계나 여러 언론의 보도를 비교해 본다.','댓글 수가 많은 글을 믿는다.','제목이 자극적이면 믿는다.','유명인이 공유하면 믿는다.'],a:1,ex:'믿을 만한 공식 자료와 여러 출처를 비교하는 것이 사실 확인의 기본이에요.'},
+ {q:'미디어를 이용할 때 바람직한 태도는?',ch:['다른 사람의 사진을 허락 없이 올린다.','남의 글을 출처 없이 가져다 쓴다.','다른 사람의 개인 정보와 초상권을 존중한다.','확인되지 않은 소문을 퍼뜨린다.','악성 댓글을 단다.'],a:2,ex:'다른 사람의 개인 정보, 초상권, 저작권을 존중해야 해요.'}
+ ],essay2:{q:'다수결의 원칙의 의미를 쓰고, 다수결로 결정할 때 주의해야 할 점을 서술하시오.',model:'다수결의 원칙은 의견이 다를 때 더 많은 사람이 찬성하는 의견을 집단의 의견으로 정하는 방법이다.\n다수의 의견이 항상 옳은 것은 아니므로, 결정 전에 충분히 토론하고 소수의 의견도 존중해야 한다.',crit:['다수결의 의미를 바르게 썼다','토론과 소수 의견 존중을 썼다']}},
+'수학':{qs:[
+ {q:'점 (0, −5)는 좌표평면에서 어디에 있는가?',ch:['제3사분면','제4사분면','x축 위','y축 위','원점'],a:3,ex:'x좌표가 0이므로 y축 위의 점이에요. 어느 사분면에도 속하지 않아요.'},
+ {q:'점 (3, −2)를 x축에 대하여 대칭이동한 점의 좌표는?',ch:['(−3, −2)','(3, 2)','(−3, 2)','(2, 3)','(−2, 3)'],a:1,ex:'x축 대칭은 y좌표의 부호만 바뀌어요.'},
+ {q:'점 (−4, 1)을 원점에 대하여 대칭이동한 점의 좌표는?',ch:['(4, 1)','(−4, −1)','(4, −1)','(1, −4)','(−1, 4)'],a:2,ex:'원점 대칭은 x, y좌표의 부호가 모두 바뀌어요.'},
+ {q:'점 (a, 6)이 정비례 관계 y = −2x의 그래프 위에 있을 때, a의 값은?',ch:['−12','−3','3','4','12'],a:1,ex:'6 = −2a → a = −3.'},
+ {q:'반비례 관계 y = 8/x의 그래프 위의 점 중에서 x좌표와 y좌표가 모두 자연수인 점의 개수는?',ch:['2개','3개','4개','6개','8개'],a:2,ex:'xy = 8을 만족하는 자연수 쌍: (1, 8), (2, 4), (4, 2), (8, 1) → 4개.'},
+ {q:'원점과 점 (2, 5)를 지나는 직선을 그래프로 하는 식은?',ch:['y = 2x','y = 5x','y = (2/5)x','y = (5/2)x','y = 10/x'],a:3,ex:'y = ax에 (2, 5) 대입: 5 = 2a → a = 5/2.'},
+ {q:'선분 AB의 수직이등분선 위의 한 점 P에 대하여 항상 성립하는 것은?',ch:['PA = AB','PA = PB','PB = AB','∠PAB = 90°','PA = 2PB'],a:1,ex:'수직이등분선 위의 모든 점은 선분의 양 끝점에서 같은 거리에 있어요.'},
+ {q:'작도할 때 눈금 없는 자를 사용하는 목적으로 알맞은 것은?',ch:['선분의 길이를 잰다.','각도를 잰다.','두 점을 잇는 선분을 긋거나 연장한다.','원을 그린다.','넓이를 구한다.'],a:2,ex:'눈금 없는 자는 선을 긋는 데만, 컴퍼스는 원을 그리거나 길이를 옮기는 데 써요.'},
+ {q:'반지름이 5cm인 원의 둘레의 길이는?',ch:['5π cm','10π cm','15π cm','25π cm','50π cm'],a:1,ex:'원의 둘레 = 2πr = 2 × π × 5 = 10π cm.'},
+ {q:'오각기둥의 모서리의 개수는?',ch:['10개','12개','15개','18개','20개'],a:2,ex:'n각기둥의 모서리 = 3n = 15개.'},
+ {q:'직각삼각형을 직각을 낀 한 변을 회전축으로 하여 1회전 시킬 때 생기는 입체도형은?',ch:['원기둥','원뿔','구','원뿔대','삼각뿔'],a:1,ex:'직각삼각형을 직각을 낀 변을 축으로 돌리면 원뿔이 돼요. (직사각형은 원기둥, 반원은 구, 사다리꼴은 원뿔대)'}
+ ],essay2:{q:'밑면의 반지름이 4cm, 높이가 6cm인 원기둥의 겉넓이를 풀이 과정과 함께 구하시오.',model:'밑넓이 = π × 4² = 16π, 두 밑면 = 32π\n옆넓이 = (밑면 둘레) × 높이 = 2π × 4 × 6 = 48π\n겉넓이 = 32π + 48π = 80π (cm²)',crit:['밑넓이와 옆넓이를 바르게 구했다','겉넓이 80π cm²를 구했다']}},
+'과학':{qs:[
+ {q:'다음 중 확산의 예로 알맞은 것은?',ch:['젖은 머리카락이 마른다.','뜨거운 물에 넣은 티백의 색이 물 전체로 퍼진다.','얼음이 녹는다.','물이 끓는다.','유리창에 김이 서린다.'],a:1,ex:'티백 색소 입자가 스스로 움직여 퍼지는 확산이에요. ①은 증발이에요.'},
+ {q:'다음 중 증발의 예로 알맞은 것은?',ch:['바닷물을 염전에 가두어 소금을 얻는다.','향수 냄새가 퍼진다.','차가운 컵 표면에 물방울이 맺힌다.','촛농이 굳는다.','얼음이 언다.'],a:0,ex:'바닷물의 물이 증발하고 소금이 남아요. ③은 액화예요.'},
+ {q:'풍선에 공기를 더 불어 넣으면 풍선이 팽팽해지는 까닭은?',ch:['기체 입자의 크기가 커져서','풍선 속 기체 입자 수가 늘어 벽에 충돌하는 횟수가 많아져서','기체 입자가 멈춰서','기체 입자가 사라져서','풍선이 차가워져서'],a:1,ex:'입자 수가 많아지면 충돌 횟수가 늘어 압력이 커지고 풍선이 팽팽해져요.'},
+ {q:'기체의 압력이 작용하는 방향은?',ch:['위쪽으로만','아래쪽으로만','옆쪽으로만','모든 방향으로','작용하지 않는다'],a:3,ex:'기체 입자는 모든 방향으로 운동하므로 압력도 모든 방향으로 작용해요.'},
+ {q:'온도가 일정할 때, 부피가 90mL인 기체에 처음의 3배 압력을 가하면 부피는?',ch:['30mL','45mL','90mL','180mL','270mL'],a:0,ex:'압력이 3배가 되면 부피는 ⅓배: 90 ÷ 3 = 30mL.'},
+ {q:'빈 삼각 플라스크 입구에 고무풍선을 씌우고 뜨거운 물에 담그면 나타나는 현상과 그 까닭으로 옳은 것은?',ch:['풍선이 쪼그라든다 - 입자 수가 줄어서','풍선이 부푼다 - 입자 운동이 활발해져 기체 부피가 커져서','변화 없다 - 압력이 일정해서','풍선이 부푼다 - 입자 크기가 커져서','풍선이 쪼그라든다 - 온도가 낮아져서'],a:1,ex:'샤를 법칙: 온도가 높아지면 입자 운동이 활발해져 기체 부피가 커져요. 입자 크기는 그대로예요.'},
+ {q:'열기구 속 공기를 가열하면 열기구가 떠오르는 현상과 가장 관련 깊은 법칙은?',ch:['보일 법칙','샤를 법칙','만유인력 법칙','관성 법칙','작용 반작용 법칙'],a:1,ex:'온도가 높아지면 공기 부피가 커지고(샤를 법칙) 가벼워져 떠올라요.'},
+ {q:'지구형 행성의 특징으로 옳은 것은?',ch:['표면이 암석으로 되어 있고 평균 밀도가 크다.','고리가 있다.','위성이 매우 많다.','반지름이 매우 크다.','주로 수소와 헬륨 기체로 이루어져 있다.'],a:0,ex:'지구형 행성은 단단한 암석 표면, 큰 밀도, 적은 위성이 특징이에요.'},
+ {q:'태양계 행성 중 태양에서 가장 멀리 있고, 대기의 메테인 때문에 푸르게 보이는 행성은?',ch:['토성','천왕성','해왕성','목성','화성'],a:2,ex:'해왕성은 태양에서 가장 먼 행성이고, 메테인 대기로 푸르게 보여요.'},
+ {q:'태양계 행성 중 지구에만 있는 특징으로 가장 알맞은 것은?',ch:['위성이 있다.','대기가 있다.','표면에 액체 상태의 물이 많고 생명체가 산다.','자전을 한다.','공전을 한다.'],a:2,ex:'액체 상태의 물이 풍부하고 생명체가 살고 있는 행성은 지구뿐이에요.'},
+ {q:'태양 광구에 보이는 쌀알 무늬가 생기는 원인은?',ch:['흑점의 이동','광구 아래에서 일어나는 대류','달의 그림자','지구 대기의 굴절','코로나의 폭발'],a:1,ex:'광구 아래의 뜨거운 기체가 올라오고 식은 기체가 내려가는 대류로 쌀알 무늬가 생겨요.'}
+ ],essay2:{q:'찌그러진 탁구공을 뜨거운 물에 넣으면 펴지는 까닭을 \'온도\', \'입자\'라는 말을 사용하여 서술하시오.',model:'뜨거운 물에 넣으면 탁구공 속 기체의 온도가 높아진다. 기체 입자의 운동이 활발해져 입자 사이의 거리가 멀어지고 부피가 커지므로 찌그러진 부분이 펴진다(샤를 법칙).',crit:['온도가 높아진다는 것을 썼다','입자 운동이 활발해져 부피가 커진다고 설명했다']}},
+'영어':{P:{I:'Yeoju Library Book Festival\nWhen: Saturday, November 21, 10 a.m. – 4 p.m.\nWhere: Yeoju Public Library, 1st floor\nActivities:\n- Meet a writer at 11 a.m.\n- Make your own bookmark\n- Used book market (Bring your old books!)\nAdmission is free.'},qs:[
+ {p:'I',q:'행사가 열리는 날은?',ch:['Friday, November 20','Saturday, November 21','Sunday, November 22','Saturday, October 21','Monday, November 23'],a:1,ex:'"When: Saturday, November 21"'},
+ {p:'I',q:'안내문에 나온 활동이 아닌 것은?',ch:['meeting a writer','making a bookmark','buying used books','watching a movie','bringing old books'],a:3,ex:'영화 관람(watching a movie)은 안내문에 없어요.'},
+ {p:'I',q:'입장료(admission)에 대한 내용으로 알맞은 것은?',ch:['It is free.','It is 5,000 won.','Only students pay.','You pay with old books.','It is not mentioned.'],a:0,ex:'"Admission is free."'},
+ {p:'I',q:'작가를 만날 수 있는 시각은?',ch:['10 a.m.','11 a.m.','1 p.m.','3 p.m.','4 p.m.'],a:1,ex:'"Meet a writer at 11 a.m."'},
+ {q:'빈칸에 알맞은 말은?\nA: ______ is your birthday?\nB: It\'s November 3.',ch:['What','Where','When','Who','How'],a:2,ex:'날짜를 물을 때는 When.'},
+ {q:'빈칸에 알맞은 말은?\nA: ______ do you go to school?\nB: By bus.',ch:['What','How','Who','Where','Why'],a:1,ex:'교통수단(방법)을 물을 때는 How.'},
+ {q:'빈칸에 알맞은 말은?\nShe ______ late for school.',ch:['never is','is never','never are','are never','does never'],a:1,ex:'빈도부사는 be동사 뒤, 일반동사 앞에 와요: She is never late.'},
+ {q:'빈칸에 알맞은 말은?\nThis is the ______ day of my life. (good)',ch:['good','better','best','goodest','most good'],a:2,ex:'good의 최상급은 불규칙 변화 best예요.'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: Let\'s go hiking this Saturday.\nB: ______',ch:['That sounds great.','I went hiking.','Yes, I did.','You\'re welcome.','It\'s mine.'],a:0,ex:'제안에 동의할 때 "That sounds great."'},
+ {q:'대화의 빈칸에 가장 알맞은 말은?\nA: What do you think of this movie?\nB: ______',ch:['I think it\'s exciting.','I watched it at 7.','It\'s on TV.','Yes, I like it.','I\'m going there.'],a:0,ex:'의견을 묻는 말에는 "I think ~"로 답해요.'},
+ {q:'"You must not run in the library."의 뜻으로 알맞은 것은?',ch:['도서관에서 뛰어야 한다.','도서관에서 뛰면 안 된다.','도서관에서 뛸 수 있다.','도서관에서 뛸 필요가 없다.','도서관에서 뛰었다.'],a:1,ex:'must not은 "~하면 안 된다"(금지)예요.'}
+ ],essay2:{q:'위 안내문(I)의 형식을 참고하여, 우리 반 행사를 알리는 영어 문장 두 개를 쓰시오. (When, Where, What 중 두 가지 정보 포함)',model:'Our class will have a sports day on Friday, December 11.\nIt will be held on the school playground.',crit:['행사 정보를 두 가지 이상 담았다','문법과 철자가 정확하다']}},
+'한문':{qs:[
+ {q:'木 두 개가 모여 이루어진 \'林\'의 음과 뜻은?',ch:['나무 목','수풀 림','숲 삼','뿌리 본','쉴 휴'],a:1,ex:'나무가 모인 수풀이라는 뜻의 수풀 림(林)이에요.'},
+ {q:'木이 세 개 모여 \'나무가 빽빽하다\'는 뜻을 나타내는 한자는?',ch:['林','森','本','末','休'],a:1,ex:'森(나무 빽빽할 삼)은 林보다 나무가 더 많은 모습이에요.'},
+ {q:'河(물 하), 海(바다 해), 池(못 지)에 공통으로 들어 있는 부수는?',ch:['木','氵','火','口','亻'],a:1,ex:'氵(삼수변)는 물(水)과 관련된 뜻을 나타내요.'},
+ {q:'女와 子를 합하여 만든 한자 \'好\'의 뜻은?',ch:['좋다','싫다','크다','작다','많다'],a:0,ex:'好(좋을 호): 여자가 아이를 안고 있는 모습에서 \'좋다\'는 뜻이 나왔어요.'},
+ {q:'한자어 \'登山\'의 뜻으로 알맞은 것은?',ch:['산에서 내려옴','산에 오름','산을 그림','산을 지킴','산에 나무를 심음'],a:1,ex:'登(오를 등) 山(메 산): 산에 오름.'},
+ {q:'한자어 \'入口\'의 독음은?',ch:['출구','입구','인구','팔구','입국'],a:1,ex:'入(들 입) 口(입 구): 들어가는 곳.'},
+ {q:'大器晩成(대기만성)의 뜻으로 알맞은 것은?',ch:['큰 그릇은 쉽게 깨진다.','크게 될 사람은 늦게 이루어진다.','작은 것도 소중하다.','일찍 일어나야 성공한다.','그릇을 잘 만들어야 한다.'],a:1,ex:'큰 그릇은 늦게 완성된다는 뜻으로, 크게 될 인물은 오랜 노력 끝에 늦게 이루어진다는 말이에요.'},
+ {q:'他山之石(타산지석)의 뜻으로 알맞은 것은?',ch:['다른 산의 돌은 쓸모없다.','남의 하찮은 말이나 행동도 나를 닦는 데 도움이 된다.','산에 있는 돌을 옮긴다.','남의 물건을 탐낸다.','돌처럼 단단한 마음'],a:1,ex:'다른 산의 거친 돌도 옥을 가는 데 쓸 수 있다는 데서 나온 말이에요.'},
+ {q:'孟母三遷(맹모삼천)에 담긴 교훈은?',ch:['어머니는 이사를 좋아한다.','자녀 교육에는 좋은 환경이 중요하다.','세 번 실패하면 포기해야 한다.','맹자는 시장을 좋아했다.','집은 자주 옮기지 않는 것이 좋다.'],a:1,ex:'맹자의 어머니가 아들 교육을 위해 세 번 이사했다는 이야기예요.'},
+ {q:'積小成大(적소성대)에 담긴 교훈으로 알맞은 것은?',ch:['작은 것도 쌓이면 큰 것이 된다.','큰 것만 중요하다.','작은 일은 하지 않아도 된다.','욕심을 부려야 한다.','한 번에 큰일을 해야 한다.'],a:0,ex:'積(쌓을 적) 小(작을 소) 成(이룰 성) 大(큰 대): 작은 것을 쌓아 큰 것을 이룬다.'},
+ {q:'己所不欲 勿施於人(기소불욕 물시어인)의 뜻으로 알맞은 것은?',ch:['자기가 원하지 않는 일을 남에게 시키지 말라.','자기가 원하는 것은 남에게 주지 말라.','남이 원하는 대로 다 해 주어라.','자기 일은 남에게 맡겨라.','남의 일에 끼어들지 말라.'],a:0,ex:'『논어』의 구절로, 남을 배려하는 태도를 강조해요.'}
+ ],essay2:{q:'孟母三遷(맹모삼천)의 유래를 간단히 쓰고, 이 말에 담긴 교훈을 서술하시오.',model:'맹자의 어머니는 공동묘지 근처, 시장 근처에서 맹자가 보고 배운 것을 흉내 내자, 서당(학교) 근처로 이사하여 맹자가 공부에 힘쓰게 했다.\n자녀 교육에는 주변 환경이 중요하다는 교훈을 준다.',crit:['세 번 이사한 유래를 썼다','교육 환경이 중요하다는 교훈을 썼다']}}
+}};
+Object.entries(ADD).forEach(([rd,subs])=>{const L=rd==='1'?EXAM1:EXAM2; L.forEach(x=>{const a=subs[x.k]; if(!a)return; x.qs.push(...a.qs); if(a.P)x.P=Object.assign(x.P||{},a.P); x.essay2=a.essay2;});});
+const ROUNDS=[EXAM1,EXAM2];
+/* 정답 위치가 한쪽으로 몰리지 않도록 보기 순서를 고정 시드로 섞음. 해설에 보기 번호가 나오거나 숫자·기호 보기(오름차순)인 문항은 그대로 둠 */
+(function(){const NUMS=/[①②③④⑤]/;
+  function rng(str){let h=2166136261;for(const ch of str){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}return()=>{h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
+  ROUNDS.forEach((L,ri)=>L.forEach(x=>x.qs.forEach((q,qi)=>{
+    if(NUMS.test(q.ex)||q.ch.every(c=>/^[−\-\d(ㄱㄴㄷㄹ]/.test(c)))return;
+    const r=rng(ri+x.k+qi), idx=q.ch.map((_,i)=>i);
+    for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+    q.ch=idx.map(i=>q.ch[i]); q.a=idx.indexOf(q.a);
+  })));})();
+</script>
+
+<script>
+const STICK = {
+  star:c=>`<svg viewBox="0 0 40 40"><path d="M20 3l5 10.5 11.5 1.6-8.3 8 2 11.4L20 29l-10.2 5.5 2-11.4-8.3-8L15 13.5z" fill="${c}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+  heart:c=>`<svg viewBox="0 0 40 40"><path d="M20 35S5 25.5 5 15a8 8 0 0 1 15-4 8 8 0 0 1 15 4c0 10.5-15 20-15 20z" fill="${c}" stroke="#fff" stroke-width="2.5"/></svg>`,
+  flower:c=>`<svg viewBox="0 0 40 40"><g fill="${c}" stroke="#fff" stroke-width="2">${[0,72,144,216,288].map(a=>`<circle cx="20" cy="10" r="7.5" transform="rotate(${a} 20 20)"/>`).join('')}</g><circle cx="20" cy="20" r="6" fill="#FFD45E" stroke="#fff" stroke-width="2"/></svg>`,
+  cloud:c=>`<svg viewBox="0 0 40 40"><path d="M11 31a7 7 0 0 1-1-14 9 9 0 0 1 17-3 7.5 7.5 0 0 1 3 17z" fill="${c}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/></svg>`
+};
+const SUBJ = [
+ {k:'국어',c:'pink',st:'heart',exam:true,items:[
+  {t:'주장을 담은 글 쓰기',w:25,form:'논술',steps:['찬반이 나뉘는 주제 하나 고르기','내 주장을 한 문장으로 쓰기','근거 2~3개 모으기 (통계, 전문가 의견, 경험)','반대 의견을 예상하고 반박 준비하기','서론-본론-결론으로 써 보고 맞춤법 점검'],tip:'근거는 "믿을 만한가, 주장과 연결되는가" 두 가지를 꼭 확인해요.',tpl:[['서론','문제 상황 + 나의 주장'],['본론 1','첫 번째 근거와 자료'],['본론 2','두 번째 근거와 자료'],['반론과 반박','이런 의견도 있지만…'],['결론','주장 다시 강조 + 제안']]},
+  {t:'정서를 표현하는 글 쓰기',w:25,form:'논술',steps:['마음이 크게 움직였던 경험 하나 고르기','그때 장면을 떠올리며 보이고 들린 것 메모','감정을 "좋았다" 대신 구체적인 말로 바꾸기','비유나 감각적 표현 2개 이상 넣기','경험을 통해 느끼거나 깨달은 점으로 마무리'],tip:'"슬펐다"보다 "목 끝이 뜨거워졌다"처럼 몸의 느낌으로 써 보면 좋아요.',tpl:[['그 장면','언제, 어디서, 무슨 일이'],['그때의 마음','감정을 구체적으로'],['표현 연습','비유, 감각 표현'],['깨달은 점','지금 생각해 보면…']]}
+ ]},
+ {k:'사회',c:'sky',st:'cloud',exam:true,items:[
+  {t:'뉴스 기사 비평하기',w:20,form:'논술',steps:['최근 기사 하나 고르고 언론사·날짜 적기','기사 내용을 세 줄로 요약','사실과 의견 문장을 구분해 표시','빠진 관점이나 치우친 표현이 있는지 찾기','기사에 대한 나의 평가 쓰기'],tip:'제목이 내용보다 과장되어 있지 않은지도 비평 포인트예요.',tpl:[['기사 정보','제목, 언론사, 날짜'],['요약','세 줄 요약'],['사실 vs 의견','예시 문장 구분'],['비평','공정성, 신뢰성, 빠진 관점'],['나의 생각','']]},
+  {t:'민주주의의 발전 분석하기',w:15,form:'논술',steps:['고대 아테네 민주주의 특징 정리 (직접 민주주의, 시민 범위 제한)','근대 시민 혁명 정리 (영국 명예혁명, 미국 독립 혁명, 프랑스 혁명)','현대 민주주의 정리 (보통 선거 확대, 대의제)','시기별로 무엇이 달라졌는지 비교','오늘날 우리에게 주는 의미 쓰기'],tip:'"누가 정치에 참여할 수 있었나"를 기준으로 비교하면 흐름이 잘 보여요.',tpl:[['고대','아테네 민주주의'],['근대','시민 혁명'],['현대','보통 선거, 대의제'],['비교와 의미','']]},
+  {t:'학습일지',w:15,form:'포트폴리오',steps:['수업마다 날짜와 배운 개념 적기','궁금한 점 한 가지씩 남기기','빠진 날 없는지 확인','제출 전 깔끔하게 정리']}
+ ]},
+ {k:'수학',c:'lilac',st:'star',exam:true,items:[
+  {t:'정비례와 반비례 문제 해결',w:20,form:'논술',steps:['정비례 y=ax, 반비례 y=a/x 식 구하기 연습','표 → 식 → 그래프로 바꾸는 연습','그래프 모양 비교 (원점 지나는 직선 / 한 쌍의 곡선)','실생활 문제를 식으로 세우기','풀이 과정을 문장으로 서술하는 연습'],tip:'논술형은 답보다 과정! "x가 2배가 되면 y는…"처럼 이유를 써요.',tpl:[['문제 이해','무엇을 구하나'],['식 세우기','정비례? 반비례?'],['풀이','과정을 차례대로'],['확인','답이 맞는지 검산']]},
+  {t:'삼각형 작도하기',w:10,form:'실험·실습',steps:['준비물: 눈금 없는 자, 컴퍼스, 연필','세 변의 길이가 주어질 때 작도','두 변과 그 끼인각이 주어질 때 작도','한 변과 양 끝 각이 주어질 때 작도','삼각형이 하나로 정해지지 않는 경우 알기'],tip:'컴퍼스 흔적(호)은 지우지 말고 남겨 두세요. 작도 과정이 점수예요.'},
+  {t:'회전체 겉넓이와 부피',w:20,form:'논술',steps:['회전축을 기준으로 어떤 입체가 생기는지 그려 보기','원기둥: 부피 πr²h, 겉넓이 2πr²+2πrh','원뿔: 부피 ⅓πr²h','구: 부피 ⁴⁄₃πr³, 겉넓이 4πr²','단위(cm², cm³)까지 정확히 쓰기'],tip:'원뿔 부피는 같은 밑면·높이의 원기둥의 ⅓이라는 걸 기억해요.',tpl:[['어떤 회전체?','그림과 설명'],['필요한 값','반지름, 높이'],['풀이','공식 → 대입 → 계산'],['답','단위 포함']]}
+ ]},
+ {k:'과학',c:'mint',st:'flower',exam:true,items:[
+  {t:'보일 법칙 탐구 실험',w:25,form:'실험·논술',steps:['온도가 일정할 때 압력과 부피의 관계 예상하기','주사기 실험 과정 정리 (누르는 힘과 부피 변화)','결과를 표와 그래프로 정리','압력↑ → 부피↓ (반비례) 결론 쓰기','생활 속 예 찾기 (과자 봉지, 공기 주입 운동화 등)'],tip:'"온도는 일정하게"라는 조건을 꼭 써야 해요.',tpl:[['가설','압력이 커지면 부피는…'],['실험 과정',''],['결과','표, 그래프 해석'],['결론과 생활 예','']]},
+  {t:'태양계 행성 탐사 계획서',w:25,form:'논술',steps:['탐사할 행성 하나 고르기','행성 특징 조사 (크기, 대기, 온도, 위성, 표면)','탐사 목적 정하기','탐사 방법 정하기 (궤도선, 착륙선, 로버)','예상되는 어려움과 해결 방법'],tip:'목적과 방법이 행성 특징과 연결되면 설득력이 올라가요. 예: 금성은 고온·두꺼운 대기 → 착륙선 내열 설계.',tpl:[['행성과 특징',''],['탐사 목적',''],['탐사 방법',''],['어려움과 해결','']]}
+ ]},
+ {k:'영어',c:'peach',st:'heart',exam:true,items:[
+  {t:'우리 동네 명소 소개하기',w:25,form:'논술·토의',steps:['소개할 명소 고르기 (예: 신륵사, 세종대왕릉)','위치와 특징 조사','그곳에서 할 수 있는 일 정리','추천 이유 쓰기','친구 발표를 듣고 질문·의견 나누기 연습'],tip:'유용한 표현: There is/are…, You can…, It is famous for…, I recommend it because…',tpl:[['Introduction','Name and location'],['What to do','You can…'],['Why I recommend it','because…'],['Closing','']]},
+  {t:'일상적 대화하기',w:15,form:'구술·발표',steps:['교과서 대화문 소리 내어 따라 읽기','짝과 역할 바꿔 연습','발음·억양 녹음해서 들어 보기','상대를 보며 자연스럽게 말하기']},
+  {t:'친숙한 주제 영어 듣기',w:10,form:'기타',steps:['교과서 듣기 파일 반복 듣기','들으며 핵심 단어 메모하는 연습','모르는 단어 정리']}
+ ]},
+ {k:'한문',c:'butter',st:'star',exam:true,items:[
+  {t:'고사성어 풀이하기',w:20,form:'논술',steps:['한자 하나하나의 음과 뜻 적기','글자 풀이로 직역하기','유래 이야기 정리','오늘날 쓰이는 뜻과 예문 만들기'],tip:'"글자 풀이 → 유래 → 실제 뜻" 순서로 쓰면 깔끔해요.',tpl:[['고사성어',''],['글자 풀이','음과 뜻'],['유래',''],['뜻과 예문','']]},
+  {t:'한문 격언 풀이하기',w:20,form:'논술',steps:['격언을 소리 내어 읽기 (음 달기)','해석하기','담긴 가르침 정리','내 생활에 적용한 예 쓰기'],tpl:[['격언',''],['해석',''],['가르침',''],['나에게 적용하면','']]},
+  {t:'신습한자 포트폴리오',w:10,form:'포트폴리오',steps:['새로 배운 한자 모두 정리','음·훈·부수 적기','한자가 들어간 단어 예시 쓰기']}
+ ]},
+ {k:'도덕',c:'lilac',st:'flower',exam:false,items:[
+  {t:'도덕적 성찰 기록장',w:10,form:'포트폴리오',steps:['수업마다 성찰 기록 남기기','빠진 날 채우기']},
+  {t:'인권 신문 만들기',w:30,form:'프로젝트·논술',steps:['다룰 인권 문제 정하기','관련 기사·사례 모으기','원인과 해결 방안 정리','신문 지면 구성 (제목, 기사, 그림)','나의 주장 칼럼 쓰기']},
+  {t:'다른 문화 바라보는 관점 비교',w:30,form:'논술',steps:['자문화 중심주의 뜻과 예','문화 사대주의 뜻과 예','문화 상대주의 뜻과 예','보편 윤리에 어긋나는 문화는 존중할 수 없다는 점','바람직한 태도 정리'],tip:'문화 상대주의도 "인권을 해치는 문화까지 인정"하는 건 아니라는 점이 핵심이에요.',tpl:[['세 가지 관점',''],['비교',''],['바람직한 태도','']]},
+  {t:'도덕적 고려의 범위 분석',w:30,form:'논술',steps:['도덕적으로 배려해야 할 대상 생각하기 (사람, 동물, 미래 세대, 자연)','각 대상을 배려해야 하는 근거 찾기','범위를 넓힐 때의 의미 정리','내 생각 정리'],tpl:[['대상',''],['근거',''],['나의 생각','']]}
+ ]},
+ {k:'기술·가정',c:'mint',st:'cloud',exam:false,items:[
+  {t:'청소년기 영양의 중요성',w:20,form:'논술',steps:['청소년기 성장 특징 정리','특히 필요한 영양소 (단백질, 칼슘, 철 등)','나의 식습관 문제점 찾기','개선 계획 세우기'],tpl:[['청소년기 특징',''],['필요한 영양소',''],['나의 식습관',''],['개선 계획','']]},
+  {t:'TPO 옷차림 발표하기',w:30,form:'실습·발표',steps:['TPO 뜻 알기 (시간, 장소, 상황)','상황 2~3개 정하고 옷차림 고르기','고른 이유 설명 준비','발표 연습 (시간 재기)']},
+  {t:'제품 설계하고 제작하기',w:30,form:'프로젝트',steps:['해결할 생활 속 불편함 찾기','아이디어 스케치','치수 넣은 설계도','제작하기','사용해 보고 고칠 점 찾기']},
+  {t:'제품 보고서 작성하기',w:10,form:'논술',steps:['설계 의도 정리','제작 과정 기록','평가와 개선점'],tpl:[['설계 의도',''],['제작 과정',''],['평가와 개선점','']]},
+  {t:'기술적 문제 해결 포트폴리오',w:10,form:'논술',steps:['문제 이해 → 탐색 → 실현 → 평가 단계별 기록','단계마다 사진이나 메모 첨부']}
+ ]},
+ {k:'체육',c:'sky',st:'star',exam:false,items:[
+  {t:'제자리멀리뛰기',w:20,form:'실기',steps:['팔을 크게 흔들어 반동 만들기','양발을 동시에 구르기','45도 방향으로 멀리 뛰기','착지 때 무릎 굽히고 앞으로 몸 기울이기','기록 재고 적어 두기']},
+  {t:'축구 리프팅',w:25,form:'실기',steps:['발등 가운데로 공 맞히기','공 높이는 허리 아래로 낮게','하루 10분씩 연습','최고 기록 적어 두기']},
+  {t:'축구 슈팅',w:25,form:'실기',steps:['디딤발은 공 옆에','인사이드·인스텝 차기 연습','차는 순간 공 보기','목표 지점 정해 정확도 연습']},
+  {t:'축구 경기 분석, 과학 원리 설명',w:30,form:'논술',steps:['경기 하나 보고 장면 메모','포지션과 전술 정리','과학 원리 연결 (마그누스 효과로 휘는 공, 마찰력, 작용·반작용)','분석 글 쓰기'],tip:'"이 장면에서 공이 휜 이유는…"처럼 장면 하나를 원리로 설명하면 좋아요.',tpl:[['경기와 장면',''],['전술 분석',''],['과학 원리',''],['정리','']]}
+ ]},
+ {k:'음악',c:'pink',st:'flower',exam:false,items:[
+  {t:'생활 속 클래식 음악',w:20,form:'논술',steps:['광고·영화·게임 속 클래식 찾기','곡명과 작곡가 확인','쓰인 장면과 효과 설명'],tpl:[['곡명·작곡가',''],['쓰인 곳',''],['효과','']]},
+  {t:'서양음악사 감상',w:30,form:'실기',steps:['시대별 특징 정리 (바로크, 고전, 낭만, 근현대)','대표 작곡가와 곡 듣기 (바흐, 모차르트, 베토벤, 쇼팽 등)','들으며 느낀 점 메모']},
+  {t:'우쿨렐레 연주하기',w:30,form:'실기',steps:['C, Am, F, G7 코드 잡기','코드 바꾸기 속도 연습','스트로크 박자 맞추기','과제곡 처음부터 끝까지 연주']},
+  {t:'노래 부르기',w:20,form:'실기',steps:['가사 외우기','호흡 위치 표시하기','음정 정확히 연습','반주에 맞춰 불러 보기']}
+ ]}
+];
+SUBJ.forEach((s,si)=>s.items.forEach((it,ii)=>it.id=si+'-'+ii));
+
+const KEY='suhaeng-sticker-v1';
+let S={status:{},steps:{},notes:{},exam:{}};
+try{const r=localStorage.getItem(KEY); if(r) S=Object.assign(S,JSON.parse(r));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const col=c=>`var(--${c})`, tint=c=>`var(--${c}bg)`;
+let filter='전체', openId=null, openEx=null, mode='task';
+try{mode=localStorage.getItem(KEY+'-mode')||'task';}catch(e){}
+if(!S.exam)S.exam={};
+const esc=t=>String(t??'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const NUM='①②③④⑤';
+let exRound=1, exView='round';
+try{exRound=+localStorage.getItem(KEY+'-round')||1; if(!ROUNDS[exRound-1])exRound=1;}catch(e){}
+const EXAMS=()=>ROUNDS[exRound-1];
+const keyOf=(rd,k)=>rd===1?k:rd+'-'+k;
+const ek=k=>keyOf(exRound,k);
+function exR(k){const kk=ek(k); let r=S.exam[kk]; if(!r)r=S.exam[kk]={v:2,ans:{},essays:['',''],graded:false,selfs:[null,null],best:null};
+  if(r.v!==2){r.v=2; r.ans={}; r.essays=[r.essay||'','']; r.selfs=[null,null]; r.graded=false; r.best=null; delete r.essay; delete r.self;} return r;}
+const PT=qi=>qi<10?4:5;
+const ESS=x=>[x.essay,x.essay2].filter(Boolean);
+const selfSum=r=>(r.selfs||[]).reduce((a,b)=>a+(b||0),0);
+const stripPt=t=>t.replace(/\s*\((각 )?\d+점(, \d+점)?\)/g,'');
+function wrongList(){const out=[]; ROUNDS.forEach((L,ri)=>L.forEach((x,xi)=>{const r=S.exam[keyOf(ri+1,x.k)]; if(!r||r.v!==2||!r.graded)return;
+  x.qs.forEach((q,qi)=>{if(r.ans[qi]!==q.a)out.push({rd:ri+1,x,xi,q,qi,my:r.ans[qi]});});})); return out;}
+function exChips(){const w=wrongList().length;
+  return `<nav class="chips" aria-label="회차 고르기" style="margin:18px 0 0">${ROUNDS.map((_,i)=>`<button class="chip" data-round="${i+1}" aria-pressed="${exView==='round'&&exRound===i+1}">${i+1}회</button>`).join('')}<button class="chip" data-round="wrong" aria-pressed="${exView==='wrong'}">오답노트 ${w}</button></nav>`;}
+function renderWrong(){const L=wrongList();
+  document.getElementById('examView').innerHTML=exChips()+`<div class="exam-note">채점한 시험에서 틀린 선택형 문제만 모았어요. 다시 풀기를 하면 그 시험의 오답이 새로 채점될 때까지 여기서 빠져요.</div>`+
+  (L.length?L.map(o=>`<div class="q no" style="--tint:${tint(o.x.c)};--accent:${col(o.x.c)}"><div class="qh"><span class="pt">${o.rd}회 ${o.x.k} ${o.qi+1}번</span>\n${o.q.p?`<div class="passage" style="margin-top:6px">${esc(o.x.P[o.q.p])}</div>`:''}${esc(o.q.q)}</div>
+    <div class="chs">${o.q.ch.map((c,ci)=>`<button disabled class="${ci===o.q.a?'right':(o.my===ci?'wrong':'')}"><span>${NUM[ci]}</span><span>${esc(c)}</span></button>`).join('')}</div>
+    <div class="ex"><b>내 답 ${o.my==null?'안 풂':NUM[o.my]}</b> · 정답 ${NUM[o.q.a]} · ${esc(o.q.ex)}</div></div>`).join('')
+  :`<div class="q"><div class="qh">아직 모인 오답이 없어요. 시험을 풀고 채점하면 틀린 문제가 여기에 모여요.</div></div>`);}
+function mcScore(x,r){return x.qs.reduce((s,q,i)=>s+(r.ans[i]===q.a?PT(i):0),0);}
+function setMode(m){mode=m;try{localStorage.setItem(KEY+'-mode',m);}catch(e){}
+  document.getElementById('taskView').hidden=m!=='task';document.getElementById('examView').hidden=m!=='exam';
+  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-selected',b.dataset.mode===m));
+  if(m==='exam')renderExam();}
+function renderExam(){
+  if(exView==='wrong'){renderWrong();return;}
+  document.getElementById('examView').innerHTML=exChips()+`<div class="exam-note">아직 1학년 시험범위가 공지되지 않아, 수행평가 주제와 1학년 교육과정으로 짐작한 예상 범위로 만든 연습 문제예요(1·2회 모두 예상 범위). 실제 범위가 나오면 그에 맞춘 회차를 추가해요. 과목마다 선택형 20문항(1~10번 4점, 11~20번 5점) + 서술형 2문항(각 5점) = 100점으로, 실제 시험의 90:10 배점과 같아요.</div>
+  <div class="grid">${EXAMS().map((x,i)=>{const r=S.exam[ek(x.k)]&&exR(x.k);const answered=r?Object.keys(r.ans).length:0;
+    return `<button class="ecard" data-ex="${i}" style="--tint:${tint(x.c)};--accent:${col(x.c)}">
+      <span class="ecard-top"><h3>${x.k}</h3>${r&&r.best!=null?`<span class="stamp">${r.best}점</span>`:`<span class="tag">${answered?`푸는 중 ${answered}/${x.qs.length}`:'아직 안 풀었어요'}</span>`}</span>
+      <span class="range">${x.range}</span><span class="meta">선택형 20 · 서술형 2 · 100점</span></button>`}).join('')}</div>`;
+}
+function openExam(i,keepScroll){
+  openEx=i; openId=null; const x=EXAMS()[i], r=exR(x.k), g=r.graded; const sh=document.getElementById('sheet'); const top=keepScroll?sh.scrollTop:0;
+  sh.style.setProperty('--tint',tint(x.c)); sh.style.setProperty('--accent',col(x.c));
+  let prevP=null; const mc=mcScore(x,r), total=mc+selfSum(r), selfDone=r.selfs.every((v,ei)=>ei>=ESS(x).length||v!=null);
+  const qs=x.qs.map((q,qi)=>{let h='';
+    if(q.p&&q.p!==prevP){h+=`<div class="passage"><small>[${qi+1}${x.qs.slice(qi+1).some(z=>z.p===q.p)?'~'+(qi+1+x.qs.slice(qi+1).filter(z=>z.p===q.p).length):''}] 다음 글을 읽고 물음에 답하시오.</small>${esc(x.P[q.p])}</div>`;} prevP=q.p||prevP;
+    const ok=r.ans[qi]===q.a;
+    return h+`<div class="q ${g?(ok?'ok':'no'):''}"><div class="qh"><b>${qi+1}.</b>${esc(q.q)} <span class="pt">[${PT(qi)}점]</span></div>
+      <div class="chs" role="group" aria-label="${qi+1}번 보기">${q.ch.map((c,ci)=>{const cls=g?(ci===q.a?'right':(r.ans[qi]===ci?'wrong':'')):'';
+        return `<button data-q="${qi}" data-c="${ci}" aria-pressed="${r.ans[qi]===ci}" class="${cls}" ${g?'disabled':''}><span>${NUM[ci]}</span><span>${esc(c)}</span></button>`}).join('')}</div>
+      ${g?`<div class="ex"><b>${ok?'맞았어요':'틀렸어요'}</b> 정답 ${NUM[q.a]} · ${esc(q.ex)}</div>`:''}</div>`;}).join('');
+  const essay=ESS(x).map((e,ei)=>`<div class="q"><div class="qh"><b>서술형 ${ei+1}.</b>${esc(e.q)} <span class="pt">[5점]</span></div>
+    <textarea id="es-${i}-${ei}" data-essay="${ei}" aria-label="서술형 ${ei+1} 답안">${esc(r.essays[ei])}</textarea>
+    ${g?`<div class="model"><b>모범 답안</b>\n${esc(e.model)}</div><ul class="crit">${e.crit.map(c=>`<li>${esc(stripPt(c))}</li>`).join('')}</ul>
+    <div class="selfg" role="group" aria-label="서술형 ${ei+1} 스스로 채점"><span>내 답안 채점:</span>${[5,3,0].map(v=>`<button data-self="${ei}:${v}" aria-pressed="${r.selfs[ei]===v}">${v===5?'다 맞음 5':v===3?'부분 3':'다시 0'}</button>`).join('')}</div>`:''}</div>`).join('');
+  const n=Object.keys(r.ans).length;
+  sh.innerHTML=`<div class="sheet-in">
+    <div class="sheet-top"><div><div class="sub">모의시험 ${exRound}회 · ${esc(x.range)}</div><h2 id="sh-title">${x.k}</h2></div><button class="x" id="close" aria-label="닫기">✕</button></div>
+    ${g?`<div class="scorebar"><b>${total}점</b><span>선택형 ${mc}/90</span><span>서술형 ${selfDone?selfSum(r)+'/10':'채점 전'}</span>${r.best!=null?`<span>최고 ${r.best}점</span>`:''}</div>`:''}
+    ${qs}${essay}
+    <div class="actions">${g?`<button class="big" id="retry">다시 풀기</button>`:`<span>푼 문제 ${n}/${x.qs.length}</span><button class="big" id="grade">채점하기</button>`}</div>
+  </div>`;
+  document.getElementById('scrim').hidden=false; sh.hidden=false; sh.scrollTop=top;
+  if(!keepScroll)document.getElementById('close').focus();
+}
+function updBest(x,r){const t=mcScore(x,r)+selfSum(r); const prev=r.best; r.best=Math.max(r.best??0,t); return {t,prev};}
+
+function dday(){
+  const now=new Date(), t=new Date(2026,11,8);
+  const d=Math.ceil((t-new Date(now.getFullYear(),now.getMonth(),now.getDate()))/864e5);
+  document.getElementById('dday').textContent=d>0?'D-'+d:d===0?'D-day':'끝!';
+}
+function render(){
+  const chips=document.getElementById('chips');
+  chips.innerHTML=['전체',...SUBJ.map(s=>s.k)].map(k=>`<button class="chip" aria-pressed="${k===filter}" data-f="${k}">${k}</button>`).join('');
+  const all=SUBJ.flatMap(s=>s.items.map(it=>({s,it})));
+  const done=all.filter(x=>S.status[x.it.id]===2);
+  document.getElementById('cnt').textContent=`${done.length} / ${all.length}개`;
+  document.getElementById('shelf').innerHTML=all.map(x=>S.status[x.it.id]===2?STICK[x.s.st](`var(--${x.s.c})`):'<span class="empty"></span>').join('');
+  document.getElementById('grid').innerHTML=SUBJ.filter(s=>filter==='전체'||s.k===filter).map(s=>{
+    const n=s.items.length, d=s.items.filter(i=>S.status[i.id]===2).length;
+    return `<section class="subj" style="--tint:${tint(s.c)};--accent:${col(s.c)}">
+      <div class="subj-head"><h3>${s.k}</h3><span class="tag">${s.exam?'시험 50 + 수행 50':'수행평가 100%'}</span></div>
+      <div class="barbox"><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${d}" aria-label="${s.k} 완료"><i style="width:${d/n*100}%"></i></div></div>
+      <ul class="items">${s.items.map(it=>{const st=S.status[it.id]||0;
+        return `<li><button class="item" data-id="${it.id}"><span class="dot s${st}">${st===2?STICK[s.st](col(s.c)):''}</span><span class="nm"><b>${it.t}</b><small>${it.form}${it.tpl?' · 연습장 있음':''}</small></span><span class="pct">${it.w}%</span></button></li>`}).join('')}</ul>
+    </section>`}).join('');
+}
+function find(id){for(const s of SUBJ)for(const it of s.items)if(it.id===id)return{s,it};}
+function openSheet(id){
+  openId=id; const {s,it}=find(id); const st=S.status[id]||0; const steps=S.steps[id]||[]; const notes=S.notes[id]||{};
+  const sh=document.getElementById('sheet');
+  sh.style.setProperty('--tint',tint(s.c)); sh.style.setProperty('--accent',col(s.c));
+  sh.innerHTML=`<div class="sheet-in">
+    <div class="sheet-top"><div><div class="sub">${s.k} · ${it.form} · 성적 반영 ${it.w}%</div><h2 id="sh-title">${it.t}</h2></div><button class="x" id="close" aria-label="닫기">✕</button></div>
+    <div class="status" role="group" aria-label="진행 상태">${['시작 전','준비 중','제출 완료'].map((l,i)=>`<button data-st="${i}" aria-pressed="${st===i}">${l}</button>`).join('')}</div>
+    ${it.tip?`<div class="tip"><b>꿀팁</b>${it.tip}</div>`:''}
+    <div class="box"><h3>이렇게 준비해요</h3><ul class="steps">${it.steps.map((t,i)=>`<li><label><input type="checkbox" id="stp-${id}-${i}" data-i="${i}" ${steps[i]?'checked':''}><span>${t}</span></label></li>`).join('')}</ul></div>
+    ${it.tpl?`<div class="box"><h3>글쓰기 연습장</h3><div style="font-size:13px;color:var(--soft)">칸마다 짧게라도 써 보면 실제 평가 때 훨씬 수월해요.</div>
+      ${it.tpl.map((p,i)=>`<div class="note-sec"><label for="nt-${id}-${i}">${p[0]}</label>${p[1]?`<small>${p[1]}</small>`:''}<textarea id="nt-${id}-${i}" data-i="${i}">${(notes[i]||'').replace(/</g,'&lt;')}</textarea></div>`).join('')}
+      <div class="wc"><span id="wc"></span><span id="sv" class="saved"></span></div></div>`:''}
+  </div>`;
+  document.getElementById('scrim').hidden=false; sh.hidden=false; sh.scrollTop=0;
+  updWc(); document.getElementById('close').focus();
+}
+function updWc(){const el=document.getElementById('wc'); if(!el)return;
+  const n=Object.values(S.notes[openId]||{}).join('').replace(/\s/g,'').length; el.textContent=`공백 빼고 ${n}자`;}
+function closeSheet(){document.getElementById('sheet').hidden=true;document.getElementById('scrim').hidden=true;
+  const b=openId!=null?document.querySelector(`.item[data-id="${openId}"]`):document.querySelector(`.ecard[data-ex="${openEx}"]`);
+  if(openEx!=null)renderExam(); openId=null; openEx=null;
+  const b2=b&&b.dataset.ex!=null?document.querySelector(`.ecard[data-ex="${b.dataset.ex}"]`):b; if(b2)b2.focus();}
+function cheer(s){const c=document.getElementById('cheer'); c.innerHTML=STICK[s.st](col(s.c)); c.classList.add('on'); setTimeout(()=>c.classList.remove('on'),900);}
+
+document.addEventListener('click',e=>{
+  const f=e.target.closest('[data-f]'); if(f){filter=f.dataset.f;render();return;}
+  const it=e.target.closest('.item'); if(it){openEx=null;openSheet(it.dataset.id);return;}
+  if(e.target.closest('#close')||e.target.id==='scrim'){closeSheet();return;}
+  const md=e.target.closest('[data-mode]'); if(md){setMode(md.dataset.mode);return;}
+  const rb=e.target.closest('[data-round]'); if(rb){if(rb.dataset.round==='wrong'){exView='wrong';}else{exView='round';exRound=+rb.dataset.round;try{localStorage.setItem(KEY+'-round',exRound);}catch(e){}} renderExam();return;}
+  const ec=e.target.closest('[data-ex]'); if(ec){openExam(+ec.dataset.ex);return;}
+  if(openEx!=null){const x=EXAMS()[openEx], r=exR(x.k);
+    const ch=e.target.closest('[data-c]'); if(ch&&!r.graded){r.ans[+ch.dataset.q]=+ch.dataset.c; save(); openExam(openEx,true); return;}
+    if(e.target.closest('#grade')){r.graded=true; r.selfs=[null,null]; const {t}=updBest(x,r); save(); openExam(openEx); document.getElementById('sheet').scrollTop=0; if(t>=80)cheer(x); return;}
+    const sg=e.target.closest('[data-self]'); if(sg){const [ei,v]=sg.dataset.self.split(':').map(Number); r.selfs[ei]=v; const {t,prev}=updBest(x,r); save(); openExam(openEx,true); if(t>=80&&(prev??0)<80)cheer(x); return;}
+    if(e.target.closest('#retry')){r.ans={}; r.essays=['','']; r.graded=false; r.selfs=[null,null]; save(); openExam(openEx); return;}
+  }
+  const st=e.target.closest('[data-st]'); if(st&&openId){const v=+st.dataset.st; const prev=S.status[openId]||0; S.status[openId]=v; save();
+    document.querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.st===v)); render();
+    if(v===2&&prev!==2) cheer(find(openId).s);}
+});
+document.addEventListener('change',e=>{
+  if(e.target.matches('.steps input')&&openId){const a=S.steps[openId]||[]; a[+e.target.dataset.i]=e.target.checked; S.steps[openId]=a;
+    if(e.target.checked&&!(S.status[openId]>0)){S.status[openId]=1; document.querySelectorAll('[data-st]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.st==='1'));}
+    save(); render();}
+});
+let tmr;
+document.addEventListener('input',e=>{
+  if(e.target.matches('[data-essay]')&&openEx!=null){exR(EXAMS()[openEx].k).essays[+e.target.dataset.essay]=e.target.value; clearTimeout(tmr); tmr=setTimeout(save,400); return;}
+  if(e.target.matches('.note-sec textarea')&&openId){const o=S.notes[openId]||{}; o[+e.target.dataset.i]=e.target.value; S.notes[openId]=o; updWc();
+    const sv=document.getElementById('sv'); sv.textContent=''; clearTimeout(tmr); tmr=setTimeout(()=>{save(); sv.textContent='저장됨';},500);}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&(openId||openEx!=null))closeSheet();});
+dday(); render(); setMode(mode==='exam'?'exam':'task');
+</script>
+
+</body></html>
